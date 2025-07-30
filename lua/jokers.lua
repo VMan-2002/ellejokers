@@ -1,4 +1,4 @@
---		[[ Common ]]
+--		[[ Chloe/Chesh ]]
 -- Chloe
 SMODS.Joker {
 	key = 'chloe',
@@ -19,6 +19,7 @@ SMODS.Joker {
 	rarity = 1,
 	atlas = 'jokers',
 	pos = { x = 0, y = 0 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
 	calculate = function(self, card, context)
@@ -44,92 +45,6 @@ SMODS.Joker {
 	end
 }
 
--- Drago
-SMODS.Joker {
-	key = 'drago',
-	loc_txt = {
-		name = 'Drago',
-		text = {
-			"{X:mult,C:white}X#1#{} Mult",
-			" ",
-			caption.."Genuinely pathetic",
-			"{C:inactive,s:0.7}Character belongs to",
-			"{C:inactive,s:0.7}@dragothedemon.bsky.social"
-		},
-		unlock = {
-			"Reach {X:mult,C:white}X2{} Mult",
-			"on {C:attention}Cheshire"
-		}
-	},
-	config = { extra = { Xmult = 1 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.Xmult } }
-	end,
-	rarity = 1,
-	atlas = 'jokers',
-	pos = { x = 5, y = 0 },
-	cost = 1,
-	blueprint_compat = true,
-	unlocked = false,
-	check_for_unlock = function(self, args)
-		return args.type == "elle_drago"
-	end,
-	calculate = function(self, card, context)
-		if context.joker_main then
-			return {
-				Xmult_mod = card.ability.extra.Xmult,
-				message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } }
-			}
-		end
-	end
-}
-
-
---		[[ Uncommon ]]
--- Parasite
-SMODS.Joker {
-	key = 'parajoker',
-	loc_txt = {
-		name = 'Parasite Joker',
-		text = {
-			"{C:mult}+#1#{} Mult",
-			"{C:chips}+#2#{} Chips",
-			"{C:mult}+#1#{} Mult and {C:green}#2# in #3#{} chance for",
-			"a {C:spectral}Parasite{} card"
-		}
-	},
-	config = { extra = { mult = 8, chips = 16, odds = 4 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult, card.ability.extra.chips } }
-	end,
-	rarity = 2,
-	atlas = 'jokers',
-	pos = { x = 0, y = 1 },
-	cost = 5,
-	blueprint_compat = true,
-	in_pool = function(self) return false end,
-	no_doe = true,
-	parasite_retrigger = true,
-	calculate = function(self, card, context)
-		if context.joker_main then
-			if elle_prob(card, 'elle_jolly_parasite', card.ability.extra.odds) then
-				SMODS.add_card({
-					set = "Spectral",
-					area = G.consumeables,
-					key = "c_elle_parasite"
-				})
-			end
-			
-			return {
-				mult_mod = card.ability.extra.mult,
-				chip_mod = card.ability.extra.chips,
-				message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } },
-				extra = { message = localize { type = 'variable', key = 'a_chips', vars = { card.ability.extra.chips } }, colour = G.C.CHIPS }
-			}
-		end
-	end
-}
-
 -- "Chloe"
 SMODS.Joker {
 	key = 'furry',
@@ -151,6 +66,7 @@ SMODS.Joker {
 	rarity = 2,
 	atlas = 'jokers',
 	pos = { x = 1, y = 0 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 5,
 	blueprint_compat = true,
 	in_pool = function(self) return false end,
@@ -175,134 +91,6 @@ SMODS.Joker {
 	end
 }
 
--- Sarah
-SMODS.Joker {
-	key = 'sarah',
-	loc_txt = {
-		name = 'Sarah',
-		text = {
-			"All {C:attention}scoring cards{} are",
-			"considered the first",
-			" ",
-			caption.."Let's try that again..."
-		}
-	},
-	config = { extra = { } },
-	loc_vars = function(self, info_queue, card) return { vars = { } } end,
-	rarity = 2,
-	atlas = 'jokers',
-	pos = { x = 2, y = 3 },
-	cost = 9,
-	calculate = function(self, card, context)
-		if context.cardarea == G.play and not context.retrigger_joker and context.individual then
-			for k, v in ipairs(context.scoring_hand) do
-				if (v == context.other_card) then
-					table.remove(context.scoring_hand, k)
-					table.insert(context.scoring_hand, 1, context.other_card)
-				end
-			end
-		end
-	end
-}
-
--- Check It Out
-SMODS.Joker {
-	key = 'carpet',
-	loc_txt = {
-		name = 'Check It Out',
-		text = {
-			"This joker gains {X:mult,C:white}X#1#{} Mult",
-			"if played hand contains",
-			"a {C:attention}Full House",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
-		}
-	},
-	config = { extra = { xmult_mod = 0.25, xmult = 1 } },
-	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } } end,
-	rarity = 2,
-	atlas = 'jokers',
-	pos = { x = 3, y = 3 },
-	blueprint_compat = true,
-	cost = 9,
-	calculate = function(self, card, context)
-		if context.joker_main then
-			if next(context.poker_hands['Full House']) then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-				return {
-					message = "Carpet (+X"..(card.ability.extra.xmult_mod)..")",
-					sound = 'elle_carpet',
-					colour = G.C.MULT,
-					extra = {
-						Xmult_mod = card.ability.extra.xmult,
-						message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
-					}
-				}
-			end
-			if card.ability.extra.xmult ~= 1 then
-				return {
-					Xmult_mod = card.ability.extra.xmult,
-					message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
-				}
-			end
-		end
-	end
-}
-
--- Winsweep
-SMODS.Joker {
-	key = 'winsweel',
-	loc_txt = {
-		name = 'Winsweep',
-		text = {
-			"This joker gains {X:mult,C:white}X#1#{} Mult",
-			"for each consecutive",
-			"{C:attention}First Hand{} win",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-			" ",
-			caption.."Winsweep never loses!",
-			"{C:inactive,s:0.7}Character from",
-			"{C:inactive,s:0.7}Content SMP"
-		}
-	},
-	config = { extra = { xmult = 1, xmult_mod = 0.25 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
-	end,
-	rarity = 2,
-	atlas = 'jokers',
-	pos = { x = 0, y = 2 },
-	cost = 8,
-	calculate = function(self, card, context)
-		if context.end_of_round and context.cardarea == G.jokers then
-			if (G.GAME.current_round.hands_played == 1) then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-				
-				card:juice_up(.1,.1)
-				return {
-					message = "Win! (+X"..card.ability.extra.xmult_mod..")"
-				}
-			elseif (card.ability.extra.xmult ~= 1) then
-				card.ability.extra.xmult = 1
-				
-				card:juice_up(.1,.1)
-				return {
-					message = "Reset"
-				}
-			end
-		end
-		if context.joker_main then
-			if card.ability.extra.xmult ~= 1 then
-				return {
-					xmult_mod = card.ability.extra.xmult,
-					message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
-				}
-			end
-		end
-	end
-}
-
-
---		[[ Rare ]]
 -- Furry
 SMODS.Joker {
 	key = 'furry2',
@@ -326,6 +114,7 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 2, y = 0 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 7,
 	blueprint_compat = true,
 	parasite_retrigger = true,
@@ -424,32 +213,6 @@ SMODS.Joker {
 				}
 			end
 		end
-		
-		-- Secret Drago interaction (girlfail)
-		--		1/4 chance to destroy Drago and get +X2. If Drago has an edition, inherit that edition
-		if context.end_of_round and context.cardarea == G.jokers and #find_joker("j_elle_drago") > 0 and not context.blueprint and not context.retrigger_joker and elle_prob(card, 'elle_chesh_drago', card.ability.extra.drago) then
-			local _girlfood = find_joker("j_elle_drago")[1]
-			local _ed = _girlfood.edition
-			
-			local _txt = "Pathetic."
-			local _snd = 'slice1'
-			
-			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
-			G.E_MANAGER:add_event(Event({func = function()
-				G.GAME.joker_buffer = 0
-				
-				if _ed ~= nil then card:set_edition(_ed.key) end
-				
-				card.ability.extra.Xmult_mod = card.ability.extra.Xmult_mod + card.ability.extra.drago_mod
-				card:juice_up(.8,.8)
-				_girlfood:shatter()
-				play_sound(_snd)
-			return true end }))
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = _txt.." (+X"..card.ability.extra.drago_mod..")", colour = G.C.RED})
-			
-			check_for_unlock({type="elle_symbiosis"})
-		end
-		
 		-- XMult stuff
 		if context.joker_main then
 			if card.ability.extra.Xmult ~= 0 then
@@ -462,6 +225,8 @@ SMODS.Joker {
 	end
 }
 
+
+--		[[ Other OCs ]]
 -- Sophie
 SMODS.Joker {
 	key = 'sophie',
@@ -469,9 +234,10 @@ SMODS.Joker {
 		name = 'Sophie',
 		text = {
 			"This joker gains {C:mult}+#1#{} Mult",
-			"for each additional multiple of",
-			"{C:attention}Round Score{} reached",
-			"at end of round",
+			"for each additional multiple",
+			"of {C:attention}Round Score{} reached at",
+			"end of round, resets when",
+			"{C:attention}Boss Blind{} is defeated",
 			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 			" ",
 			caption.."It burns so good~"
@@ -495,15 +261,25 @@ SMODS.Joker {
 		if args.type == "round_win" then return G.GAME.chips/G.GAME.blind.chips >= to_big(10) end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and context.cardarea == G.jokers and math.floor(G.GAME.chips / G.GAME.blind.chips) ~= 1 then
-			local _mult = (math.floor(G.GAME.chips / G.GAME.blind.chips)-1) * card.ability.extra.mult_mod
+		if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
+			-- Reset on boss blind
+			if (G.GAME.blind.boss and card.ability.extra.mult > 0) then
+				card.ability.extra.mult = 0
+				SMODS.calculate_effect({ message = "Reset!" }, card)
+			end
 			
-			card.ability.extra.mult = card.ability.extra.mult + _mult
-			
-			card:juice_up(.1,.1)
-			return {
-				message = "Hehe~ (+".._mult..")"
-			}
+			-- Add the mult stuff
+			if math.floor(G.GAME.chips / G.GAME.blind.chips) ~= 1 then
+				local _mult = (math.floor(G.GAME.chips / G.GAME.blind.chips)-1) * card.ability.extra.mult_mod
+				
+				card.ability.extra.mult = card.ability.extra.mult + _mult
+				
+				card:juice_up(.1,.1)
+				
+				return {
+					message = "Hehe~ (+".._mult..")"
+				}
+			end
 		end
 		if context.joker_main then
 			if card.ability.extra.mult ~= 0 then
@@ -516,56 +292,173 @@ SMODS.Joker {
 	end
 }
 
--- Symbiosis
+-- Sarah
 SMODS.Joker {
-	key = 'symbiosis',
+	key = 'sarah',
 	loc_txt = {
-		name = 'Symbiosis',
+		name = 'Sarah',
 		text = {
-			"When a card is destroyed",
-			"{C:green}#1# in #2#{} chance to create",
-			"a random {C:negative}Negative {C:tarot}Tarot{} card",
-			"{C:green}#3# in #4#{} chance to create",
-			"a {C:negative}Negative {C:spectral}Spectral{} card instead",
+			"All {C:attention}scoring cards{} are",
+			"considered the first",
 			" ",
-			caption_p.."It’s so warm... kinda cozy...",
-			"{C:inactive,s:0.7}Character belongs to",
-			"{C:inactive,s:0.7}@dragothedemon.bsky.social"
-		},
-		unlock = {
-			"Destroy {C:attention}Drago{} through",
-			"{C:e_possessed}unorthodox means{}..."
+			caption.."Let's try that again..."
 		}
 	},
-	config = { extra = { tarot = 4, spectral = 4 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { elle_prob_loc(card, card.ability.extra.tarot), card.ability.extra.tarot, elle_prob_loc(card, card.ability.extra.spectral), card.ability.extra.spectral } }
-	end,
-	rarity = 3,
+	config = { extra = { } },
+	loc_vars = function(self, info_queue, card) return { vars = { } } end,
+	rarity = 2,
 	atlas = 'jokers',
-	pos = { x = 6, y = 0 },
-	cost = 7,
-	blueprint_compat = true,
-	in_pool = function(self) return false end,
-	no_doe = true,
-	unlocked = false,
-	parasite_retrigger = true,
-	check_for_unlock = function(self, args)
-		return args.type == "elle_symbiosis"
-	end,
+	pos = { x = 2, y = 3 },
+	soul_pos = { x = 5, y = 0 },
+	cost = 9,
 	calculate = function(self, card, context)
-		if context.remove_playing_cards then
-			for i, v in ipairs(context.removed) do
-				if elle_prob(card,'elle_symbiosis-tarot',card.ability.extra.tarot) and #G.consumeables.cards < G.consumeables.config.card_limit then
-					local _set = "Tarot"
-					if elle_prob(card, 'elle_symbiosis-spectral', card.ability.extra.spectral) then _set = "Spectral" end
-					
-					SMODS.add_card({
-						set = _set,
-						area = G.consumeables,
-						edition = 'e_negative'
-					})
+		if context.cardarea == G.play and not context.retrigger_joker and context.individual then
+			for k, v in ipairs(context.scoring_hand) do
+				if (v == context.other_card) then
+					table.remove(context.scoring_hand, k)
+					table.insert(context.scoring_hand, 1, context.other_card)
 				end
+			end
+		end
+	end
+}
+
+-- spearmint.prog
+SMODS.Joker {
+	key = 'spearmint',
+	loc_txt = {
+		name = 'spearmint.prog',
+		text = {
+			"idk",
+			" ",
+			caption.."At your service."
+		}
+	},
+	config = { extra = { } },
+	loc_vars = function(self, info_queue, card) return { vars = { } } end,
+	display_size = { w = 71 , h = 81 },
+	pixel_size = { w = 71 , h = 81 },
+	rarity = 2,
+	atlas = 'spearmint',
+	pos = { x = 0, y = 1 },
+	soul_pos = { x = 5, y = 0 },
+	cost = 9,
+	calculate = function(self, card, context) end
+}
+
+-- Spearmint
+SMODS.Joker {
+	key = 'spearmint2',
+	loc_txt = {
+		name = 'Spearmint',
+		text = {
+			"idk",
+			" ",
+			caption.."Can we wander for a spell?"
+		}
+	},
+	config = { extra = { } },
+	loc_vars = function(self, info_queue, card) return { vars = { } } end,
+	rarity = 3,
+	atlas = 'spearmint',
+	pos = { x = 0, y = 0 },
+	soul_pos = { x = 5, y = 0 },
+	cost = 9,
+	calculate = function(self, card, context) end
+}
+
+--		[[ References/Inside Jokes ]]
+-- Check It Out
+SMODS.Joker {
+	key = 'carpet',
+	loc_txt = {
+		name = 'Check It Out',
+		text = {
+			"This joker gains {X:mult,C:white}X#1#{} Mult",
+			"if played hand contains",
+			"a {C:attention}Full House",
+			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+		}
+	},
+	config = { extra = { xmult_mod = 0.25, xmult = 1 } },
+	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } } end,
+	rarity = 2,
+	atlas = 'jokers',
+	pos = { x = 3, y = 3 },
+	blueprint_compat = true,
+	cost = 9,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			if next(context.poker_hands['Full House']) and not context.blueprint then
+				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+				return {
+					message = "Carpet (+X"..(card.ability.extra.xmult_mod)..")",
+					sound = 'elle_carpet',
+					colour = G.C.MULT,
+					extra = {
+						Xmult_mod = card.ability.extra.xmult,
+						message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+					}
+				}
+			end
+			if card.ability.extra.xmult ~= 1 then
+				return {
+					Xmult_mod = card.ability.extra.xmult,
+					message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+				}
+			end
+		end
+	end
+}
+
+-- Winsweep
+SMODS.Joker {
+	key = 'winsweel',
+	loc_txt = {
+		name = 'Winsweep',
+		text = {
+			"This joker gains {X:mult,C:white}X#1#{} Mult",
+			"for each consecutive",
+			"{C:attention}First Hand{} win",
+			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+			" ",
+			caption.."Winsweep never loses!",
+			"{C:inactive,s:0.7}Character from",
+			"{C:inactive,s:0.7}Content SMP"
+		}
+	},
+	config = { extra = { xmult = 1, xmult_mod = 0.25 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+	end,
+	rarity = 2,
+	atlas = 'jokers',
+	pos = { x = 0, y = 2 },
+	cost = 8,
+	calculate = function(self, card, context)
+		if context.end_of_round and context.cardarea == G.jokers then
+			if (G.GAME.current_round.hands_played == 1) then
+				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+				
+				card:juice_up(.1,.1)
+				return {
+					message = "Win! (+X"..card.ability.extra.xmult_mod..")"
+				}
+			elseif (card.ability.extra.xmult ~= 1) then
+				card.ability.extra.xmult = 1
+				
+				card:juice_up(.1,.1)
+				return {
+					message = "Reset"
+				}
+			end
+		end
+		if context.joker_main then
+			if card.ability.extra.xmult ~= 1 then
+				return {
+					xmult_mod = card.ability.extra.xmult,
+					message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+				}
 			end
 		end
 	end
@@ -591,6 +484,7 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 1, y = 3 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 8,
 	blueprint_compat = false,
 	calculate = function(self, card, context)
@@ -655,6 +549,7 @@ SMODS.Joker {
 	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 0, y = 3 },
+	soul_pos = { x = 5, y = 0 },
 	cost = 9
 }
 

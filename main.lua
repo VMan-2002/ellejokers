@@ -31,6 +31,12 @@ SMODS.Atlas {
 	py = 95,
 }
 SMODS.Atlas {
+	key = "spearmint",
+	path = "spearmint.png",
+	px = 71,
+	py = 95,
+}
+SMODS.Atlas {
 	key = "consumables",
 	path = "consumables.png",
 	px = 71,
@@ -182,6 +188,32 @@ G.FUNCS.elle_active_ability = function(e, mute, nosave)
 	card.area:remove_from_highlighted(card)
 	
 	if (card.config.center.elle_active.should_close and not card.config.center.elle_active:should_close(card)) then card.area:add_to_highlighted(card) end
+end
+
+-- Add spearmint animations
+local upd = Game.update
+anim_elle_spearmint_dt = 0
+anim_elle_spearmint_f = 0
+
+function Game:update(dt)
+	upd(self,dt)
+	anim_elle_spearmint_dt = anim_elle_spearmint_dt + dt
+	if G.P_CENTERS and anim_elle_spearmint_dt > 0.2 then
+		anim_elle_spearmint_dt = 0
+		
+		-- spearmint.prog animation
+		if G.P_CENTERS.j_elle_spearmint then
+			local obj = G.P_CENTERS.j_elle_spearmint
+			obj.pos.x = (obj.pos.x + 1) % 2
+		end
+		
+		-- Spearmint animation
+		if G.P_CENTERS.j_elle_spearmint2 then
+			local obj = G.P_CENTERS.j_elle_spearmint2
+			anim_elle_spearmint_f = (anim_elle_spearmint_f + 1) % 4 -- Taking extra steps to ping-pong the middle frame
+			obj.pos.x = anim_elle_spearmint_f > 2 and 2-(anim_elle_spearmint_f-2) or anim_elle_spearmint_f
+		end
+	end
 end
 
 for i, v in ipairs(files) do

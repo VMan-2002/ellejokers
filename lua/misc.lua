@@ -1,12 +1,13 @@
 --		[[ Consumables ]]
--- Parasite (Spectral)
+-- Upgrade (Spectral)
+--[[
 SMODS.Consumable {
 	key = 'parasite',
 	set = 'Spectral',
 	loc_txt = {
-		name = "Parasite",
+		name = "Upgrade",
 		text = {
-			"Can {C:e_possessed}\"Upgrade\"{} specific Jokers.",
+			"Can {C:attention}Upgrade{} specific Jokers.",
 			"Carries over values when applicable.",
 			"Destroys #1# random cards in hand"
 		}
@@ -17,7 +18,7 @@ SMODS.Consumable {
 	end,
 	cost = 7,
 	atlas = 'consumables',
-	pos = { x = 1, y = 0 },
+	pos = { x = 0, y = 0 },
 	can_use = function(self, card)
 		-- immediately ignore if the init conditions aren't true
 		if (#G.jokers.highlighted ~= 1 or #G.hand.cards < 3) then return false end
@@ -58,6 +59,7 @@ SMODS.Consumable {
 		upgrade_joker(G.jokers.highlighted[1], elle_parasite_upgrades)
 	end
 }
+--]]
 
 -- Resident (Tarot)
 SMODS.Consumable {
@@ -68,45 +70,52 @@ SMODS.Consumable {
 		text = {
 			"Enhances {C:attention}#1#{} selected",
 			"card into a",
-			"{C:attention}Slimed Card"
+			"{C:attention}Slime Card"
 		}
 	},
 	cost = 4,
 	atlas = 'consumables',
-	pos = { x = 0, y = 1 },
-	config = { extra = { }, max_highlighted = 1, mod_conv = "m_elle_slimed" },
+	pos = { x = 1, y = 0 },
+	config = { extra = { }, max_highlighted = 1, mod_conv = "m_elle_slime" },
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.max_highlighted } } end,
 }
 
 
 --		[[ Enhancements/Editions ]]
--- Slimed Enhancement
+-- Slime Enhancement
 SMODS.Enhancement {
-	key = 'slimed',
+	key = 'slime',
 	loc_txt = {
-		name = "Slimed Card",
+		name = "Slime Card",
 		text = {
-			"{X:mult,C:white}X#1#{} Mult",
-			"Card gets destroyed",
-			"when discarded"
+			"{C:green}#1# in #2#{} Chance to",
+			"retrigger {C:attention}#3#{} times"
 		}
 	},
 	atlas = 'enhancers',
 	pos = { x = 0, y = 0 },
-	config = { extra = { }, x_mult = 2 },
-	loc_vars = function(self, info_queue, card) return { vars = { card.ability.x_mult } } end,
+	config = { extra = { odds = 3, retriggers = 2 } },
+	loc_vars = function(self, info_queue, card) return { vars = { elle_prob_loc(card,card.ability.extra.odds), card.ability.extra.odds, card.ability.extra.retriggers } } end,
 	calculate = function(self, card, context)
-		if context.discard and context.other_card == card then
+		if context.repetition and elle_prob(card, 'elle_lucidity', card.ability.extra.odds) then
+			return {
+				message = localize('k_again_ex'),
+				repetitions = card.ability.extra.retriggers
+			}
+		end
+	end
+	
+		--[[if context.discard and context.other_card == card then
 			G.E_MANAGER:add_event(Event({
 				trigger = 'before',
 				delay = 0.0,
 				func = (function()
-					card:start_dissolve({HEX("FFAE36")}, nil, 1.6)
+					card:start_dissolve({HEX("FF53A9")}, nil, 1.6)
 					return true
 				end)}))
 			return {remove = true}
 		end
-	end
+	end]]
 }
 
 --		[[ MoreFluff Stuff ]]

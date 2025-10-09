@@ -5,26 +5,22 @@
 --		- Marie
 --		- Twy
 --	- More Jokers????
---		- Already sprited Jokers
---			- "Pluey"
---			- Pluey
---			- FRIEND_INSIDE_ME
---			- Defile
---			- Elle
+--		- Ideas
+--			- Deck with showman effect
+--			- Jokers
+--				- Drago Rework
+--					- Wild cards can't be debuffed
+--				- Symbiosis Rework (Indirect Chesh Upgrade)
+--					- X0.2 Mult per card
+--					- $4 per card
+--					- Can destroy playing cards, jokers, or consumables
+--					- Per round instead of Per hand
+--				- Unnamed Joker Idea
+--					- If Scoring Hand contains a Straight, give all cards in hand a permanent +4 Mult
 --		- pls don't scope creep i swear to god-
 --			- oops too late hehe~
 --	- Needs effects
---		- Change effects
---			- Amy
---				- Old effect moved to Lucidity
---			- Sarah
---		- No effects in mind
---			- "Pluey"
---			- Pluey
---			- FRIEND_INSIDE_ME
---			- Defile
---			- Elle
---		- Has effect ideas
+--		- Unimplemented
 --			- Spearmint/spearmint.prog
 --				- Skill tree?
 --				- Allocatable points from beating blinds?

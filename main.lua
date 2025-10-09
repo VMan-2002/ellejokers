@@ -75,7 +75,6 @@ local jokers = {
 	"waterbucketrelease/obsidian",
 	
 			-- Other stuff
-	"winsweep",
 	"carpet",
 	"polyamory",
 	"lucidity",

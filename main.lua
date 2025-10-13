@@ -71,15 +71,16 @@ local jokers = {
 	"waterbucketrelease/obsidian",
 	
 			-- Other stuff
+	"drago",
+	"vivian",
 	"carpet",
 	"polyamory",
-	"lucidity",
 	"bf",
 	"nitro",
+	"eraser",
 	
 			-- Legendaries
 	"marie",
-	"amy",
 	"twy",
 	"elle"
 }

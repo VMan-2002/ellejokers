@@ -35,7 +35,7 @@ bucket.calculate = function(self, card, context)
 			obsidian = obsidian or (G.jokers.cards[lava_pos+i] and G.jokers.cards[lava_pos+i].config.center_key == "j_elle_water_bucket")
 			
 			-- Make cobblestone
-			if (G.jokers.cards[lava_pos+(i*2)] and G.jokers.cards[lava_pos+(i*2)].config.center_key == "j_elle_water_bucket" and G.jokers.cards[lava_pos+(i*2)].config.center_key ~= "j_elle_cobblestone") then
+			if (G.jokers.cards[lava_pos+(i*2)] and G.jokers.cards[lava_pos+(i*2)].config.center_key == "j_elle_water_bucket" and G.jokers.cards[lava_pos+i].config.center_key ~= "j_elle_cobblestone") then
 				play_sound("elle_fizz", 1.6, 0.4)
 				transform_joker(G.jokers.cards[lava_pos+(i)],"j_elle_cobblestone",{value=G.jokers.cards[lava_pos+(i)].sell_cost},true)
 			end

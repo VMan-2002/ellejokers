@@ -59,8 +59,8 @@ local jokers = {
 	"fallen angel",
 	"sarah",
 	"mint",
-	"spearmint.prog",
-	"spearmint",
+	--"spearmint.prog",
+	--"spearmint",
 	"spearlamp",
 	
 			-- Jess's Minecraft Idea
@@ -78,6 +78,7 @@ local jokers = {
 	"bf",
 	"nitro",
 	"eraser",
+	"suggestion",
 	
 			-- Legendaries
 	"marie",

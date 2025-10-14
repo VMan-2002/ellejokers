@@ -3,13 +3,13 @@ local suggestion = SMODS.Joker {
 	loc_txt = {
 		name = 'Suggestion',
 		text = {
-			"Scoring {C:attention}Face Cards",
+			"All played {C:attention}face{} cards",
 			"become {C:attention}Queens",
+			"before scoring",
 			caption..'"I have a suggestion."'
 		}
 	},
 	blueprint_compat = true,
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card) return { vars = { } } end,
 	rarity = 3,

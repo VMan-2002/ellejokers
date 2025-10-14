@@ -3,9 +3,9 @@ local twy = SMODS.Joker {
 	loc_txt = {
 		name = 'TwyLight',
 		text = {
-			"At end of round,",
+			"At {C:attention}end of round,",
 			"{C:green}#1# in #2#{} chance to",
-			"destroy all cards held",
+			"{C:attention}destroy all cards{} held",
 			"in hand and add {C:dark_edition}Negative{}",
 			"to a random joker",
 			caption.."99... 100! This is too many tails~,,",

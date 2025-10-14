@@ -69,7 +69,7 @@ SMODS.Consumable {
 		name = "Resident",
 		text = {
 			"Enhances {C:attention}#1#{} selected",
-			"card into a",
+			"cards into a",
 			"{C:attention}Slime Card"
 		}
 	},

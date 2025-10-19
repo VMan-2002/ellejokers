@@ -3,10 +3,10 @@ local twy = SMODS.Joker {
 	loc_txt = {
 		name = 'TwyLight',
 		text = {
-			"At end of round,",
-			"{C:green}1 in 4{} chance to",
-			"destroy all cards held",
-			"in hand and add {C:negative}Negative{}",
+			"At {C:attention}end of round,",
+			"{C:green}#1# in #2#{} chance to",
+			"{C:attention}destroy all cards{} held",
+			"in hand and add {C:dark_edition}Negative{}",
 			"to a random joker",
 			caption.."99... 100! This is too many tails~,,",
 			"{C:inactive,s:0.7}Character belongs to",
@@ -17,9 +17,9 @@ local twy = SMODS.Joker {
 		}
 	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
-	config = { extra = { xmult_mod = 0.2, xmult = 1 } },
+	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+		return { vars = { elle_prob_loc(card,card.ability.extra.odds), card.ability.extra.odds } }
 	end,
 	rarity = 4,
 	atlas = 'legendary',
@@ -30,30 +30,35 @@ local twy = SMODS.Joker {
 }
 
 twy.calculate = function(self, card, context)
-	if context.destroying_card and next(context.poker_hands['Straight']) and not context.blueprint then
-		if context.cardarea == G.play then
-			local _card = context.destroying_card
-			
-			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-				card:juice_up(.4,.4)
-				_card:start_dissolve({HEX("FFAE36")}, nil, 1.6)
-			return true end }))
-			return {
-				message_card = card,
-				remove = true,
-				message = "+X"..card.ability.extra.xmult_mod,
-				colour = G.C.MULT
-			}
+	if context.end_of_round and context.main_eval and elle_prob(card, 'elle_twy', card.ability.extra.odds) and #G.hand.cards > 0 then
+		-- Find viable Jokers
+		local candidates = {}
+		for k, v in ipairs(G.jokers.cards) do
+			local j = G.jokers.cards[k]
+			if (j ~= card and not (j.edition and j.edition.key == "e_negative")) then candidates[#candidates+1] = j end
 		end
-		
-	end
-	
-	if context.joker_main then
-		if card.ability.extra.xmult ~= 1 then
+		-- If there are non-negative jokers
+		if #candidates > 0 then
+			-- Destroy the cards in hand
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				for k, v in ipairs(G.hand.cards) do
+					v:juice_up(.4,.4)
+					v:start_dissolve({HEX("FFAE36")}, nil, 1.6)
+				end
+			return true end }))
+			
+			-- Set Joker to negative
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+				local j = pseudorandom_element(candidates, 'elle_twy_target')
+				j:set_edition("e_negative", true)
+				j:juice_up(.4,.4)
+				card:juice_up(.4,.4)
+			return true end }))
+			
 			return {
-				Xmult_mod = card.ability.extra.xmult,
-				message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }
+				remove = true,
+				message = "Negative!",
+				colour = G.C.DARK_EDITION
 			}
 		end
 	end

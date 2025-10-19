@@ -23,29 +23,10 @@ local spearlamp = SMODS.Joker {
 }
 
 spearlamp.calculate = function(self, card, context)
-	if context.check_enhancement then
-		if context.other_card.config.center.key == "m_steel" or context.other_card.config.center.key == "m_elle_slime" then
-			return{
-				m_steel = true,
-				m_elle_slime = true
-			}
-		end
+	if context.check_enhancement and context.other_card.config.center.key == "m_steel" or context.other_card.config.center.key == "m_elle_slime" then
+		return{
+			m_steel = true,
+			m_elle_slime = true
+		}
 	end
-end
-
--- Set the info queues of steel and slime cards if this joker is equipped
-local lv_ref = Card.loc_vars
-function Card:loc_vars(info_queue,card)
-	local lv = lv_ref(self,info_queue,card)
-	
-	print("test")
-	print("enhancement: "..self.config.center_key)
-	print("lamp count: "..#SMODS.find_card("j_elle_spearlamp", false))
-	
-if (#SMODS.find_card("j_elle_spearlamp", false)>0) then
-	if (self.config.center_key == "m_steel") then info_queue[#info_queue+1] = G.P_CENTERS.m_elle_slime end
-	if (self.config.center_key == "m_elle_slime") then info_queue[#info_queue+1] = G.P_CENTERS.m_steel end
-end
-	
-	return lv
 end

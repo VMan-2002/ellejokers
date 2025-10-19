@@ -35,7 +35,7 @@ local sophie = SMODS.Joker {
 sophie.calculate = function(self, card, context)
 	if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
 		-- Reset on boss blind
-		if (G.GAME.blind.boss and card.ability.extra.mult > to_big(0)) then
+		if (G.GAME.blind.boss and to_big(card.ability.extra.mult) > to_big(0)) then
 			card.ability.extra.mult = 0
 			SMODS.calculate_effect({ message = "Reset!" }, card)
 		end

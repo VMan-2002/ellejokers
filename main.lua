@@ -59,8 +59,8 @@ local jokers = {
 	"fallen angel",
 	"sarah",
 	"mint",
-	"spearmint.prog",
-	"spearmint",
+	--"spearmint.prog",
+	--"spearmint",
 	"spearlamp",
 	
 			-- Jess's Minecraft Idea
@@ -71,15 +71,17 @@ local jokers = {
 	"waterbucketrelease/obsidian",
 	
 			-- Other stuff
+	"drago",
+	"vivian",
 	"carpet",
 	"polyamory",
-	"lucidity",
 	"bf",
 	"nitro",
+	"eraser",
+	"suggestion",
 	
 			-- Legendaries
 	"marie",
-	"amy",
 	"twy",
 	"elle"
 }

@@ -69,14 +69,14 @@ SMODS.Consumable {
 		name = "Resident",
 		text = {
 			"Enhances {C:attention}#1#{} selected",
-			"card into a",
+			"cards into a",
 			"{C:attention}Slime Card"
 		}
 	},
 	cost = 4,
 	atlas = 'consumables',
 	pos = { x = 1, y = 0 },
-	config = { extra = { }, max_highlighted = 1, mod_conv = "m_elle_slime" },
+	config = { extra = { }, max_highlighted = 2, mod_conv = "m_elle_slime" },
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.max_highlighted } } end,
 }
 

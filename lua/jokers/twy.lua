@@ -19,7 +19,8 @@ local twy = SMODS.Joker {
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
 	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { elle_prob_loc(card,card.ability.extra.odds), card.ability.extra.odds } }
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_twy')
+		return { vars = { numerator, denominator } }
 	end,
 	rarity = 4,
 	atlas = 'legendary',
@@ -30,7 +31,7 @@ local twy = SMODS.Joker {
 }
 
 twy.calculate = function(self, card, context)
-	if context.end_of_round and context.main_eval and elle_prob(card, 'elle_twy', card.ability.extra.odds) and #G.hand.cards > 0 then
+	if context.end_of_round and context.main_eval and SMODS.pseudorandom_probability(card, 'elle_twy', 1, card.ability.extra.odds) and #G.hand.cards > 0 then
 		-- Find viable Jokers
 		local candidates = {}
 		for k, v in ipairs(G.jokers.cards) do

@@ -95,9 +95,12 @@ SMODS.Enhancement {
 	atlas = 'enhancers',
 	pos = { x = 0, y = 0 },
 	config = { extra = { odds = 3, retriggers = 2 } },
-	loc_vars = function(self, info_queue, card) return { vars = { elle_prob_loc(card,card.ability.extra.odds), card.ability.extra.odds, card.ability.extra.retriggers } } end,
+	loc_vars = function(self, info_queue, card)
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_slime_card')
+		return { vars = { numerator, denominator, card.ability.extra.retriggers } }
+	end,
 	calculate = function(self, card, context)
-		if context.repetition and elle_prob(card, 'elle_lucidity', card.ability.extra.odds) then
+		if context.repetition and SMODS.pseudorandom_probability(card, 'elle_slime_card', 1, card.ability.extra.odds) then
 			return {
 				message = localize('k_again_ex'),
 				repetitions = card.ability.extra.retriggers

@@ -40,7 +40,7 @@ polyamory.calculate = function(self, card, context)
 			end
 			return {
 				message = "<3",
-				card = self
+				card = card
 			}
 		end
 	end

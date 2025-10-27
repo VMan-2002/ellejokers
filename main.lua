@@ -146,7 +146,7 @@ elle_badges = {
 	["mall"] =		function() return create_badge("The Mall", HEX('B7A2FD'), G.C.WHITE, 0.8 ) end,
 	["oc"] =		function() return create_badge("ellestuff.", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
 	["friends"] =	function() return create_badge("Friends of Elle", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
-	["toby"] =		function() return create_badge("Toby Fox", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
+	["toby"] =		function() return create_badge("Toby Fox", HEX('FF0000'), G.C.WHITE, 0.8 ) end,
 	["mc"] =		function() return create_badge("Minecraft", HEX('FF005F'), G.C.WHITE, 0.8 ) end
 }
 

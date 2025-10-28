@@ -65,6 +65,7 @@ G.FUNCS.elle_can_use_active = function(e)
     (G.GAME.STOP_USE and G.GAME.STOP_USE > 0))) and
     G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT and
     card.area == G.jokers and not card.debuff and
+	card.config.center.elle_active and
     (not card.config.center.elle_active.can_use or card.config.center.elle_active:can_use(card))
     if can_use then 
         e.config.colour = G.C.RED
@@ -117,6 +118,7 @@ G.FUNCS.elle_can_upgrade = function(e)
     (G.GAME.STOP_USE and G.GAME.STOP_USE > 0))) and
     G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT and
     card.area == G.jokers and not card.debuff and
+	card.config.center.elle_upgrade and
     (not card.config.center.elle_upgrade.can_use or card.config.center.elle_upgrade:can_use(card))
     if can_use then 
         e.config.colour = loc_colour("elle")

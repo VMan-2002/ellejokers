@@ -13,7 +13,7 @@
 --				- Symbiosis Rework (Indirect Chesh Upgrade)
 --					- X0.2 Mult per card
 --					- $4 per card
---					- Can destroy playing cards, jokers, or consumables
+--					- Can destroy playing cards or consumables
 --					- Per round instead of Per hand
 --				- Unnamed Joker Idea
 --					- If Scoring Hand contains a Straight, give all cards in hand a permanent +4 Mult
@@ -62,6 +62,7 @@ local jokers = {
 	--"spearmint.prog",
 	--"spearmint",
 	"spearlamp",
+	"marie",
 	
 			-- Jess's Minecraft Idea
 	"waterbucketrelease/cobble_gen",
@@ -81,7 +82,6 @@ local jokers = {
 	"suggestion",
 	
 			-- Legendaries
-	"marie",
 	"twy",
 	"elle"
 }
@@ -146,7 +146,7 @@ elle_badges = {
 	["mall"] =		function() return create_badge("The Mall", HEX('B7A2FD'), G.C.WHITE, 0.8 ) end,
 	["oc"] =		function() return create_badge("ellestuff.", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
 	["friends"] =	function() return create_badge("Friends of Elle", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
-	["toby"] =		function() return create_badge("Toby Fox", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
+	["toby"] =		function() return create_badge("Toby Fox", HEX('FF0000'), G.C.WHITE, 0.8 ) end,
 	["mc"] =		function() return create_badge("Minecraft", HEX('FF005F'), G.C.WHITE, 0.8 ) end
 }
 
@@ -191,15 +191,8 @@ function transform_joker(card, joker, vars, instant)
 end
 
 -- Cryptid/Talisman Compatibility functions
-function elle_prob(card,p_key,odds)
-	return pseudorandom(p_key) < (Cryptid and cry_prob(card.ability.cry_prob, odds, card.ability.cry_rigged) or G.GAME.probabilities.normal) / odds
-end
-
-function elle_prob_loc(card,odds)
-	return Cryptid and cry_prob(card.ability.cry_prob, odds, card.ability.cry_rigged) or G.GAME.probabilities.normal or 1
-end
-
 to_big = to_big or function(x) return x end
+to_number = to_number or function(x) return x end
 
 -- Add spearmint animations
 local upd = Game.update

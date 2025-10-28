@@ -16,7 +16,6 @@ local sarah = SMODS.Joker {
 	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 4, y = 2 },
-	soul_pos = { x = 5, y = 3 },
 	cost = 11
 }
 

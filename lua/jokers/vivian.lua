@@ -10,7 +10,8 @@ local vivian = SMODS.Joker {
 	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { elle_prob_loc(card,card.ability.extra.odds), card.ability.extra.odds } }
+		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_vivian')
+		return { vars = { numerator, denominator } }
 	end,
 	config = { extra = { odds = 8 } },
 	rarity = 3,
@@ -20,7 +21,7 @@ local vivian = SMODS.Joker {
 }
 
 vivian.calculate = function(self, card, context)
-	if context.before and context.cardarea == G.jokers and elle_prob(card, 'elle_vivian', card.ability.extra.odds) then
+	if context.before and context.cardarea == G.jokers and SMODS.pseudorandom_probability(card, 'elle_vivian', 1, card.ability.extra.odds) then
 		for k, v in ipairs(context.scoring_hand) do
 			local ench = SMODS.poll_enhancement({
 				key = "elle_vivian_card",

@@ -23,7 +23,7 @@ local spearlamp = SMODS.Joker {
 }
 
 spearlamp.calculate = function(self, card, context)
-	if context.check_enhancement and context.other_card.config.center.key == "m_steel" or context.other_card.config.center.key == "m_elle_slime" then
+	if context.check_enhancement and (context.other_card.config.center.key == "m_steel" or context.other_card.config.center.key == "m_elle_slime") then
 		return{
 			m_steel = true,
 			m_elle_slime = true

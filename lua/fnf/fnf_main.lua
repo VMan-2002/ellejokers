@@ -89,7 +89,7 @@ do
 				--v[2]: The KeyConstant that was pressed
 				--v[3]: true if it was just pressed, false if it was just released
 				print(v[1], v[2], v[3])
-				print("this is mania key "..photochadfunkin.bindForKey(v[2]))
+				print("this is mania key "..tostring(photochadfunkin.bindForKey(v[2])))
 			end
 			photochadfunkin.keyEvents = {}
 		end

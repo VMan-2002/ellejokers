@@ -1,0 +1,19 @@
+[manifest]
+version = "0.1.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''if name == 'touchpressed' then'''
+position = "before"
+payload = '''
+do
+	local fnf = photochadfunkin
+	if fnf ~= nil and ((name == 'keypressed' and c == false) or name == 'keyreleased') then
+		fnf.keyEvents[#fnf.keyEvents + 1] = {run_time, a, name == 'keypressed'}
+	end
+end
+'''
+match_indent = true

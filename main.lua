@@ -45,7 +45,8 @@ local files = {
 	"challenges",
 	"skins",
 	"misc",
-	"http"
+	"http",
+	"fnf/fnf_main"
 }
 
 --		[[ Joker List ]]

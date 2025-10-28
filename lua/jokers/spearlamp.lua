@@ -1,5 +1,6 @@
 local spearlamp = SMODS.Joker {
 	key = 'spearlamp',
+	pronouns = "she_her",
 	loc_txt = {
 		name = 'Spearlamp',
 		text = {

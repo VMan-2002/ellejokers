@@ -1,5 +1,6 @@
 local sarah = SMODS.Joker {
 	key = 'sarah',
+	pronouns = "she_her",
 	loc_txt = {
 		name = 'Sarah',
 		text = {

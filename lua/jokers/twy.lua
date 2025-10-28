@@ -1,5 +1,6 @@
 local twy = SMODS.Joker {
 	key = 'twy',
+	pronouns = "she_her",
 	loc_txt = {
 		name = 'TwyLight',
 		text = {

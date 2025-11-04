@@ -42,15 +42,18 @@ end
 
 bf.elle_active = {
 	calculate = function(self, card)
-		card.ability.extra.attempted = true
+		if photochadfunkin and photochadfunkin.options then
+			return photochadfunkin:options()
+		end
+		--[[card.ability.extra.attempted = true
 		
 		local max_misses = ((card.ability.extra.win-1)*(1/card.ability.extra.miss))
 		local misses = math.floor(pseudorandom("elle_bf")*max_misses+0.5)
-		card.ability.extra.xmult = card.ability.extra.win - misses*card.ability.extra.miss
+		card.ability.extra.xmult = card.ability.extra.win - misses*card.ability.extra.miss]]
 		
 		SMODS.calculate_effect({ message_card = card,
-			message = "not coding allat",
-			extra = { message = misses .." Misses" }
+			message = "Error!",
+			--extra = { message = misses .." Misses" }
 		}, card)
 	end,
 	can_use = function(self, card) return not card.ability.extra.attempted end,

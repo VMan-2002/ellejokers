@@ -1,1 +1,6 @@
 .lovelyignore
+# Temporary
+assets/sounds/*-inst.ogg
+assets/sounds/*-voices.ogg
+assets/sounds/phantomMenu.ogg
+assets/sounds/phantomMenuScary.ogg

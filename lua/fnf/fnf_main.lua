@@ -6,10 +6,12 @@
 
 photochadfunkin = {
 	--shared
-	running = false,
+	running, audioStarted = false, false,
 	
 	--song
 	mania = 4, --corrosponds DIRECTLY to the number of keys (4 is 4, etc.)
+	unspawnNoteIndex = false,
+	startTime = 0,
 	
 	--game settings
 	downscroll = false,
@@ -28,45 +30,76 @@ photochadfunkin = {
 	hits, misses, accuracy = 0, 0, 100,
 	
 	--management
-	start = function()
+	start = function(self)
 		if running then	return print("Tried to start FNF but it's already started!") end
+		self.keyEvents = {}
 		running = true
+		self.score, self.health = 0, 1
+		self.sicks, self.goods, self.bads, self.shits = 0, 0, 0, 0
+		self.hits, self.misses, self.accuracy = 0, 0, 100
+		for k = 1, self.mania do
+			self.keyHolds[k] = false
+		end
+		--Load shit
+		self.unspawnNoteIndex = 1
+		self.unspawnNotes, self.notes, self.camChanges = {}, {}, {}
+		self.camPlayer = self.song.notes[1].mustHitSection
 		
-		photochadfunkin.score, photochadfunkin.health = 0, 100
-		photochadfunkin.sicks, photochadfunkin.goods, photochadfunkin.bads, photochadfunkin.shits = 0, 0, 0, 0
-		photochadfunkin.hits, photochadfunkin.misses, photochadfunkin.accuracy = 0, 0, 100
+		--notes
+		local noteData
+		local mustHitSection = self.camPlayer
+		for k,v in pairs(self.song.notes) do
+			if v.mustHitSection ~= mustHitSection then
+				self.camChanges[#self.camChanges + 1] = k
+				mustHitSection = v.mustHitSection
+			end
+			for k2,v2 in pairs(v.sectionNotes) do
+				self.unspawnNotes[#self.unspawnNotes + 1] = {
+					v2[1] * 0.001, --Time (seconds)
+					(v2[2] % self.mania) + 1, --Lane (starting from 1)
+					(v2[2] >= self.mania) ~= mustHitSection, --True if note belongs to player
+					v2[3] and (v2[3] * 0.001) or 0 --Sustain length (seconds)
+				}
+			end
+		end
+		table.sort(self.unspawnNotes, function(a, b)
+			return a[1] < b[1]
+		end)
+		print("loaded "..tostring(#self.unspawnNotes).." notes")
+		
+		self:resize(love.graphics.getDimensions())
+		
+		self.startTime = love.timer.getTime() + 3
 	end,
-	song = function(song)
-		photochadfunkin.song = assert(SMODS.load_file("lua/fnf/songs/"..song..".lua"))().song
-		photochadfunkin.songPath = ((photochadfunkin.song.song):lower()):gsub("%s", "-")
+	song = function(self, song)
+		self.song = assert(SMODS.load_file("lua/fnf/songs/"..song..".lua"))().song
+		self.songPath = ((self.song.song):lower()):gsub("%s", "-")
 		SMODS.Sound {
 			key = "fnf_inst",
-			path = photochadfunkin.songPath .. "-inst.ogg"
+			path = self.songPath .. "-inst.ogg"
 		}
 		SMODS.Sound {
 			key = "fnf_voices",
-			path = photochadfunkin.songPath .. "-voices.ogg"
+			path = self.songPath .. "-voices.ogg"
 		}
-		if photochadfunkin.song.keyCount then
-			photochadfunkin.mania = photochadfunkin.song.keyCount
-		elseif photochadfunkin.song.maniaStr then
-			photochadfunkin.mania = tonumber(photochadfunkin.song.maniaStr:sub(1, -2))
-		elseif photochadfunkin.song.mania then
-			photochadfunkin.mania = ({4, 6, 7, 9})[photochadfunkin.song.mania + 1]
+		--Support multiple types of mania definition even tho only 1 chart format is (intentionally) supported
+		if self.song.keyCount then
+			self.mania = self.song.keyCount
+		elseif self.song.maniaStr then
+			self.mania = tonumber(self.song.maniaStr:sub(1, -2))
+		elseif self.song.mania then
+			self.mania = ({4, 6, 7, 9})[self.song.mania + 1]
 		else
-			photochadfunkin.mania = 4
+			self.mania = 4
 		end
-		if not photochadfunkin.binds[photochadfunkin.mania] then
-			error("Loaded chart "..song.." has mania "..tostring(photochadfunkin.mania)..", but there's no keybinds for it")
-		end
-		for k = 1, photochadfunkin.mania do
-			photochadfunkin.keyHolds[k] = false
+		if not self.binds[self.mania] then
+			error("Loaded chart "..song.." has mania "..tostring(self.mania)..", but there's no keybinds for it")
 		end
 	end,
 	
 	--game
-	bindForKey = function(n)
-		for k,v in pairs(photochadfunkin.binds[photochadfunkin.mania]) do
+	bindForKey = function(self, n)
+		for k,v in pairs(self.binds[self.mania]) do
 			--vn like visual novel lolol
 			if v[n] then return k end
 		end
@@ -75,23 +108,24 @@ photochadfunkin = {
 	keyEvents = {}
 }
 
-photochadfunkin.song("god-eater-hard")
-
-do
-	local photochadfunkin, next = photochadfunkin, next --yes this is an optimization
-	local _update = love.update
-	function love.update(...)
-		_update(...)
-		
-		if next(photochadfunkin.keyEvents) ~= nil then
-			for k, v in pairs(photochadfunkin.keyEvents) do
-				--v[1]: When the key was pressed, relative to application start
-				--v[2]: The KeyConstant that was pressed
-				--v[3]: true if it was just pressed, false if it was just released
-				print(v[1], v[2], v[3])
-				print("this is mania key "..tostring(photochadfunkin.bindForKey(v[2])))
-			end
-			photochadfunkin.keyEvents = {}
-		end
-	end
+for k, v in pairs({
+	fnf_miss1 = "missnote1",
+	fnf_miss2 = "missnote2",
+	fnf_miss3 = "missnote3",
+	fnf_die = "fnf_loss_sfx",
+	fnf_intro3 = "intro3",
+	fnf_intro2 = "intro2",
+	fnf_intro1 = "intro1",
+	fnf_intro0 = "introGo"
+}) do
+	SMODS.Sound {
+		key = k,
+		path = v .. ".ogg"
+	}
 end
+
+for i, v in ipairs({"fnf_game"}) do
+	assert(SMODS.load_file("lua/fnf/"..v..".lua"))()
+end
+
+photochadfunkin:song("god-eater-hard")

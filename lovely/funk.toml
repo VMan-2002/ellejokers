@@ -11,8 +11,12 @@ position = "before"
 payload = '''
 do
 	local fnf = photochadfunkin
-	if fnf ~= nil and ((name == 'keypressed' and c == false) or name == 'keyreleased') then
-		fnf.keyEvents[#fnf.keyEvents + 1] = {run_time, a, name == 'keypressed'}
+	if fnf ~= nil then
+		if ((name == 'keypressed' and c == false) or name == 'keyreleased') then
+			fnf.keyEvents[#fnf.keyEvents + 1] = {run_time, a, name == 'keypressed'}
+		elseif name == "resize" then
+			fnf:resize(a, b)
+		end
 	end
 end
 '''

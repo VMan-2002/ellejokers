@@ -50,6 +50,10 @@ photochadfunkin = {
 	graphics = {
 		arrows = {}
 	},
+	multBase = 3,
+	gfxData = function(file, mod)
+		return NFS.read('data', (SMODS.Mods[mod] or SMODS.current_mod).path .. "assets/gfx/" .. file .. ".png")
+	end,
 	
 	--song
 	mania = 4, --corrosponds DIRECTLY to the number of keys (4 is 4, etc.)
@@ -75,7 +79,8 @@ photochadfunkin = {
 		[8] = {1, 2, 3, 4, 6, 7, 8, 9},
 		[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}
 	},
-	keyHolds = {false, false, false, false, false, false, false, false, false},
+	arrowdirs = { "LEFT", "DOWN", "UP", "RIGHT", "UP", "LEFT", "DOWN", "UP", "RIGHT" },
+	keyHolds = {1, 1, 1, 1, 1, 1, 1, 1, 1},
 	
 	--management
 	start = function(self)
@@ -87,7 +92,7 @@ photochadfunkin = {
 		self.sicks, self.goods, self.bads, self.shits = 0, 0, 0, 0
 		self.hits, self.misses, self.accuracy = 0, 0, 100
 		for k = 1, self.mania do
-			self.keyHolds[k] = false
+			self.keyHolds[k] = 1
 		end
 		
 		self.conductor.bpm = self.song.bpm
@@ -96,8 +101,11 @@ photochadfunkin = {
 		self.conductor.prevBeat = -99
 		
 		self:resize(love.graphics.getWidth(), love.graphics.getHeight())
+		self:updateScoreHud()
 		
 		self.conductor.startTime = love.timer.getTime() + (self.conductor.crochet * 4) + 1
+		
+		self.characters = {self:createCharacter("bf", "ellejokers")}
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -166,6 +174,60 @@ photochadfunkin = {
 		print("loaded "..tostring(#self.unspawnNotes).." notes")
 	end,
 	
+	--characters
+	getCharacterID = function(name, mod)
+		return (SMODS.Mods[mod] or SMODS.current_mod).prefix .. "_" .. name
+	end,
+	loadCharacter = function(self, name, mod)
+		local id = self.getCharacterID(name, mod)
+		if self.characterDefs[id] then return print("Character Def "..tostring(id).." already loaded") end
+		local ch = assert(SMODS.load_file("lua/fnf/chars/"..name..".lua", mod))()
+		self.characterDefs[id] = ch
+		ch.image = love.graphics.newImage(self.gfxData(ch.imageFile))
+		ch.image:setFilter("linear", "nearest")
+		local tx, ty = ch.image:getDimensions()
+		local quads = {}
+		ch.quads = quads
+		for _,v in pairs(ch.anims) do
+			for _,v2 in pairs(v) do
+				if not quads[v2] then
+					quads[v2] = love.graphics.newQuad(
+						((v2 - 1) % ch.xtiles) * ch.xtilesize,
+						math.floor((v2 - 1) / ch.xtiles) * ch.ytilesize,
+						ch.xtilesize, ch.ytilesize,
+						tx, ty
+					)
+				end
+			end
+		end
+		ch.danceType = ch.anims.danceLeft
+	end,
+	createCharacter = function(self, name, mod)
+		local def = self.characterDefs[self.getCharacterID(name, mod)]
+		return {
+			def = def,
+			curAnim = def.danceType and "danceLeft" or "idle",
+			curAnimTime = 0,
+			position = love.math.newTransform(),
+			idle = true,
+			danced = true
+		}
+	end,
+	characterDefs = {},
+	characters = {},
+	characterPlayAnim = function(self, ch, name, force)
+		if force or ch.curAnim ~= name then
+			ch.curAnim = name
+			ch.curAnimTime = 0
+			ch.idle = false
+		end
+	end,
+	characterDance = function(self, ch)
+		ch.danced = not ch.danced
+		self:characterPlayAnim(ch, ch.def.danceType and (ch.danced and "danceRight" or "danceLeft") or "idle", true)
+		ch.idle = true
+	end,
+	
 	--game
 	bindForKey = function(self, n)
 		for k,v in pairs(self.binds[self.mania]) do
@@ -176,6 +238,7 @@ photochadfunkin = {
 	end,
 	keyEvents = {}
 }
+photochadfunkin:loadCharacter("bf", "ellejokers")
 
 for k, v in pairs({
 	fnf_miss1 = "missnote1",

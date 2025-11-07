@@ -1,10 +1,11 @@
 local photochadfunkin, next = photochadfunkin, next --yes this is an optimization
 local safeHit = 10 / 60
+local transform1 = love.math.newTransform()
+local transformtemp = function(a, b) return (b or transform1):setMatrix(a:getMatrix()) end
+local lerp = function(a,b,t) return (1-t)*a + t*b end
 
 photochadfunkin.resize = function(self, w, h)
 	w, h = w or 100, h or 100
-	--[[local ostrums = {}
-	local strums = {}]]
 	self.position = {
 		width = w,
 		height = h,
@@ -16,18 +17,19 @@ photochadfunkin.resize = function(self, w, h)
 		hold = 1,
 		holdend = 2,
 		songpos = (SMODS.Mods.DebugPlus and not SMODS.Mods.DebugPlus.disabled) and 50 or 0,
-		viewTransform = love.math.newTransform()
-		--[[strums = strums,
-		ostrums = ostrums]]
+		viewTransform = love.math.newTransform(),
+		tShadDist = h * 0.003,
+		strumscale = {},
+		ostrumscale = {}
 	}
 	local spacing = self.position.scale * 30
 	local spacing2 = self.position.scale * math.ceil((58 / self.mania) + 14)
 	local start = (w * 0.75) - (spacing2 * self.mania * 0.5)
 	local Ostart = (w * 0.25) - (spacing2 * self.mania * 0.5)
 	local arrowx = {}
-	local arrowy = self.position.scale * 6
+	local arrowy = self.position.scale * 18
 	if self.downscroll then
-		arrowy = h - spacing
+		arrowy = h - arrowy
 		self.position.scroll = 0 - self.position.scroll
 		self.position.scoretxy = 70
 		self.position.hold = 3
@@ -35,16 +37,20 @@ photochadfunkin.resize = function(self, w, h)
 	end
 	local arrowx2 = {}
 	local ib
+	local middler = 12 * self.position.scale
+	self.position.scale12 = middler
 	for i = 1, self.mania do
 		ib = i - 1
-		arrowx[i] = start + (spacing2 * (i - 1))
-		arrowx2[i] = Ostart + (spacing2 * (i - 1))
-		--[[strums[i] = love.math.newTransform(start + (spacing2 * ib), arrowy, 0, self.scale, self.scale)
-		ostrums[i] = love.math.newTransform(Ostart + (spacing2 * ib), arrowy, 0, self.scale, self.scale)]]
+		arrowx[i] = start + (spacing2 * (i - 1)) + middler
+		arrowx2[i] = Ostart + (spacing2 * (i - 1)) + middler
+		--[[strums[i] = love.math.newTransform(start + (spacing2 * ib) + middler, arrowy + middler, 0, self.position.scale, self.position.scale, 12, 12)
+		ostrums[i] = love.math.newTransform(Ostart + (spacing2 * ib) + middler, arrowy + middler, 0, self.position.scale, self.position.scale, 12, 12)]]
+		self.position.strumscale[i] = 1
+		self.position.ostrumscale[i] = 1
 	end
 	self.position.arrowx = arrowx
 	self.position.Oarrowx = arrowx2
-	self.position.arrowy = {arrowy}
+	self.position.arrowy = arrowy
 	--valatroingout.inspect("position", self.position)
 	
 	self.position.viewTransform:setTransformation(0, 0, 0, self.position.scale, self.position.scale)
@@ -59,6 +65,7 @@ photochadfunkin.updateScoreHud = function(self)
 	self.scoreHudText = "Hits: "..tostring(self.hits).." | Misses: "..tostring(self.misses).." | Mult: X"..mult.." | Accuracy: TBA"
 end
 
+local spritebatchNotes, spritebatchHolds
 do
 	local gfx = {}
 	local path = SMODS.current_mod.path .. "assets/gfx/"
@@ -73,6 +80,8 @@ do
 	photochadfunkin.graphics.holdsSheet = gfx.holds
 	photochadfunkin.graphics.noteQuads = {{}, {}, {}, {}}
 	photochadfunkin.graphics.holdQuads = {{}, {}, {}, {}}
+	spritebatchNotes = love.graphics.newSpriteBatch(gfx.arrows)
+	spritebatchHolds = love.graphics.newSpriteBatch(gfx.holds)
 	local tx, ty = gfx.arrows:getDimensions()
 	local htx, hty = gfx.holds:getDimensions()
 	for i = 1, 9 do
@@ -157,6 +166,7 @@ photochadfunkin.update = function(self)
 			end
 		end
 		
+		--Handle key events
 		for k, v in pairs(self.keyEvents) do
 			--v[1]: When the key was pressed (in seconds), relative to application start
 			--v[2]: The KeyConstant that was pressed
@@ -166,6 +176,7 @@ photochadfunkin.update = function(self)
 			if nkey then
 				if v[3] then
 					self.keyHolds[nkey] = 2
+					self.position.strumscale[nkey] = 0.85
 					--Try to hit a note
 					for k,v in ipairs(self.notes) do
 						if (v[3]) and (nkey == v[2]) and (math.abs(self.songPosition - v[1]) <= safeHit) then
@@ -175,6 +186,7 @@ photochadfunkin.update = function(self)
 							self.hits = self.hits + 1
 							self.keyHolds[nkey] = 4
 							self:updateScoreHud()
+							self.position.strumscale[nkey] = 1.3
 							break
 						end
 					end
@@ -186,6 +198,10 @@ photochadfunkin.update = function(self)
 		
 		for k,v in pairs(self.characters) do
 			v.curAnimTime = v.curAnimTime + elapsed
+		end
+		
+		for i = 1, self.mania do
+			self.position.strumscale[i] = lerp(self.position.strumscale[i], 1, elapsed * 12)
 		end
 	
 		--Note misses/holds
@@ -205,40 +221,59 @@ photochadfunkin.draw = function(self)
 		love.graphics.rectangle("fill", 0, 0, (1 + math.sin(love.timer.getTime() * 2)) * w * 0.5, h)
 	end]]
 	if self.running then
+		--[[local oldshad = love.graphics.getShader()
+		self.fuckassshader
+		love.graphics.setShader(self.fuckassshader)]]
 		for _,v in ipairs(self.characters) do
 			local frame = v.def.anims[v.curAnim][math.min(math.floor(v.curAnimTime * 24) + 1, #v.def.anims[v.curAnim])]
-			love.graphics.draw(v.def.image, v.def.quads[frame], v.position * self.position.viewTransform)
+			love.graphics.draw(v.image, v.def.quads[frame], transformtemp(v.position):apply(self.position.viewTransform))
 		end
+		--love.graphics.setShader()
 		
 		for i = 1, self.mania do
-			love.graphics.draw(self.graphics.arrowsSheet, self.graphics.noteQuads[self.keyHolds[i]][arroworder(i)], self.position.arrowx[i], self.position.arrowy[1], 0, self.position.scale)
-			love.graphics.draw(self.graphics.arrowsSheet, self.graphics.noteQuads[1][arroworder(i)], self.position.Oarrowx[i], self.position.arrowy[1], 0, self.position.scale)
-			-- love.graphics.draw(self.graphics.arrowsSheet, (self.keyHolds[i] and self.graphics.pressQuads or self.graphics.strumQuads)[arroworder(i)], self.position.strums[i])
-			-- love.graphics.draw(self.graphics.arrowsSheet, self.graphics.strumQuads[arroworder(i)], self.position.ostrums[i])
+			spritebatchNotes:add(
+				self.graphics.noteQuads[self.keyHolds[i]][arroworder(i)],
+				self.position.arrowx[i], self.position.arrowy,
+				0,
+				self.position.scale * self.position.strumscale[i], nil,
+				12, 12
+			)
+			spritebatchNotes:add(
+				self.graphics.noteQuads[1][arroworder(i)],
+				self.position.Oarrowx[i], self.position.arrowy,
+				0, 
+				self.position.scale, nil,
+				12, 12
+			)
 			for k,v in pairs(self.notes) do
-				love.graphics.draw(
-					self.graphics.arrowsSheet,
+				spritebatchNotes:add(
 					self.graphics.noteQuads[3][arroworder(v[2])],
 					(v[3] and self.position.arrowx or self.position.Oarrowx)[v[2]],
-					self.position.arrowy[1] - ((self.songPosition - v[1]) * self.position.scroll),
-					0, self.position.scale
+					self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
+					0, self.position.scale, nil,
+					12, 12
 				)
 				--[[love.graphics.printf(
 					v[1],
 					self.font,
 					self.position[v[3] and "arrowx" or "Oarrowx"][v[2] ],
-					self.position.arrowy[1] - ((self.songPosition - v[1]) * self.position.scroll),
+					self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
 					self.position.width
 				)]]
 			end
 		end
+		love.graphics.draw(spritebatchNotes)
+		spritebatchNotes:clear()
 		love.graphics.printf(
 			self.songPosition,
 			self.font,
 			0, self.position.songpos,
 			self.position.width
 		)
+		love.graphics.printf({G.C.UI.HOVER, self.scoreHudText}, self.font, self.position.tShadDist, self.position.scoretxy + self.position.tShadDist, self.position.width, "center")
 		love.graphics.printf(self.scoreHudText, self.font, 0, self.position.scoretxy, self.position.width, "center")
+		
+		--love.graphics.setShader(oldshad)
 	end
 end
 

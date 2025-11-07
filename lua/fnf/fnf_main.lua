@@ -105,7 +105,7 @@ photochadfunkin = {
 		
 		self.conductor.startTime = love.timer.getTime() + (self.conductor.crochet * 4) + 1
 		
-		self.characters = {self:createCharacter("bf", "ellejokers")}
+		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -185,6 +185,7 @@ photochadfunkin = {
 		self.characterDefs[id] = ch
 		ch.image = love.graphics.newImage(self.gfxData(ch.imageFile))
 		ch.image:setFilter("linear", "nearest")
+		ch.editionImage = {}
 		local tx, ty = ch.image:getDimensions()
 		local quads = {}
 		ch.quads = quads
@@ -202,15 +203,34 @@ photochadfunkin = {
 		end
 		ch.danceType = ch.anims.danceLeft
 	end,
-	createCharacter = function(self, name, mod)
+	createCharacter = function(self, name, mod, edition)
 		local def = self.characterDefs[self.getCharacterID(name, mod)]
+		local img = def.image
+		if edition then
+			--using shader is better most of the time
+			if def.editionImage[edition] ~= nil then
+				img = def.editionImage[edition]
+			elseif def.editionImage[edition] ~= false then
+				def.editionImage[edition] = false
+				for k, v in pairs(SMODS.Mods) do
+					if not v.disabled then
+						if pcall(function()
+							def.editionImage[edition] = love.graphics.newImage(self.gfxData(def.imageFile .. "_" .. edition, k))
+							img = def.editionImage[edition]
+							img:setFilter("linear", "nearest")
+						end) then break end
+					end
+				end
+			end
+		end
 		return {
 			def = def,
 			curAnim = def.danceType and "danceLeft" or "idle",
 			curAnimTime = 0,
 			position = love.math.newTransform(),
 			idle = true,
-			danced = true
+			danced = true,
+			image = img
 		}
 	end,
 	characterDefs = {},
@@ -236,7 +256,9 @@ photochadfunkin = {
 		end
 		return nil
 	end,
-	keyEvents = {}
+	keyEvents = {},
+	
+	--fuckassshader = G.SHADERS.polychrome
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
 

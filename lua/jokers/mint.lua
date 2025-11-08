@@ -1,29 +1,21 @@
 local mint = SMODS.Joker {
 	key = 'mint',
-	loc_txt = {
-		name = 'Mint',
-		text = {
-			"Retrigger played",
-			"{C:clubs}Clubs{} cards",
-			caption.."...what is wrong with you?"
-		}
-	},
 	blueprint_compat = true,
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
-	config = { extra = { } },
-	loc_vars = function(self, info_queue, card) return { vars = { } } end,
-	rarity = 2,
+	config = { extra = { xmult = 1.5 } },
+	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.xmult } } end,
+	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 5, y = 2 },
 	soul_pos = { x = 5, y = 3 },
-	cost = 5
+	cost = 9
+	
 }
 
 mint.calculate = function(self, card, context)
-	if context.repetition and context.cardarea == G.play and context.other_card:is_suit("Clubs") then
+	if context.individual and not context.end_of_round and context.cardarea == G.play and context.other_card:is_suit("Clubs") then
 		return {
-			message = localize('k_again_ex'),
-			repetitions = 1,
+			x_mult = card.ability.extra.xmult,
 			card = card
 		}
 	end

@@ -1,16 +1,5 @@
 local furry = SMODS.Joker {
 	key = 'furry',
-	loc_txt = {
-		name = 'Furry',
-		text = {
-			"This joker gains {C:mult}+#1#{} Mult",
-			"every time a card",
-			"is destroyed",
-			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
-			caption..'"Chloe always sucked at names~"'
-		},
-		unlock = { "Upgrade {C:attention}Chloe" }
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { mult_mod = 5, mult = 0 } },
 	loc_vars = function(self, info_queue, card)

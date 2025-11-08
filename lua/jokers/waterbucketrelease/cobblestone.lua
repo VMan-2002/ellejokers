@@ -1,12 +1,5 @@
 local cobble = SMODS.Joker {
 	key = 'cobblestone',
-	loc_txt = {
-		name = 'Cobblestone',
-		text = {
-			"Sell for {X:money,C:white}X#1#{} of",
-			"the original Joker{C:inactive}[$#2#]"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
 	config = { extra = { mult = 3, value = 0 } },
 	loc_vars = function(self, info_queue, card)

@@ -1,11 +1,5 @@
 local obsidian = SMODS.Joker {
 	key = 'obsidian',
-	loc_txt = {
-		name = 'Obsidian',
-		text = {
-			"{X:mult,C:white}X#1#{} Mult"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)

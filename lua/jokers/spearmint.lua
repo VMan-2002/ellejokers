@@ -1,12 +1,5 @@
 local spearmint = SMODS.Joker {
 	key = 'spearmint',
-	loc_txt = {
-		name = 'Spearmint',
-		text = {
-			"idk",
-			caption..'"Can we wander for a spell?"'
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card) return { vars = { } } end,

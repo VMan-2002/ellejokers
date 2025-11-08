@@ -1,16 +1,5 @@
 local bucket = SMODS.Joker {
 	key = 'water_bucket',
-	loc_txt = {
-		name = 'Water Bucket',
-		text = {
-			"{C:chips}+#1#{} Chips",
-			"When blind selected,",
-			"if there is a single Joker",
-			"between this and {C:attention}Lava Bucket{},",
-			"turn it into {C:attention}Cobblestone",
-			caption..'"Water Bucket, release!"'
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
 	config = { extra = { chips = 50 } },
 	loc_vars = function(self, info_queue, card)

@@ -1,21 +1,5 @@
 local twy = SMODS.Joker {
 	key = 'twy',
-	loc_txt = {
-		name = 'TwyLight',
-		text = {
-			"At {C:attention}end of round,",
-			"{C:green}#1# in #2#{} chance to",
-			"{C:attention}destroy all cards{} held",
-			"in hand and add {C:dark_edition}Negative{}",
-			"to a random joker",
-			caption.."99... 100! This is too many tails~,,",
-			"{C:inactive,s:0.7}Character belongs to",
-			"{C:inactive,s:0.7}@twylightstar.bsky.social"
-		},
-		unlock = {
-			"{E:1,s:1.3}?????"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
 	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)

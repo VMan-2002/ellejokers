@@ -1,16 +1,5 @@
 local fallen = SMODS.Joker {
 	key = 'fallen',
-	loc_txt = {
-		name = 'Fallen Angel',
-		text = {
-			"{C:mult}+#1#{} Mult per excess",
-			"{C:attention}Blind Size{} Scored at",
-			"end of round",
-			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
-			caption.."\"It burns so good~\""
-		},
-		unlock = { "Upgrade {C:attention}Sophie" }
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { mult_mod = 1, mult = 0 } },
 	loc_vars = function(self, info_queue, card)
@@ -21,12 +10,8 @@ local fallen = SMODS.Joker {
 	pos = { x = 4, y = 0 },
 	soul_pos = { x = 4, y = 1 },
 	cost = 11,
-	unlocked = false,
 	in_pool = function(self) return false end,
-	blueprint_compat = true,
-	check_for_unlock = function(self, args)
-		if args.type == "round_win" then return G.GAME.chips/G.GAME.blind.chips >= to_big(10) end
-	end
+	blueprint_compat = true
 }
 
 fallen.calculate = function(self, card, context)

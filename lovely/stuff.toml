@@ -27,32 +27,21 @@ if (card) then
 
 	-- Upgrade support
 	if (_c.elle_upgrade) then
-		local t = G.P_CENTERS[_c.elle_upgrade.card]
-		local j = copy_table(G.P_CENTERS[_c.elle_upgrade.card].config)
-		local u = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
-		
-		--print(tprint(t))
+		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
+		upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
+		local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
 		
 		-- Upgrade variable stuff
-		--print(tprint(j))
-		for i,v in pairs(u) do
-			j.extra[i] = v
-		end
-		j.set = "Other"
-		j.name = "j_elle_fallen"
-		--print(tprint(j))
-		
-		local test = {set="Other", specific_vars=j, vars=j}
-		for k,v in pairs(t) do
-			test[k] = v
+		for k, v in pairs(upgrade_vars) do
+			upgrade_center.config.extra[k] = v
 		end
 		
-		info_queue[#info_queue+1] = t
-		info_queue[#info_queue+1] = test
-		info_queue[#info_queue+1] = {key = "j_elle_fallen", set = "Other", config = j, vars = j}
+		local upgrade_uibox = Card.generate_UIBox_ability_table({ability = upgrade_center.config, config = {center = upgrade_center}}, true)
+		upgrade_center.loc_vars = function() return {vars = upgrade_uibox} end
 		
-		--print(tprint(t))
-		--print(tprint(test))
+		print(upgrade_uibox)
+		
+		info_queue[#info_queue+1] = upgrade_center
 	end
 end
 '''

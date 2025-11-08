@@ -1,17 +1,5 @@
 local bf = SMODS.Joker {
 	key = 'bf',
-	loc_txt = {
-		name = 'Boyfriend',
-		text = {
-			"{X:mult,C:white}X#1#{} Mult if you beat",
-			"him in a {C:attention}Rap Battle",
-			"{X:mult,C:white}X-#2#{} Mult per {C:attention}Miss",
-			"Can be attempted",
-			"once per round",
-			"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)",
-			"{C:inactive}(#4#)"
-		}
-	},
 	config = { extra = { xmult = 1, miss = 0.1, win = 3, attempted = false } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.win, card.ability.extra.miss, card.ability.extra.xmult, card.ability.extra.used and "Inactive" or "Active" } }

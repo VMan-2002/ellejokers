@@ -1,16 +1,5 @@
 local eraser = SMODS.Joker {
 	key = 'eraser',
-	loc_txt = {
-		name = 'Eraser',
-		text = {
-			"{C:attention}Once per Ante:",
-			"{C:red}Ban{} a Card from",
-			"{C:attention}Shops{} or {C:attention}Booster Packs",
-			"for the rest of the run",
-			"{C:inactive,s:0.7}(Excluding Playing Cards)",
-			"{C:inactive}(#1#)"
-		}
-	},
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.used and "Used" or "Available" } } end,
 	config = { extra = { used = false } },
 	rarity = 3,

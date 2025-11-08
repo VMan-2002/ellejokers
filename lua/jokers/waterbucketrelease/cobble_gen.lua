@@ -1,13 +1,5 @@
 local gen = SMODS.Joker {
 	key = 'cobble_gen',
-	loc_txt = {
-		name = 'Cobblestone Generator',
-		text = {
-			"{C:attention}Sell{} this Joker to create",
-			"{C:attention}Water Bucket{} and {C:attention}Lava Bucket",
-			"{C:inactive}(Must have room)"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card)

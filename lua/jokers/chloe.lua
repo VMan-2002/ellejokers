@@ -1,18 +1,5 @@
 local chloe = SMODS.Joker {
 	key = 'chloe',
-	loc_txt = {
-		name = 'Chloe',
-		text = {
-			"Gain {C:chips}+#1#{} Chips every",
-			"time you {C:attention}discard{} a card.",
-			"Amount resets at end",
-			"of round",
-			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)"
-		},
-		upgrade = {
-			"{C:money}$#3#"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { chip_mod = 4, chips = 0, upgr_cost = 20 } },
 	loc_vars = function(self, info_queue, card)
@@ -40,9 +27,7 @@ chloe.calculate = function(self, card, context)
 	if context.joker_main then
 		if card.ability.extra.chips ~= 0 then
 			return {
-				chip_mod = card.ability.extra.chips,
-				message = localize { type = 'variable', key = 'a_chip', vars = { card.ability.extra.chips } },
-				colour = G.C.CHIPS
+				chips = card.ability.extra.chips,
 			}
 		end
 	end

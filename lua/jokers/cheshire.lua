@@ -1,17 +1,5 @@
 local cheshire = SMODS.Joker {
 	key = 'cheshire',
-	loc_txt = {
-		name = 'Cheshire',
-		text = {
-			"{C:attention}Once per Hand:",
-			"Destroy a single card",
-			"and gain {X:mult,C:white}X#1#{} Mult",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-			"{C:inactive}(#3#)",
-			caption.."Finally flying solo!"
-		},
-		unlock = { "Upgrade {C:attention}Furry" }
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { Xmult_mod = 0.1, Xmult = 1, used = false } },
 	loc_vars = function(self, info_queue, card)

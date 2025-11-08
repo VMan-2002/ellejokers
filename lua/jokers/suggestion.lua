@@ -1,14 +1,5 @@
 local suggestion = SMODS.Joker {
 	key = 'suggestion',
-	loc_txt = {
-		name = 'Suggestion',
-		text = {
-			"All played {C:attention}face{} cards",
-			"become {C:attention}Queens",
-			"before scoring",
-			caption..'"I have a suggestion."'
-		}
-	},
 	blueprint_compat = true,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card) return { vars = { } } end,

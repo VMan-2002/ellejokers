@@ -1,16 +1,5 @@
 nitro = SMODS.Joker {
 	key = 'nitro',
-	loc_txt = {
-		name = 'Discord Nitro',
-		text = {
-			"{C:attention}Once per Round:",
-			"Pay {C:money}$#1#{} and gain",
-			"{C:mult}+#2#{} Mult, resets if not",
-			"paid for by end of round",
-			"{C:inactive}(Currently {C:mult}+#3#{C:inactive} Mult)",
-			"{C:inactive}(#4#)"
-		}
-	},
 	config = { extra = { mult = 0, mult_mod = 15, cost = 10, used = false } },
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.cost-0.01, card.ability.extra.mult_mod, card.ability.extra.mult, card.ability.extra.used and "Bought" or "Available" } } end,
 	atlas = 'jokers',

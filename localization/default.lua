@@ -261,6 +261,30 @@ return {
 					"{E:1,s:1.3}?????"
 				}
 			},
+		},
+		Other = {
+			elle_upgr_not_discovered = {
+				name = 'Not Discovered',
+				text = {
+					"Upgrade this card or",
+					"discover the upgrade",
+					"card to learn what",
+					"it upgrades into"
+				}
+			},
+			elle_upgr_j_elle_sophie = {
+				name = 'Upgrade',
+				text = {
+					"Reach {C:mult}+#1#{} Mult"
+				}
+			},
+			elle_upgr_j_elle_sarah = {
+				name = 'Upgrade..?',
+				text = {
+					"Trigger {C:attention}#1#{C:inactive}[#2#]{} times"
+				}
+			}
 		}
 	}
 }
+

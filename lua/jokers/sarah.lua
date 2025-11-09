@@ -2,7 +2,7 @@ local sarah = SMODS.Joker {
 	key = 'sarah',
 	blueprint_compat = true,
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
-	config = { extra = { odds = 2, criteria = 50, upgr = 0 } },
+	config = { extra = { odds = 2, criteria = 15, upgr = 0 } },
 	loc_vars = function(self, info_queue, card)
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_sarah')
 		return { vars = { numerator, denominator } }
@@ -27,5 +27,6 @@ end
 
 sarah.elle_upgrade = {
 	card = "j_elle_mint",
-	can_use = function(self, card) return false end
+	can_use = function(self, card) return card.ability.extra.upgr >= card.ability.extra.criteria end,
+	loc_vars = function(self, card) return { card.ability.extra.criteria, card.ability.extra.upgr } end
 }

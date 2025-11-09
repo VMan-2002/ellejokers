@@ -26,21 +26,29 @@ if (card) then
 	end
 
 	-- Upgrade support
-	if (_c.elle_upgrade) then
+	if (_c.elle_upgrade and _c.discovered) then
+		--		[[ Upgrade Requirements ]]
+		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_".._c.key, specific_vars = (_c.elle_upgrade.loc_vars and _c.elle_upgrade:loc_vars(card) or {}) }
+		
+		--		[[ Upgrade Preview ]]
 		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
-		upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
-		local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
 		
 		-- Upgrade variable stuff
-		for k, v in pairs(upgrade_vars) do
-			upgrade_center.config.extra[k] = v
+		if (upgrade_center.discovered) then
+			upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
+			local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
+			for k, v in pairs(upgrade_vars) do
+				upgrade_center.config.extra[k] = v
+			end
+			
+			-- Use correct localization
+			local upgrade_loc_values = upgrade_center:loc_vars({}, {ability = upgrade_center.config, config = {center = upgrade_center}}).vars
+			upgrade_center.loc_vars = function() return {vars = upgrade_loc_values} end
+			upgrade_center.elle_upgrade_preview = true -- this tells the localize hook to do its thing
+		else
+			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered", elle_upgr_test = true}
 		end
-		
-		local upgrade_uibox = Card.generate_UIBox_ability_table({ability = upgrade_center.config, config = {center = upgrade_center}}, true)
-		upgrade_center.loc_vars = function() return {vars = upgrade_uibox} end
-		
-		print(upgrade_uibox)
-		
+
 		info_queue[#info_queue+1] = upgrade_center
 	end
 end

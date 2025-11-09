@@ -153,3 +153,13 @@ G.FUNCS.elle_active_upgrade = function(e, mute, nosave)
 		false
 	)
 end
+
+-- Upgrade preview text hook
+-- (putting this here since it felt like it made sense)
+-- ...is this even gonna work? i'm just getting ui tables
+--[[local loc_ref = localize
+function localize(args, misc_cat)
+	local loc = loc_ref(args, misc_cat)
+	--print(args)
+	return loc
+end]]

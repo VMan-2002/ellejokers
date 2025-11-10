@@ -4,17 +4,13 @@
 --		- Furry
 --		- Marie
 --		- Twy
+--		- Elle
+--		- Mint
+--		- Drago
 --	- More Jokers????
 --		- Ideas
 --			- Deck with showman effect
 --			- Jokers
---				- Drago Rework
---					- Wild cards can't be debuffed
---				- Symbiosis Rework (Indirect Chesh Upgrade)
---					- X0.2 Mult per card
---					- $4 per card
---					- Can destroy playing cards or consumables
---					- Per round instead of Per hand
 --				- Unnamed Joker Idea
 --					- If Scoring Hand contains a Straight, give all cards in hand a permanent +4 Mult
 --		- pls don't scope creep i swear to god-
@@ -28,7 +24,7 @@
 --			- Boyfriend
 --				- LITERALLY JUST FNF
 --				- Balatro SFX atonals similar to SCDM
---	- "The Microphone" boss blind
+--	- "The Microphone" boss blind - VMan's working on this :p
 --		- Also FNF, like Boyfriend
 --		- Plays a harder fnf song
 --		- "Zoinks!" final boss blind
@@ -36,13 +32,10 @@
 --	- Fix Bugs
 --		- MoreFluff
 --			- Custom Colour card crashes game on round end
---	- Reword sophie/fallen angel joker effects		...again
-
 
 --		[[ File List ]]
 local files = {
 	"j_buttons",
-	"challenges",
 	"skins",
 	"misc",
 	"http",
@@ -149,14 +142,6 @@ elle_badges = {
 	["friends"] =	function() return create_badge("Friends of Elle", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
 	["toby"] =		function() return create_badge("Toby Fox", HEX('FF0000'), G.C.WHITE, 0.8 ) end,
 	["mc"] =		function() return create_badge("Minecraft", HEX('FF005F'), G.C.WHITE, 0.8 ) end
-}
-
---		[[ Parasite Upgrades ]]
--- Deprecated, but good for referencing what upgrades need adding
-elle_parasite_upgrades = {
-	["j_elle_chloe"] = { upgrade = "j_elle_furry" },
-	["j_elle_furry"] = { upgrade = "j_elle_cheshire" },
-	["j_elle_sarah"] = { upgrade = "j_elle_mint" },
 }
 
 function transform_joker(card, joker, vars, instant)

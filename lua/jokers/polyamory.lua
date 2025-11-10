@@ -1,14 +1,5 @@
 local polyamory = SMODS.Joker {
 	key = 'polyamory',
-	loc_txt = {
-		name = 'Polyamory',
-		text = {
-			"If played hand contains",
-			"a {C:attention}Four of a Kind{},",
-			"convert all scoring",
-			"cards into {C:hearts}Hearts"
-		}
-	},
 	config = { extra = { count = 3 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.count } }

@@ -1,13 +1,5 @@
 local vivian = SMODS.Joker {
 	key = 'vivian',
-	loc_txt = {
-		name = 'Vivian',
-		text = {
-			"{C:green}#1# in #2#{} chance to",
-			"give {C:attention}scoring hand",
-			"random {C:enhanced}Enhancements"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
 	loc_vars = function(self, info_queue, card)
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_vivian')

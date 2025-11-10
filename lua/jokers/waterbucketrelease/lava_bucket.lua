@@ -1,13 +1,5 @@
 local bucket = SMODS.Joker {
 	key = 'lava_bucket',
-	loc_txt = {
-		name = 'Lava Bucket',
-		text = {
-			"When blind selected,",
-			"if neighbouring {C:attention}Water Bucket{},",
-			"turn into {C:attention}Obsidian"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
 	config = { extra = { mult_mod = 5, mult = 0 } },
 	loc_vars = function(self, info_queue, card)

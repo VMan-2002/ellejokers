@@ -26,33 +26,31 @@ if (card) then
 	end
 
 	-- Upgrade support
-	if (_c.elle_upgrade) then
-		local t = G.P_CENTERS[_c.elle_upgrade.card]
-		local j = copy_table(G.P_CENTERS[_c.elle_upgrade.card].config)
-		local u = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
+	if (_c.elle_upgrade and _c.discovered) then
+		--		[[ Upgrade Requirements ]]
+		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_".._c.key, specific_vars = (_c.elle_upgrade.loc_vars and _c.elle_upgrade:loc_vars(card) or {}) }
 		
-		--print(tprint(t))
+		--		[[ Upgrade Preview ]]
+		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
 		
 		-- Upgrade variable stuff
-		--print(tprint(j))
-		for i,v in pairs(u) do
-			j.extra[i] = v
+		if (not upgrade_center.unlocked) then										-- Locked
+			upgrade_center = {set = "Other", key = "elle_upgr_locked"}
+		elseif (not upgrade_center.discovered) then									-- Not Discoverd
+			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered"}
+		else																		-- Unlocked
+			upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
+			local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
+			for k, v in pairs(upgrade_vars) do
+				upgrade_center.config.extra[k] = v
+			end
+			
+			-- Use correct localization
+			local upgrade_loc_values = upgrade_center:loc_vars({}, {ability = upgrade_center.config, config = {center = upgrade_center}}).vars
+			upgrade_center.loc_vars = function() return {vars = upgrade_loc_values} end
 		end
-		j.set = "Other"
-		j.name = "j_elle_fallen"
-		--print(tprint(j))
-		
-		local test = {set="Other", specific_vars=j, vars=j}
-		for k,v in pairs(t) do
-			test[k] = v
-		end
-		
-		info_queue[#info_queue+1] = t
-		info_queue[#info_queue+1] = test
-		info_queue[#info_queue+1] = {key = "j_elle_fallen", set = "Other", config = j, vars = j}
-		
-		--print(tprint(t))
-		--print(tprint(test))
+
+		info_queue[#info_queue+1] = upgrade_center
 	end
 end
 '''

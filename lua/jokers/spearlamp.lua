@@ -1,13 +1,5 @@
 local spearlamp = SMODS.Joker {
 	key = 'spearlamp',
-	loc_txt = {
-		name = 'Spearlamp',
-		text = {
-			"{C:enhanced}Steel{} and {C:enhanced}Slime{} Cards",
-			"{C:attention}share effects",
-			caption..'This was Chloe\'s Idea...'
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card) 

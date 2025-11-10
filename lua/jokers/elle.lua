@@ -1,18 +1,5 @@
 local elle = SMODS.Joker {
 	key = 'elle',
-	loc_txt = {
-		name = 'ellestuff.',
-		text = {
-			"{X:mult,C:white}X#1#{} Mult per {C:attention}Follower",
-			"on {C:elle}elle.{}'s {C:blue}BlueSky{} account",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
-			caption.."obligatory self-insert legendary",
-			"{C:inactive,s:0.7}@ellestuff.dev btw :3"
-		},
-		unlock = {
-			"{E:1,s:1.3}?????"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.oc() end,
 	config = { extra = {
 		xmult_mod = 0.1,

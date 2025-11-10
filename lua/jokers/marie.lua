@@ -1,12 +1,5 @@
 SMODS.Joker {
 	key = 'marie',
-	loc_txt = {
-		name = 'Marie',
-		text = {
-			"{C:attention}Slime cards{} are",
-			"guaranteed to trigger"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
 	blueprint_compat = true,
 	config = { extra = { } },

@@ -1,14 +1,5 @@
 local carpet = SMODS.Joker {
 	key = 'carpet',
-	loc_txt = {
-		name = 'Check It Out',
-		text = {
-			"This joker gains {X:mult,C:white}X#1#{} Mult",
-			"if played hand contains",
-			"a {C:attention}Full House",
-			"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
-		}
-	},
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.toby() end,
 	config = { extra = { xmult_mod = 0.25, xmult = 1 } },
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } } end,

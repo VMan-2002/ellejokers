@@ -54,6 +54,8 @@ photochadfunkin = {
 	gfxData = function(file, mod)
 		return NFS.read('data', (SMODS.Mods[mod] or SMODS.current_mod).path .. "assets/gfx/" .. file .. ".png")
 	end,
+	noteintro = {},
+	debug = SMODS.Mods.DebugPlus and not SMODS.Mods.DebugPlus.disabled,
 	
 	--song
 	mania = 4, --corrosponds DIRECTLY to the number of keys (4 is 4, etc.)
@@ -258,9 +260,46 @@ photochadfunkin = {
 	end,
 	keyEvents = {},
 	
+	loadNoteskin = function(self, name, mod)
+		local ch = assert(SMODS.load_file("lua/fnf/noteskins/"..name..".lua", mod))()
+		
+		local gfx = {}
+		for k,v in pairs({
+			arrows = ch.arrows,
+			holds = ch.holds
+		}) do
+			gfx[k] = love.graphics.newImage(self.gfxData(v, mod))
+			gfx[k]:setFilter("linear", "nearest")
+		end
+		self.graphics.arrowsSheet = gfx.arrows
+		self.graphics.holdsSheet = gfx.holds
+		self.graphics.noteQuads = {{}, {}, {}, {}}
+		self.graphics.holdQuads = {{}, {}, {}, {}}
+		self.graphics.spritebatchNotes = love.graphics.newSpriteBatch(gfx.arrows)
+		self.graphics.spritebatchHolds = love.graphics.newSpriteBatch(gfx.holds)
+		local tx, ty = gfx.arrows:getDimensions()
+		local htx, hty = gfx.holds:getDimensions()
+		local sizer = {
+			--note tile size
+			ch.arrowtilew or 24, ch.arrowtileh or 24,
+			--hold tile size
+			ch.holdtilew or 8, ch.holdtileh or 5
+		}
+		self.graphics.noteMiddle = ch.arrowtilew * 0.5
+		for i = 1, ch.arrowcount or 9 do
+			local x = (i-1)*sizer[1]
+			local hx = (i-1)*sizer[3]
+			for i2 = 1, 4 do
+				self.graphics.noteQuads[i2][i] = love.graphics.newQuad(x, (i2-1)*sizer[2], sizer[1], sizer[2], tx, ty)
+				self.graphics.holdQuads[i2][i] = love.graphics.newQuad(hx, (i2-1)*sizer[4], sizer[3], sizer[4], htx, hty)
+			end
+		end
+	end
+	
 	--fuckassshader = G.SHADERS.polychrome
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
+photochadfunkin:loadNoteskin("cardgame", "ellejokers")
 
 for k, v in pairs({
 	fnf_miss1 = "missnote1",

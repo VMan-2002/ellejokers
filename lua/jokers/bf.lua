@@ -44,7 +44,7 @@ bf.elle_active = {
 	calculate = function(self, card)
 		if photochadfunkin and photochadfunkin.options then
 			photochadfunkin.jokerEdition = card.edition and card.edition.type
-			return photochadfunkin:options()
+			return photochadfunkin:options(card)
 		end
 		--[[card.ability.extra.attempted = true
 		

@@ -19,6 +19,7 @@ do -- Options
 	G.FUNCS.fun_fnf_downscroll = function(e)
 		photochadfunkin.buttonevent = e
 		photochadfunkin.downscroll = not photochadfunkin.downscroll
+		photochadfunkin:resize(love.graphics.getWidth(), love.graphics.getHeight())
 		print(photochadfunkin.downscroll and "Scroll is Down" or "Scroll is Up")
 	end
 
@@ -52,11 +53,15 @@ do -- Options
 		return t
 	end
 
-	photochadfunkin.options = function(self)
+	photochadfunkin.options = function(self, card)
 		G.SETTINGS.paused = true
 		G.FUNCS.overlay_menu{
 			definition = UIBox_fnf_options(),
 		}
+		self.noteintro = {intro = true, cards = {}, card = card}
+		for i = 1, self.mania do
+			table.insert(self.noteintro.cards, {target = "arrowx", index = i, x = 0, y = 0, quad = self.graphics.noteQuads[1][i]})
+		end
 	end
 end
 

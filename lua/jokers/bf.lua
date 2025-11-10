@@ -8,8 +8,7 @@ local bf = SMODS.Joker {
 	atlas = 'jokers',
 	blueprint_compat = true,
 	pos = { x = 5, y = 0 },
-	cost = 7,
-	unlocked = false
+	cost = 7
 }
 
 bf.calculate = function(self, card, context)

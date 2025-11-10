@@ -8,7 +8,9 @@ local mint = SMODS.Joker {
 	atlas = 'jokers',
 	pos = { x = 5, y = 2 },
 	soul_pos = { x = 5, y = 3 },
-	cost = 9
+	cost = 9,
+	in_pool = function(self) return false end,
+	no_doe = true
 	
 }
 

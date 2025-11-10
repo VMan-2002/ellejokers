@@ -6,6 +6,7 @@ local spearmint = SMODS.Joker {
 	rarity = 3,
 	atlas = 'animated',
 	pos = { x = 0, y = 0 },
+	cost = 9,
 	in_pool = function(self) return false end,
-	cost = 9
+	no_doe = true
 }

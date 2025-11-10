@@ -10,8 +10,8 @@ local cheshire = SMODS.Joker {
 	pos = { x = 2, y = 0 },
 	cost = 12,
 	blueprint_compat = true,
-	unlocked = false,
-	parasite_bypass = true
+	in_pool = function(self) return false end,
+	no_doe = true
 }
 
 cheshire.calculate = function(self, card, context)
@@ -22,8 +22,7 @@ cheshire.calculate = function(self, card, context)
 	if context.joker_main then
 		if card.ability.extra.Xmult ~= 0 then
 			return {
-				Xmult_mod = card.ability.extra.Xmult,
-				message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.Xmult } }
+				Xmult = card.ability.extra.Xmult,
 			}
 		end
 	end
@@ -34,15 +33,14 @@ cheshire.elle_active = {
 		local _card = G.hand.highlighted[1]
 		
 		local _texts = {"*Stab*", "Pathetic.", "Oops~"}
-		local _snd = 'slice1'
 		
 		local _txt = _texts[math.random(#_texts)].." (+X"..card.ability.extra.Xmult_mod..")"
 		
 		card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
 		G.E_MANAGER:add_event(Event({func = function()
 			card:juice_up(.4,.4)
-			_card:shatter()
-			play_sound(_snd, 1)
+			_card:start_dissolve({HEX("625F86")}, nil, 1.6)
+			SMODS.destroy_cards(_card)
 		return true end }))
 		
 		card.ability.extra.used = true
@@ -58,11 +56,3 @@ cheshire.elle_active = {
 	end,
 	should_close = function(self, card) return true end
 }
-
--- Example upgrade, do not seriously use :p
---[[
-cheshire.elle_upgrade = {
-	card = "j_elle_chloe",
-	can_use = function(self, card) return to_big(G.GAME.dollars) >= to_big(20) end,
-	calculate = function(self, card) ease_dollars(-20) end
-}--]]

@@ -1,9 +1,9 @@
 local furry = SMODS.Joker {
 	key = 'furry',
 	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
-	config = { extra = { mult_mod = 5, mult = 0 } },
+	config = { extra = { mult_mod = 5, mult = 0, used = false, req = 10, count = 0 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult } }
+		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult, card.ability.extra.used and "Inactive" or "Active" } }
 	end,
 	rarity = 2,
 	atlas = 'jokers',
@@ -11,26 +11,64 @@ local furry = SMODS.Joker {
 	soul_pos = { x = 5, y = 3 },
 	cost = 5,
 	blueprint_compat = true,
-	unlocked = false,
-	parasite_bypass = true,
 	in_pool = function(self) return false end,
 	no_doe = true
 }
 
 furry.calculate = function(self, card, context)
-	if context.remove_playing_cards then
-		local _mult = card.ability.extra.mult_mod * #context.removed
-		card.ability.extra.mult = card.ability.extra.mult + _mult
-		return {
-			message = "Nice~ (+"..(_mult)..")"
-		}
+	if context.setting_blind then
+		card.ability.extra.used = false
 	end
+	-- Mult stuff
 	if context.joker_main then
 		if card.ability.extra.mult ~= 0 then
 			return {
-				mult_mod = card.ability.extra.mult,
-				message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+				mult = card.ability.extra.mult,
 			}
 		end
 	end
 end
+
+furry.elle_active = {
+	calculate = function(self, card)
+		local _card = G.hand.highlighted[1]
+		
+		local _texts = {"Hehe~", "Oops~"}
+		
+		local _txt = _texts[math.random(#_texts)].." (+"..card.ability.extra.mult_mod..")"
+		
+		card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+		G.E_MANAGER:add_event(Event({func = function()
+			card:juice_up(.4,.4)
+			_card:start_dissolve({HEX("F68100")}, nil, 1.6)
+			SMODS.destroy_cards(_card)
+		return true end }))
+		
+		card.ability.extra.used = true
+		card.ability.extra.count = card.ability.extra.count + 1
+		
+		SMODS.calculate_effect({ message_card = card,
+			remove = true,
+			message = _txt,
+			colour = G.C.RED
+		}, card)
+	end,
+	can_use = function(self, card)
+		return #G.hand.highlighted == 1 and not card.ability.extra.used
+	end,
+	should_close = function(self, card) return true end
+}
+
+furry.elle_upgrade = {
+	card = "j_elle_cheshire",
+	values = function(self, card) return {Xmult = 1+((card.ability.extra.count-card.ability.extra.req)*.1)} end,
+	can_use = function(self, card) return #SMODS.find_card("j_elle_sarah", false)>0 and card.ability.extra.count>=card.ability.extra.req end,
+	calculate = function(self, card)
+		local sarah = find_joker("j_elle_sarah")[1]
+		G.E_MANAGER:add_event(Event({func = function()
+			sarah:start_dissolve({HEX("F68100")}, nil, 1.6)
+			SMODS.destroy_cards(sarah)
+		return true end }))
+	end,
+	loc_vars = function(self, card) return { card.ability.extra.req, card.ability.extra.count } end
+}

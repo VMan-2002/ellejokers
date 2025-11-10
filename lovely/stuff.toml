@@ -34,7 +34,11 @@ if (card) then
 		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
 		
 		-- Upgrade variable stuff
-		if (upgrade_center.discovered) then
+		if (not upgrade_center.unlocked) then										-- Locked
+			upgrade_center = {set = "Other", key = "elle_upgr_locked"}
+		elseif (not upgrade_center.discovered) then									-- Not Discoverd
+			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered"}
+		else																		-- Unlocked
 			upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
 			local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
 			for k, v in pairs(upgrade_vars) do
@@ -44,9 +48,6 @@ if (card) then
 			-- Use correct localization
 			local upgrade_loc_values = upgrade_center:loc_vars({}, {ability = upgrade_center.config, config = {center = upgrade_center}}).vars
 			upgrade_center.loc_vars = function() return {vars = upgrade_loc_values} end
-			upgrade_center.elle_upgrade_preview = true -- this tells the localize hook to do its thing
-		else
-			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered", elle_upgr_test = true}
 		end
 
 		info_queue[#info_queue+1] = upgrade_center

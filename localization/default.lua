@@ -18,13 +18,13 @@ return {
 			j_elle_furry = {
 				name = 'Furry',
 				text = {
-					"This joker gains {C:mult}+#1#{} Mult",
-					"every time a card",
-					"is destroyed",
+					"{C:attention}Once per Round:",
+					"Destroy a single card",
+					"and gain {C:mult}+#1#{} Mult",
 					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					"{C:inactive}(#3#)",
 					caption..'"Chloe always sucked at names~"'
-				},
-				unlock = { "Upgrade {C:attention}Chloe" }
+				}
 			},
 			j_elle_cheshire = {
 				name = 'Cheshire',
@@ -35,8 +35,7 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					"{C:inactive}(#3#)",
 					caption.."Finally flying solo!"
-				},
-				unlock = { "Upgrade {C:attention}Furry" }
+				}
 			},
 			j_elle_sophie = {
 				name = 'Sophie',
@@ -263,6 +262,13 @@ return {
 			},
 		},
 		Other = {
+			elle_upgr_locked = {
+				name = 'Locked',
+				text = {
+					"Unlock this card",
+					"to upgrade"
+				}
+			},
 			elle_upgr_not_discovered = {
 				name = 'Not Discovered',
 				text = {
@@ -270,6 +276,20 @@ return {
 					"discover the upgrade",
 					"card to learn what",
 					"it upgrades into"
+				}
+			},
+			elle_upgr_j_elle_chloe = {
+				name = 'Upgrade..?',
+				text = {
+					"Discard {C:attention}#1#{C:inactive}[#2#]{}",
+					"{C:attention}face{} cards"
+				}
+			},
+			elle_upgr_j_elle_furry = {
+				name = 'Upgrade',
+				text = {
+					"Destroy {C:attention}#1#{C:inactive}[#2#]{} cards",
+					"and have {C:attention}Sarah{}"
 				}
 			},
 			elle_upgr_j_elle_sophie = {

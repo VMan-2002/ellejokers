@@ -10,8 +10,9 @@ local fallen = SMODS.Joker {
 	pos = { x = 4, y = 0 },
 	soul_pos = { x = 4, y = 1 },
 	cost = 11,
+	blueprint_compat = true,
 	in_pool = function(self) return false end,
-	blueprint_compat = true
+	no_doe = true
 }
 
 fallen.calculate = function(self, card, context)

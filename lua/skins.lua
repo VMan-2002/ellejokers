@@ -28,7 +28,8 @@ SMODS.DeckSkin {
 			ranks = {'Jack', 'Queen', "King"},
 			display_ranks = {"King", "Queen", "Jack"},
 			atlas = atlas_hc.key,
-			pos_style = 'collab'
+			pos_style = 'collab',
+			hc_default = true
 		},
 	},
 }

@@ -2,10 +2,11 @@
 local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
     local t = use_and_sell_buttonsref(card)
+	local _nodes = t.nodes[1].nodes
 	
 	-- Use Button
-    if t and t.nodes[1] and t.nodes[1].nodes[2] and card.config.center.elle_active and type(card.config.center.elle_active) == "table" then
-        table.insert(t.nodes[1].nodes[2].nodes, 
+    if t and t.nodes[1] and card.config.center.elle_active and type(card.config.center.elle_active) == "table" then
+        table.insert(_nodes[#_nodes].nodes, 
             {n=G.UIT.C, config={align = "cr"}, nodes={
                 {n=G.UIT.C, config={ref_table = card, align = "cr", maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'elle_active_ability', func = 'elle_can_use_active'}, nodes={
                     {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -16,12 +17,11 @@ function G.UIDEF.use_and_sell_buttons(card)
     end
 	
 	-- Upgrade Button
-	local upgr_node = card.config.center.elle_active and card.config.center.elle_upgrade and 3 or 2
     if t and t.nodes[1] and card.config.center.elle_upgrade and type(card.config.center.elle_upgrade) == "table" then
 		
 		-- Make 3rd node for Upgrade Button
         if (card.config.center.elle_active) then
-			table.insert(t.nodes[1].nodes,{
+			table.insert(_nodes,{
 				nodes = {},
 				n = 4,
 				config = {
@@ -29,7 +29,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 			}})
 		end
 		
-		table.insert(t.nodes[1].nodes[upgr_node].nodes, 
+		table.insert(_nodes[#_nodes].nodes, 
             {n=G.UIT.C, config={align = "cr"}, nodes={
                 {n=G.UIT.C, config={ref_table = card, align = "cr", maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = 0.4, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'elle_active_upgrade', func = 'elle_can_upgrade'}, nodes={
                     {n=G.UIT.B, config = {w=0.1,h=0.4}},
@@ -40,8 +40,8 @@ function G.UIDEF.use_and_sell_buttons(card)
 		
 		-- Make Use button thinner if Upgrade button also exists
 		if (card.config.center.elle_active) then
-			t.nodes[1].nodes[2].nodes[1].nodes[1].config.minh = 0.4
-			t.nodes[1].nodes[2].nodes[1].nodes[1].nodes[1].config.h = 0.4
+			_nodes[2].nodes[1].nodes[1].config.minh = 0.6
+			--_nodes[2].nodes[1].nodes[1].nodes[1].config.h = 0.4
 		end
     end
 	
@@ -119,7 +119,8 @@ G.FUNCS.elle_can_upgrade = function(e)
     G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT and
     card.area == G.jokers and not card.debuff and
 	card.config.center.elle_upgrade and
-    (not card.config.center.elle_upgrade.can_use or card.config.center.elle_upgrade:can_use(card))
+    (not card.config.center.elle_upgrade.can_use or card.config.center.elle_upgrade:can_use(card)) and
+	card.config.center.unlocked
     if can_use then 
         e.config.colour = loc_colour("elle")
         e.config.button = 'elle_active_upgrade'
@@ -153,13 +154,3 @@ G.FUNCS.elle_active_upgrade = function(e, mute, nosave)
 		false
 	)
 end
-
--- Upgrade preview text hook
--- (putting this here since it felt like it made sense)
--- ...is this even gonna work? i'm just getting ui tables
---[[local loc_ref = localize
-function localize(args, misc_cat)
-	local loc = loc_ref(args, misc_cat)
-	--print(args)
-	return loc
-end]]

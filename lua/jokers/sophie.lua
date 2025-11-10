@@ -51,7 +51,7 @@ end
 
 sophie.elle_upgrade = {
 	card = "j_elle_fallen",
-	values = function(self, card) return { mult = to_big(card.ability.extra.mult)/to_big(2) } end,
+	values = function(self, card) return { mult = to_big(card.ability.extra.mult)/to_big(card.ability.extra.mult_mod) } end,
 	can_use = function(self, card) return to_big(card.ability.extra.mult) >= to_big(card.ability.extra.req) end,
 	loc_vars = function(self, card) return { card.ability.extra.req } end
 }

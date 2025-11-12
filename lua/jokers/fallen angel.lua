@@ -19,7 +19,18 @@ fallen.calculate = function(self, card, context)
 	if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
 		-- Add the mult stuff
 		if math.floor(G.GAME.chips / G.GAME.blind.chips) > to_big(1) then
-			local _mult = (math.floor(G.GAME.chips / G.GAME.blind.chips)-1) * card.ability.extra.mult_mod
+			local _count = math.floor(G.GAME.chips / G.GAME.blind.chips)-1
+			
+			-- ...what?
+			if (to_number(_count) < 0) then 
+				card:juice_up(1,1)
+				print("Attempted to set Fallen Angel to negative value: ".._count)
+				return {
+					message = "...what?"
+				}
+			end
+			
+			local _mult = _count * card.ability.extra.mult_mod
 			
 			card.ability.extra.mult = card.ability.extra.mult + _mult
 			

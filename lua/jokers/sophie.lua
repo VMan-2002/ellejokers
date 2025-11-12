@@ -28,7 +28,18 @@ sophie.calculate = function(self, card, context)
 		
 		-- Add the mult stuff
 		if math.floor(G.GAME.chips / G.GAME.blind.chips) ~= 1 then
-			local _mult = (math.floor(G.GAME.chips / G.GAME.blind.chips)-1) * card.ability.extra.mult_mod
+			local _count = math.floor(G.GAME.chips / G.GAME.blind.chips)-1
+			
+			-- ...what?
+			if (to_number(_count) < 0) then 
+				card:juice_up(1,1)
+				print("Attempted to set Sophie to negative value: ".._count)
+				return {
+					message = "...what?"
+				}
+			end
+			
+			local _mult = _count * card.ability.extra.mult_mod
 			
 			card.ability.extra.mult = card.ability.extra.mult + _mult
 			
@@ -39,6 +50,7 @@ sophie.calculate = function(self, card, context)
 			}
 		end
 	end
+	
 	if context.joker_main then
 		if card.ability.extra.mult ~= 0 then
 			return {

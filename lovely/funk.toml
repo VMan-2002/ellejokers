@@ -4,6 +4,7 @@ dump_lua = true
 priority = 0
 
 [[patches]]
+# Get key events
 [patches.pattern]
 target = "main.lua"
 pattern = '''if name == 'touchpressed' then'''

@@ -4,6 +4,11 @@ local transform1 = love.math.newTransform()
 local transformtemp = function(a, b) return (b or transform1):setMatrix(a:getMatrix()) end
 local lerp = function(a,b,t) return (1-t)*a + t*b end
 
+photochadfunkin.drawshadowedtext = function(self, text, x, y, width, align)
+	love.graphics.printf({G.C.UI.HOVER, text}, self.font, x + self.position.tShadDist, y + self.position.tShadDist, width, align)
+	love.graphics.printf(text, self.font, x, y, width, align)
+end
+
 photochadfunkin.resize = function(self, w, h)
 	w, h = w or 100, h or 100
 	self.position = {
@@ -12,7 +17,7 @@ photochadfunkin.resize = function(self, w, h)
 		halfwidth = w*0.5,
 		halfheight = h*0.5,
 		scale = h / 240,
-		scroll = h / 2.84,
+		scroll = h / 2.1,
 		scoretxy = h - 100,
 		hold = 1,
 		holdend = 2,
@@ -20,7 +25,8 @@ photochadfunkin.resize = function(self, w, h)
 		viewTransform = love.math.newTransform(),
 		tShadDist = h * 0.003,
 		strumscale = {},
-		ostrumscale = {}
+		ostrumscale = {},
+		fontsize = 1
 	}
 	local spacing = self.position.scale * 30
 	local spacing2 = self.position.scale * math.ceil((58 / self.mania) + 14)
@@ -60,13 +66,14 @@ photochadfunkin.resize = function(self, w, h)
 	self.position.viewTransform:setTransformation(0, 0, 0, self.position.scale, self.position.scale)
 	
 	if self.running then
-		self.font = love.graphics.newFont("resources/fonts/m6x11plus.ttf", h * 0.04)
+		self.position.fontsize = h * 0.04
+		self.font = love.graphics.newFont("resources/fonts/m6x11plus.ttf", self.position.fontsize)
 	end
 end
 
 photochadfunkin.updateScoreHud = function(self)
-	local mult = tostring(math.max(self.multBase - (self.misses * 0.1), 1))
-	self.scoreHudText = "Hits: "..tostring(self.hits).." | Misses: "..tostring(self.misses).." | Mult: X"..mult.." | Accuracy: TBA"
+	self.mult = math.max(self.multBase - (self.misses * self.multPerMiss), self.multMinimum)
+	self.scoreHudText = "Hits: "..tostring(self.hits).." | Misses: "..tostring(self.misses).." | Mult: X"..tostring(mult).." | Accuracy: TBA"
 end
 
 --[[local spritebatchNotes, spritebatchHolds
@@ -138,6 +145,12 @@ photochadfunkin.update = function(self)
 			for k,v in pairs(self.characters) do
 				if (v.idle and (beat % 2 == 0)) or v.curAnimTime > self.conductor.crochet * 1.99 then
 					self:characterDance(v)
+				end
+			end
+			if self.songPosition >= self.songLength then
+				self.running = false
+				if self.endSong then
+					self.endSong()
 				end
 			end
 		end
@@ -288,8 +301,8 @@ photochadfunkin.draw = function(self)
 			0, self.position.songpos,
 			self.position.width
 		)
-		love.graphics.printf({G.C.UI.HOVER, self.scoreHudText}, self.font, self.position.tShadDist, self.position.scoretxy + self.position.tShadDist, self.position.width, "center")
-		love.graphics.printf(self.scoreHudText, self.font, 0, self.position.scoretxy, self.position.width, "center")
+		self:drawshadowedtext(self.scoreHudText, 0, self.position.scoretxy, self.position.width, "center")
+		self:drawshadowedtext(self.songinfo, 0, self.position.height - self.position.fontsize, self.position.width, "left")
 		
 		-- love.graphics.setShader(oldshad)
 	elseif self.noteintro.intro then

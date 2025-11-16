@@ -4,14 +4,35 @@
 
 --this wacky (wip) bs was coded by vman_2002
 
-SMODS.Sound {
-	key = "stream_fnf_inst",
-	path = "carpet.ogg"
-}
-SMODS.Sound {
-	key = "stream_fnf_voices",
-	path = "carpet.ogg"
-}
+--[[
+	TODO:
+	
+	Hold notes
+	Health & Game Over
+	Disable Balatro interactions during FNF game
+	Full options menu
+	Boss blinds
+	Cool intro thingy where the strumnotes come out from the Joker or Boss Blind, like how cards are drawn from deck into hand
+]]
+
+for k, v in pairs({
+	stream_fnf_inst = "carpet.ogg",
+	stream_fnf_voices = "carpet.ogg",
+	fnf_miss1 = "missnote1",
+	fnf_miss2 = "missnote2",
+	fnf_miss3 = "missnote3",
+	fnf_die = "fnf_loss_sfx",
+	fnf_intro3 = "intro3",
+	fnf_intro2 = "intro2",
+	fnf_intro1 = "intro1",
+	fnf_intro0 = "introGo"
+}) do
+	SMODS.Sound {
+		key = k,
+		path = v .. ".ogg"
+	}
+end
+
 SMODS.Sound {
 	key = "music_fnf_menu",
 	path = "phantomMenu.ogg",
@@ -34,14 +55,16 @@ local replaceSound = function(key, path, mod)
 	local snd = SMODS.Sounds[key]
 	snd.full_path = SMODS.Mods[mod].path .. "assets/sounds/" .. path
 	--print("snd full path", snd.full_path)
+	local data = NFS.read('data', snd.full_path)
 	G.SOUND_MANAGER.channel:push({
 		type = 'sound_source',
 		sound_code = snd.sound_code,
-		data = NFS.read('data', snd.full_path),
+		data = data,
 		should_stream = snd.should_stream,
 		per = snd.pitch,
 		vol = snd.volume
 	})
+	return data
 end
 
 photochadfunkin = {
@@ -51,6 +74,9 @@ photochadfunkin = {
 		arrows = {}
 	},
 	multBase = 3,
+	multPerMiss = 0.1,
+	multMinimum = 1,
+	multOnLoss = 0.5,
 	gfxData = function(file, mod)
 		return NFS.read('data', (SMODS.Mods[mod] or SMODS.current_mod).path .. "assets/gfx/" .. file .. ".png")
 	end,
@@ -108,6 +134,7 @@ photochadfunkin = {
 		self.conductor.startTime = love.timer.getTime() + (self.conductor.crochet * 4) + 1
 		
 		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
+		self.songinfo = self.song.song .. " | ellejokers " .. SMODS.Mods.ellejokers.version
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -120,8 +147,9 @@ photochadfunkin = {
 	initSong = function(self, loadAudio)
 		self.songPath = self.formatSong(self.song.song)
 		if loadAudio then
-			replaceSound("elle_stream_fnf_inst", self.songPath .. "-inst.ogg", self.songOwner)
+			local instData = replaceSound("elle_stream_fnf_inst", self.songPath .. "-inst.ogg", self.songOwner)
 			replaceSound("elle_stream_fnf_voices", self.songPath .. "-voices.ogg", self.songOwner)
+			self.songLength = love.audio.newSource(instData, "stream"):getDuration()
 			--[[SMODS.Sound {
 				key = "stream_fnf_inst",
 				path = self.songPath .. "-inst.ogg"
@@ -294,30 +322,28 @@ photochadfunkin = {
 				self.graphics.holdQuads[i2][i] = love.graphics.newQuad(hx, (i2-1)*sizer[4], sizer[3], sizer[4], htx, hty)
 			end
 		end
-	end
+	end,
+	
+	accepted_blinds = {bl_elle_microphone = true, bl_elle_microphone_showdown = true},
 	
 	--fuckassshader = G.SHADERS.polychrome
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
 photochadfunkin:loadNoteskin("cardgame", "ellejokers")
 
-for k, v in pairs({
-	fnf_miss1 = "missnote1",
-	fnf_miss2 = "missnote2",
-	fnf_miss3 = "missnote3",
-	fnf_die = "fnf_loss_sfx",
-	fnf_intro3 = "intro3",
-	fnf_intro2 = "intro2",
-	fnf_intro1 = "intro1",
-	fnf_intro0 = "introGo"
-}) do
-	SMODS.Sound {
-		key = k,
-		path = v .. ".ogg"
-	}
+local bclick = Blind.click
+function Blind.click(self, ...) 
+	if photochadfunkin.accepted_blinds[self.name] and not G.GAME.blind.photochadfunkin_completed then
+		return photochadfunkin:options(self)
+	end
+	bclick(self, ...)
 end
 
-for i, v in ipairs({"fnf_game", "fnf_menu"}) do
+for i, v in ipairs({
+	"fnf_game",
+	"fnf_menu",
+	"fnf_blinds"
+}) do
 	assert(SMODS.load_file("lua/fnf/"..v..".lua"))()
 end
 

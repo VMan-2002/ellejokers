@@ -1,8 +1,8 @@
 local bf = SMODS.Joker {
 	key = 'bf',
-	config = { extra = { xmult = 1, miss = 0.1, win = 3, attempted = false } },
+	config = { extra = { xmult = 1, miss = 0.1, win = 3, loss = 0.5, min = 1, attempted = false } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.win, card.ability.extra.miss, card.ability.extra.xmult, card.ability.extra.used and "Inactive" or "Active" } }
+		return { vars = { card.ability.extra.win, card.ability.extra.miss, card.ability.extra.xmult, card.ability.extra.attempted and "Inactive" or "Active" } }
 	end,
 	rarity = 2,
 	atlas = 'jokers',
@@ -22,6 +22,7 @@ bf.calculate = function(self, card, context)
 	end
 	if context.end_of_round and card.ability.extra.attempted then
 		card.ability.extra.attempted = false
+		card.ability.extra.xmult = 1
 		return {
 			message = "RETRY?"
 		}
@@ -32,6 +33,20 @@ bf.elle_active = {
 	calculate = function(self, card)
 		if photochadfunkin and photochadfunkin.options then
 			photochadfunkin.jokerEdition = card.edition and card.edition.type
+			photochadfunkin.multBase = card.ability.extra.win
+			photochadfunkin.multPerMiss = card.ability.extra.miss
+			photochadfunkin.multMinimum = card.ability.extra.min
+			photochadfunkin.multOnLoss = card.ability.extra.loss
+			photochadfunkin.onWin = function()
+				card.ability.extra.attempted = true
+				card.ability.extra.xmult = math.max(photochadfunkin.multBase - (photochadfunkin.misses * photochadfunkin.multPerMiss), photochadfunkin.multMinimum)
+				photochadfunkin.onWin, photochadfunkin.onLose = nil, nil
+			end
+			photochadfunkin.onLose = function()
+				card.ability.extra.attempted = true
+				card.ability.extra.xmult = photochadfunkin.multOnLoss
+				photochadfunkin.onWin, photochadfunkin.onLose = nil, nil
+			end
 			return photochadfunkin:options(card)
 		end
 		--[[card.ability.extra.attempted = true

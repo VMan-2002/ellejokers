@@ -9,7 +9,6 @@
 	
 	Hold notes
 	Health & Game Over
-	Disable Balatro interactions during FNF game
 	Full options menu
 	Boss blinds
 	Cool intro thingy where the strumnotes come out from the Joker or Boss Blind, like how cards are drawn from deck into hand
@@ -135,6 +134,8 @@ photochadfunkin = {
 		
 		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
 		self.songinfo = self.song.song .. " | ellejokers " .. SMODS.Mods.ellejokers.version
+		
+		G.CONTROLLERS.locks.frame = true
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")

@@ -24,12 +24,7 @@ do -- Options
 	end
 
 	G.FUNCS.fun_fnf_keybinds = function(e)
-		print("Changing keybinds not yet implemented")
-		print("4 Key: DFJK / Arrows")
-		print("6 Key: SDFJKL / ZXC Left Down Right")
-		print("7 Key: SDF SPACE JKL / ZXC SPACE Left Down Right")
-		print("8 Key: ASDFJKL;")
-		print("9 Key: ASDF SPACE JKL;")
+		photochadfunkin:keybindmenu()
 	end
 	
 	G.FUNCS.fun_fnf_start = function(e)
@@ -58,10 +53,48 @@ do -- Options
 		G.FUNCS.overlay_menu{
 			definition = UIBox_fnf_options(),
 		}
-		self.noteintro = {intro = true, cards = {}, card = card}
-		for i = 1, self.mania do
-			table.insert(self.noteintro.cards, {target = "arrowx", index = i, x = 0, y = 0, quad = self.graphics.noteQuads[1][i]})
+		if card then
+			self.noteintro = {intro = true, cards = {}, card = card}
+			for i = 1, self.mania do
+				table.insert(self.noteintro.cards, {target = "arrowx", index = i, x = 0, y = 0, quad = self.graphics.noteQuads[1][i]})
+			end
 		end
+	end
+	
+	G.FUNCS.photochadfunkin_options = function()
+		photochadfunkin:options()
+	end
+	
+	local textline = function(n, scale)
+		return {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+			{n=G.UIT.T, config={text = n, scale = (4/7) * (scale or 1), colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+		}}
+	end
+
+	local UIBox_fnf_keybinds = function()
+		local small_lol = 3/4
+		local t = create_UIBox_generic_options({ contents = {
+			textline("4 Key", small_lol),
+			textline("DFJK / Arrow Keys"),
+			textline("6 Key", small_lol),
+			textline("SDFJKL / ZXC Left Down Right"),
+			textline("7 Key", small_lol),
+			textline("SDF SPACE JKL / ZXC SPACE Left Down Right"),
+			textline("8 Key", small_lol),
+			textline("ASDFJKL;"),
+			textline("9 Key", small_lol),
+			textline("ASDF SPACE JKL;"),
+			textline("Changing keybinds will come soon", 2/3)
+		}, back_func = "photochadfunkin_options"})
+		t.imstupidandfunkybitch = true
+		return t
+	end
+
+	photochadfunkin.keybindmenu = function(self, card)
+		G.SETTINGS.paused = true
+		G.FUNCS.overlay_menu{
+			definition = UIBox_fnf_keybinds(),
+		}
 	end
 end
 

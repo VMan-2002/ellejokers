@@ -149,7 +149,8 @@ photochadfunkin.update = function(self)
 			end
 			if self.songPosition >= self.songLength then
 				self.running = false
-				G.CONTROLLERS.locks.frame = false
+				--todo fix
+				--G.CONTROLLERS.locks.frame = false
 				if self.endSong then
 					self.endSong()
 				end

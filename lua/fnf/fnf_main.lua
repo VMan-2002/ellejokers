@@ -135,7 +135,8 @@ photochadfunkin = {
 		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
 		self.songinfo = self.song.song .. " | ellejokers " .. SMODS.Mods.ellejokers.version
 		
-		G.CONTROLLERS.locks.frame = true
+		--todo: this doesnt work what
+		--G.CONTROLLERS.locks.frame = true
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -331,14 +332,6 @@ photochadfunkin = {
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
 photochadfunkin:loadNoteskin("cardgame", "ellejokers")
-
-local bclick = Blind.click
-function Blind.click(self, ...) 
-	if photochadfunkin.accepted_blinds[self.name] and not G.GAME.blind.photochadfunkin_completed then
-		return photochadfunkin:options(self)
-	end
-	bclick(self, ...)
-end
 
 for i, v in ipairs({
 	"fnf_game",

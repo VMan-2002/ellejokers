@@ -137,8 +137,7 @@ photochadfunkin = {
 		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
 		self.songinfo = self.song.song .. " | ellejokers " .. SMODS.Mods.ellejokers.version
 		
-		--todo: this doesnt work what
-		--G.CONTROLLERS.locks.frame = true
+		G.CONTROLLER.locks.frame = true
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -328,8 +327,7 @@ photochadfunkin = {
 		end
 	end,
 	stop = function(this, fn)
-		--todo fix
-		--G.CONTROLLERS.locks.frame = false
+		G.CONTROLLER.locks.frame = false
 		self.running = false
 		if fn then fn(self) end
 		self.onWin, self.onLose = nil, nil

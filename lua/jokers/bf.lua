@@ -37,15 +37,13 @@ bf.elle_active = {
 			photochadfunkin.multPerMiss = card.ability.extra.miss
 			photochadfunkin.multMinimum = card.ability.extra.min
 			photochadfunkin.multOnLoss = card.ability.extra.loss
-			photochadfunkin.onWin = function()
+			photochadfunkin.onWin = function(self)
 				card.ability.extra.attempted = true
-				card.ability.extra.xmult = math.max(photochadfunkin.multBase - (photochadfunkin.misses * photochadfunkin.multPerMiss), photochadfunkin.multMinimum)
-				photochadfunkin.onWin, photochadfunkin.onLose = nil, nil
+				card.ability.extra.xmult = math.max(self.multBase - (self.misses * self.multPerMiss), self.multMinimum)
 			end
-			photochadfunkin.onLose = function()
+			photochadfunkin.onLose = function(self)
 				card.ability.extra.attempted = true
 				card.ability.extra.xmult = photochadfunkin.multOnLoss
-				photochadfunkin.onWin, photochadfunkin.onLose = nil, nil
 			end
 			return photochadfunkin:options(card)
 		end

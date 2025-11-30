@@ -33,7 +33,7 @@ photochadfunkin.resize = function(self, w, h)
 	local start = (w * 0.75) - (spacing2 * self.mania * 0.5)
 	local Ostart = (w * 0.25) - (spacing2 * self.mania * 0.5)
 	local arrowx = {}
-	local arrowy = self.position.scale * 18
+	local arrowy = self.position.scale * 24
 	if self.downscroll then
 		arrowy = h - arrowy
 		self.position.scroll = 0 - self.position.scroll
@@ -61,7 +61,6 @@ photochadfunkin.resize = function(self, w, h)
 	self.position.arrowx = arrowx
 	self.position.Oarrowx = arrowx2
 	self.position.arrowy = arrowy
-	--valatroingout.inspect("position", self.position)
 	
 	self.position.viewTransform:setTransformation(0, 0, 0, self.position.scale, self.position.scale)
 	
@@ -73,7 +72,7 @@ end
 
 photochadfunkin.updateScoreHud = function(self)
 	self.mult = math.max(self.multBase - (self.misses * self.multPerMiss), self.multMinimum)
-	self.scoreHudText = "Hits: "..tostring(self.hits).." | Misses: "..tostring(self.misses).." | Mult: X"..tostring(mult).." | Accuracy: TBA"
+	self.scoreHudText = "Hits: "..tostring(self.hits).." | Misses: "..tostring(self.misses).." | Mult: X"..tostring(self.mult).." | Accuracy: TBA | Health: "..tostring(self.health * 50).."%"
 end
 
 --[[local spritebatchNotes, spritebatchHolds
@@ -148,12 +147,7 @@ photochadfunkin.update = function(self)
 				end
 			end
 			if self.songPosition >= self.songLength then
-				self.running = false
-				--todo fix
-				--G.CONTROLLERS.locks.frame = false
-				if self.endSong then
-					self.endSong()
-				end
+				self:stop(self.onWin)
 			end
 		end
 		--Spawn notes
@@ -175,12 +169,18 @@ photochadfunkin.update = function(self)
 			while self.notes[i][1] < self.songPosition do
 				if self.notes[i][3] then
 					if self.notes[i][1] + safeHit < self.songPosition then
+						--Player note miss
 						table.remove(self.notes, i)
 						self.misses = self.misses + 1
+						self.health = self.health - 0.0475
 						self:updateScoreHud()
+						if self.health < 0 then
+							self:stop(self.onLose)
+						end
 						goto continue1
 					end
 				elseif self.notes[i][1] < self.songPosition then
+					--Opponent note hit
 					self:characterPlayAnim(self.characters[1], "sing" .. self.arrowdirs[self.notes[i][2]], true)
 					table.remove(self.notes, i)
 					goto continue1
@@ -212,6 +212,7 @@ photochadfunkin.update = function(self)
 							self.keyHolds[nkey] = 4
 							self:updateScoreHud()
 							self.position.strumscale[nkey] = 1.3
+							self.health = math.min(self.health + 0.023, self.maxHealth)
 							break
 						end
 					end

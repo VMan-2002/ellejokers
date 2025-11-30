@@ -13,6 +13,7 @@
 	Boss blinds
 	Cool intro thingy where the strumnotes come out from the Joker or Boss Blind, like how cards are drawn from deck into hand
 ]]
+local config = SMODS.current_mod.config
 
 for k, v in pairs({
 	stream_fnf_inst = "carpet.ogg",
@@ -91,7 +92,7 @@ photochadfunkin = {
 	},
 	
 	--game settings
-	downscroll = false,
+	downscroll = (config.fnf_downscroll ~= nil) and config.fnf_downscroll or false,
 	binds = {
 		[4] = {{d = true, left = true}, {f = true, down = true}, {j = true, up = true}, {k = true, right = true}},
 		[6] = {{s = true, z = true}, {d = true, x = true}, {f = true, c = true}, {j = true, left = true}, {k = true, down = true}, {l = true, right = true}},
@@ -116,6 +117,7 @@ photochadfunkin = {
 		self.keyEvents = {}
 		self.running = true
 		self.score, self.health = 0, 1
+		self.maxHealth = 2
 		self.sicks, self.goods, self.bads, self.shits = 0, 0, 0, 0
 		self.hits, self.misses, self.accuracy = 0, 0, 100
 		for k = 1, self.mania do
@@ -325,6 +327,13 @@ photochadfunkin = {
 			end
 		end
 	end,
+	stop = function(this, fn)
+		--todo fix
+		--G.CONTROLLERS.locks.frame = false
+		self.running = false
+		if fn then fn(self) end
+		self.onWin, self.onLose = nil, nil
+	end,
 	
 	accepted_blinds = {bl_elle_microphone = true, bl_elle_microphone_showdown = true},
 	
@@ -332,6 +341,14 @@ photochadfunkin = {
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
 photochadfunkin:loadNoteskin("cardgame", "ellejokers")
+
+local bclick = Blind.click
+function Blind.click(self, ...) 
+	if photochadfunkin.accepted_blinds[self.name] and not G.GAME.blind.photochadfunkin_completed then
+		return photochadfunkin:options(self)
+	end
+	bclick(self, ...)
+end
 
 for i, v in ipairs({
 	"fnf_game",

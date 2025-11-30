@@ -45,7 +45,7 @@ local bl_microphone_showdown = SMODS.Blind{
 	disable = bl_microphone.disable
 }
 
-local bl_microphone_showdown_mania = SMODS.Blind{
+--[[local bl_microphone_showdown_mania = SMODS.Blind{
 	key = "microphone_showdown_mania",
 	loc_txt = {
 		name = "Maniac",
@@ -58,12 +58,4 @@ local bl_microphone_showdown_mania = SMODS.Blind{
 	boss_colour = HEX('04A408'),
 	debuff_hand = bl_microphone.debuff_hand,
 	disable = bl_microphone.disable
-}
-
-local bclick = Blind.click
-function Blind.click(self, ...) 
-	if photochadfunkin.accepted_blinds[self.name] and not G.GAME.blind.photochadfunkin_completed then
-		return photochadfunkin:options(self)
-	end
-	bclick(self, ...)
-end
+}]]

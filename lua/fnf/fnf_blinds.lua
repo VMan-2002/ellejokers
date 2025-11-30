@@ -59,3 +59,18 @@ local bl_microphone_showdown = SMODS.Blind{
 	debuff_hand = bl_microphone.debuff_hand,
 	disable = bl_microphone.disable
 }]]
+
+--[[local bl_microphone_showdown_marathon = SMODS.Blind{
+	key = "microphone_showdown_marathon",
+	loc_txt = {
+		name = "Audiathalon",
+		text = {"Must play marathon FNF game","before playing this blind","(click blind chip)"}
+	},
+	atlas = "fnf_blindchips",
+	mult = 2,
+	pos = {x = 0, y = 0},
+	boss = {showdown = true},
+	boss_colour = HEX('04A408'),
+	debuff_hand = bl_microphone.debuff_hand,
+	disable = bl_microphone.disable
+}]]

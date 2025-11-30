@@ -175,7 +175,7 @@ photochadfunkin.update = function(self)
 						self.health = self.health - 0.0475
 						self:updateScoreHud()
 						if self.health < 0 then
-							self:stop(self.onLose)
+							self:stop(self.onLose, true)
 						end
 						goto continue1
 					end
@@ -279,22 +279,25 @@ photochadfunkin.draw = function(self)
 				self.position.scale, nil,
 				self.position.middleg, self.position.middleg
 			)
-			for k,v in pairs(self.notes) do
-				self.graphics.spritebatchNotes:add(
-					self.graphics.noteQuads[3][arroworder(v[2])],
-					(v[3] and self.position.arrowx or self.position.Oarrowx)[v[2]],
-					self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
-					0, self.position.scale, nil,
-					self.position.middleg, self.position.middleg
-				)
-				--[[love.graphics.printf(
-					v[1],
-					self.font,
-					self.position[v[3] and "arrowx" or "Oarrowx"][v[2] ],
-					self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
-					self.position.width
-				)]]
-			end
+		end
+		local notesb
+		for k,v in pairs(self.notes) do
+			notesb = self.graphics.spritebatchNotes
+			-- spritebatch patch thing here
+			notesb:add(
+				self.graphics.noteQuads[3][arroworder(v[2])],
+				(v[3] and self.position.arrowx or self.position.Oarrowx)[v[2]],
+				self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
+				0, self.position.scale, nil,
+				self.position.middleg, self.position.middleg
+			)
+			--[[love.graphics.printf(
+				v[1],
+				self.font,
+				self.position[v[3] and "arrowx" or "Oarrowx"][v[2] ],
+				self.position.arrowy - ((self.songPosition - v[1]) * self.position.scroll),
+				self.position.width
+			)]]
 		end
 		love.graphics.draw(self.graphics.spritebatchNotes)
 		self.graphics.spritebatchNotes:clear()

@@ -67,6 +67,8 @@ local replaceSound = function(key, path, mod)
 	return data
 end
 
+local engineText = " | " .. SMODS.current_mod.display_name .. " " .. SMODS.current_mod.version
+
 photochadfunkin = {
 	--shared
 	running = false,
@@ -112,7 +114,7 @@ photochadfunkin = {
 	
 	--management
 	start = function(self)
-		if self.running then	return print("Tried to start FNF but it's already started!") end
+		if self.running then return print("Tried to start FNF but it's already started!") end
 		print("starting fnf, prepare your ass", self.mania)
 		self.keyEvents = {}
 		self.running = true
@@ -135,9 +137,17 @@ photochadfunkin = {
 		self.conductor.startTime = love.timer.getTime() + (self.conductor.crochet * 4) + 1
 		
 		self.characters = {self:createCharacter("bf", "ellejokers", self.jokerEdition)}
-		self.songinfo = self.song.song .. " | ellejokers " .. SMODS.Mods.ellejokers.version
+		self.songinfo = self.song.song .. engineText
 		
+		G.FUNCS.exit_overlay_menu()
 		G.CONTROLLER.locks.frame = true
+	end,
+	stop = function(self, fn, stopmusic)
+		if stopmusic then G.SOUND_MANAGER.channel:push({type = "stop"}) end
+		G.CONTROLLER.locks.frame = false
+		self.running = false
+		if fn then fn(self) end
+		self.onWin, self.onLose = nil, nil
 	end,
 	formatSong = function(str)
 		return ((str):lower()):gsub("%s", "-")
@@ -180,9 +190,13 @@ photochadfunkin = {
 		self.unspawnNoteIndex = 1
 		self.unspawnNotes, self.notes, self.camChanges = {}, {}, {}
 		self.camPlayer = self.song.notes[1].mustHitSection
+		self.noteTypes = self.noteTypes or self.usedNoteTypes or {}
+		local noteTypeLut = {}
+		for k,v in pairs(self.noteTypes) do
+			noteTypeLut[v] = k
+		end
 		
 		--notes
-		local noteData
 		local mustHitSection = self.camPlayer
 		for k,v in pairs(self.song.notes) do
 			if v.mustHitSection ~= mustHitSection then
@@ -190,12 +204,20 @@ photochadfunkin = {
 				mustHitSection = v.mustHitSection
 			end
 			for k2,v2 in pairs(v.sectionNotes) do
-				if v2[4] ~= "scytheNote" then --lul
+				if type(v2[4]) == "string" then
+					if not noteTypeLut[v2[4]] then
+						noteTypeLut[v2[4]] = #self.noteTypes + 1
+						self.noteTypes[noteTypeLut[v2[4]]] = v2[4]
+					end
+					v2[4] = noteTypeLut[v2[4]]
+				end
+				if self.noteTypes[v2[4]] ~= "scytheNote" then --lul
 					self.unspawnNotes[#self.unspawnNotes + 1] = {
 						v2[1] * 0.001, --Time (seconds)
 						(v2[2] % self.mania) + 1, --Lane (starting from 1)
 						(v2[2] >= self.mania) ~= mustHitSection, --True if note belongs to player
-						v2[3] and (v2[3] * 0.001) or 0 --Sustain length (seconds)
+						v2[3] and (v2[3] * 0.001) or 0, --Sustain length (seconds)
+						v2[4] ~= 1 and v2[4] or nil --Note type
 					}
 				end
 			end
@@ -326,14 +348,13 @@ photochadfunkin = {
 			end
 		end
 	end,
-	stop = function(self, fn)
-		G.CONTROLLER.locks.frame = false
-		self.running = false
-		if fn then fn(self) end
-		self.onWin, self.onLose = nil, nil
-	end,
 	
-	accepted_blinds = {bl_elle_microphone = true, bl_elle_microphone_showdown = true},
+	accepted_blinds = {
+		bl_elle_microphone = true,
+		bl_elle_microphone_showdown = true,
+		bl_elle_microphone_showdown_mania = true,
+		bl_elle_microphone_showdown_marathon = true
+	},
 	
 	--fuckassshader = G.SHADERS.polychrome
 }

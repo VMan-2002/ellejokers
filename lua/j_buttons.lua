@@ -2,6 +2,10 @@
 local use_and_sell_buttonsref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
     local t = use_and_sell_buttonsref(card)
+	
+	-- Don't do this shit if you aren't in the joker tray
+	if (card.area ~= G.jokers) then return t end
+	
 	local _nodes = t.nodes[1].nodes
 	
 	-- Use Button

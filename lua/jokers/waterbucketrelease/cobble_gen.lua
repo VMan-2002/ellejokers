@@ -23,16 +23,19 @@ gen.calculate = function(self, card, context)
 			end
 		end
 		
+		local ed = card.edition.key
+		
 		-- idk how else to do this lmao
 		local success = #G.jokers.cards <= G.jokers.config.card_limit
-		if success then 
-			local bucket = SMODS.create_card({key="j_elle_water_bucket",no_edition=true})
+		if success or ed == "e_negative" then
+			
+			local bucket = SMODS.create_card({key="j_elle_water_bucket",edition=ed})
 			bucket:add_to_deck()
 			G.jokers:emplace(bucket)
 			
 			success = #G.jokers.cards <= G.jokers.config.card_limit
-			if success then 
-				local bucket = SMODS.create_card({key="j_elle_lava_bucket",no_edition=true})
+			if success or ed == "e_negative" then 
+				local bucket = SMODS.create_card({key="j_elle_lava_bucket",edition=ed})
 				bucket:add_to_deck()
 				G.jokers:emplace(bucket)
 			end

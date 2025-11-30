@@ -22,9 +22,9 @@
 --				- Allocatable points from beating blinds?
 --					- More points from boss blinds (3?)
 --			- Boyfriend
---				- LITERALLY JUST FNF
+--				- LITERALLY JUST FNF - VMan's working on this :p
 --				- Balatro SFX atonals similar to SCDM
---	- "The Microphone" boss blind - VMan's working on this :p
+--	- "The Microphone" boss blind
 --		- Also FNF, like Boyfriend
 --		- Plays a harder fnf song
 --		- "Zoinks!" final boss blind

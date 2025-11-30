@@ -1,7 +1,7 @@
 {
 	"id": "ellejokers",
 	"name": "ellejokers.",
-	"author": ["ellestuff."],
+	"author": ["slimestuff."],
 	"description": "This is what Balatro was missing, right?",
 	"prefix": "elle",
 	"badge_colour": "ff53a9",
@@ -9,5 +9,5 @@
 		"Steamodded (>=1.0.0~ALPHA-1404b)"
 	],
 	"main_file": "main.lua",
-	"version": "0.0.3beta4"
+	"version": "0.1.3"
 }

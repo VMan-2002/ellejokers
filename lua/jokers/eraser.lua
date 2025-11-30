@@ -49,3 +49,9 @@ eraser.elle_active = {
 	
 	should_close = function(self, card) return true end
 }
+
+eraser.calculate = function(self, card, context)
+	if context.end_of_round and context.beat_boss then
+		card.ability.extra.used = false
+	end
+end

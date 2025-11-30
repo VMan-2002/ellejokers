@@ -111,7 +111,6 @@ do
 end]]
 
 photochadfunkin:resize(love.graphics.getDimensions())
---valatroingout.inspect("a lol", photochadfunkin.size)
 
 photochadfunkin.update = function(self)
 	local elapsed = love.timer.getDelta()
@@ -154,10 +153,8 @@ photochadfunkin.update = function(self)
 		if self.unspawnNoteIndex ~= false then
 			while self.unspawnNotes[self.unspawnNoteIndex][1] - 5 < self.songPosition do
 				self.notes[#self.notes + 1] = self.unspawnNotes[self.unspawnNoteIndex]
-				--print("note spawned at "..tostring(self.unspawnNotes[self.unspawnNoteIndex][1]))
 				if self.unspawnNoteIndex == #self.unspawnNotes then
 					self.unspawnNoteIndex = false
-					--print("no more notes to spawn")
 					break
 				end
 				self.unspawnNoteIndex = self.unspawnNoteIndex + 1
@@ -249,10 +246,6 @@ end
 --idk how to do the balatro sprite objects. but i do know how to do this. now, is that bad?
 photochadfunkin.draw = function(self)
 	love.graphics.setColor(1, 1, 1, 1)
-	--[[if self.running then
-		local w, h = love.graphics.getDimensions()
-		love.graphics.rectangle("fill", 0, 0, (1 + math.sin(love.timer.getTime() * 2)) * w * 0.5, h)
-	end]]
 	if self.running then
 		-- local oldshad = love.graphics.getShader()
 		--self.fuckassshader

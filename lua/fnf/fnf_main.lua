@@ -364,6 +364,12 @@ photochadfunkin:loadNoteskin("cardgame", "ellejokers")
 local bclick = Blind.click
 function Blind.click(self, ...) 
 	if photochadfunkin.accepted_blinds[self.name] and not G.GAME.blind.photochadfunkin_completed then
+		photochadfunkin.onWin = function(self)
+			--something goes here
+		end
+		photochadfunkin.onLose = function(self)
+			--another something goes here
+		end
 		return photochadfunkin:options(self)
 	end
 	bclick(self, ...)

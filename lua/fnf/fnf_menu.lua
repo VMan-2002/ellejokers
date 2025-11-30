@@ -15,7 +15,6 @@ do -- Options
 		--song_i = (song_i == #songs) and 1 or (song_i + 1)
 		song_i = args.cycle_config.current_option
 		print("Selected song: "..songs[song_i])
-		photochadfunkin:loadSong(songs[song_i], "ellejokers")
 	end
 
 	G.FUNCS.fun_fnf_downscroll = function(e)
@@ -31,6 +30,7 @@ do -- Options
 	end
 	
 	G.FUNCS.fun_fnf_start = function(e)
+		photochadfunkin:loadSong(songs[song_i], "ellejokers")
 		photochadfunkin:start()
 		print("Pressed the start button")
 	end

@@ -326,7 +326,7 @@ photochadfunkin = {
 			end
 		end
 	end,
-	stop = function(this, fn)
+	stop = function(self, fn)
 		G.CONTROLLER.locks.frame = false
 		self.running = false
 		if fn then fn(self) end

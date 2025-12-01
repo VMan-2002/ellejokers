@@ -69,6 +69,24 @@ end
 
 local engineText = " | " .. SMODS.current_mod.display_name .. " " .. SMODS.current_mod.version
 
+local defaultBinds = {
+	[4] = {{"d", "left"}, {"f", "down"}, {"j", "up"}, {"k", "right"}},
+	[5] = {{"d", "left"}, {"f", "down"}, {"space"}, {"j", "up"}, {"k", "right"}},
+	[6] = {{"s", "z"}, {"d", "x"}, {"f", "c"}, {"j", "left"}, {"k", "down"}, {"l", "right"}},
+	[7] = {{"s", "z"}, {"d", "x"}, {"f", "c"}, {"space"}, {"j", "left"}, {"k", "down"}, {"l, right"}},
+	[8] = {{"a"}, {"s"}, {"d"}, {"f"}, {"j"}, {"k"}, {"l"}, {";"}},
+	[9] = {{"a"}, {"s"}, {"d"}, {"f"}, {"space"}, {"j"}, {"k"}, {"l"}, {";"}}
+}
+--TODO: make sure this saves properly!
+do
+	local tmp_keybinds = config.fnf_keybinds or {}
+	for k,v in pairs(defaultBinds) do
+		tmp_keybinds[k] = tmp_keybinds[k] or v
+		print("added new fnf keybinds for "..tostring(k).." key")
+	end
+	config.fnf_keybinds = tmp_keybinds
+end
+
 photochadfunkin = {
 	--shared
 	running = false,
@@ -95,13 +113,19 @@ photochadfunkin = {
 	
 	--game settings
 	downscroll = (config.fnf_downscroll ~= nil) and config.fnf_downscroll or false,
-	binds = {
-		[4] = {{d = true, left = true}, {f = true, down = true}, {j = true, up = true}, {k = true, right = true}},
-		[6] = {{s = true, z = true}, {d = true, x = true}, {f = true, c = true}, {j = true, left = true}, {k = true, down = true}, {l = true, right = true}},
-		[7] = {{s = true, z = true}, {d = true, x = true}, {f = true, c = true}, {space = true}, {j = true, left = true}, {k = true, down = true}, {l = true, right = true}},
-		[8] = {{a = true}, {s = true}, {d = true}, {f = true}, {j = true}, {k = true}, {l = true}, {[";"] = true}},
-		[9] = {{a = true}, {s = true}, {d = true}, {f = true}, {space = true}, {j = true}, {k = true}, {l = true}, {[";"] = true}}
-	},
+	updateBinds = function(self)
+		self.binds = {}
+		for k,v in pairs(config.fnf_keybinds) do
+			local mcontrol = {}
+			for k1,v1 in pairs(v) do
+				mcontrol[k1] = {}
+				for k2,v2 in pairs(v1) do
+					mcontrol[k1][v2] = k2
+				end
+			end
+			self.binds[k] = mcontrol
+		end
+	end,
 	arroworder = {
 		[1] = {5},
 		[2] = {1, 4},
@@ -187,7 +211,7 @@ photochadfunkin = {
 			self.mania = 4
 		end
 		if not self.binds[self.mania] then
-			error("Loaded chart "..song.." has mania "..tostring(self.mania)..", but there's no keybinds for it")
+			error("Loaded chart "..self.song.song.." has mania "..tostring(self.mania)..", but there's no keybinds for it")
 		end
 		
 		--Load shit
@@ -364,6 +388,7 @@ photochadfunkin = {
 }
 photochadfunkin:loadCharacter("bf", "ellejokers")
 photochadfunkin:loadNoteskin("cardgame", "ellejokers")
+photochadfunkin:updateBinds()
 
 local bclick = Blind.click
 function Blind.click(self, ...) 

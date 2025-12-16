@@ -1,6 +1,6 @@
 local sophie = SMODS.Joker {
 	key = 'sophie',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult_mod = 2, mult = 0, odds = 4, req = 50 } },
 	loc_vars = function(self, info_queue, card)
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_sophie')
@@ -61,7 +61,7 @@ sophie.calculate = function(self, card, context)
 	end
 end
 
-sophie.elle_upgrade = {
+sophie.slime_upgrade = {
 	card = "j_elle_fallen",
 	values = function(self, card) return { mult = to_big(card.ability.extra.mult)/to_big(card.ability.extra.mult_mod) } end,
 	can_use = function(self, card) return to_big(card.ability.extra.mult) >= to_big(card.ability.extra.req) end,

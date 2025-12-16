@@ -27,7 +27,7 @@ bf.calculate = function(self, card, context)
 	end
 end
 
-bf.elle_active = {
+bf.slime_active = {
 	calculate = function(self, card)
 		card.ability.extra.attempted = true
 		

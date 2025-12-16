@@ -1,6 +1,6 @@
 local furry = SMODS.Joker {
 	key = 'furry',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult_mod = 5, mult = 0, used = false, req = 10, count = 0 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult, card.ability.extra.used and "Inactive" or "Active" } }
@@ -8,7 +8,6 @@ local furry = SMODS.Joker {
 	rarity = 2,
 	atlas = 'jokers',
 	pos = { x = 1, y = 0 },
-	soul_pos = { x = 5, y = 3 },
 	cost = 5,
 	blueprint_compat = true,
 	in_pool = function(self) return false end,
@@ -29,7 +28,7 @@ furry.calculate = function(self, card, context)
 	end
 end
 
-furry.elle_active = {
+furry.slime_active = {
 	calculate = function(self, card)
 		local _card = G.hand.highlighted[1]
 		
@@ -59,7 +58,7 @@ furry.elle_active = {
 	should_close = function(self, card) return true end
 }
 
-furry.elle_upgrade = {
+furry.slime_upgrade = {
 	card = "j_elle_cheshire",
 	values = function(self, card) return {Xmult = 1+((card.ability.extra.count-card.ability.extra.req)*.1)} end,
 	can_use = function(self, card) return #SMODS.find_card("j_elle_sarah", false)>0 and card.ability.extra.count>=card.ability.extra.req end,

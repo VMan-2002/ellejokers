@@ -1,6 +1,6 @@
 local twy = SMODS.Joker {
 	key = 'twy',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.friends() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.friends) end end,
 	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_twy')

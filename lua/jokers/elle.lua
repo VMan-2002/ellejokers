@@ -1,6 +1,6 @@
 local elle = SMODS.Joker {
 	key = 'elle',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.oc() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.oc) end end,
 	config = { extra = {
 		xmult_mod = 0.1,
 	}},

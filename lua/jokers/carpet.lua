@@ -1,6 +1,5 @@
 local carpet = SMODS.Joker {
 	key = 'carpet',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.toby() end,
 	config = { extra = { xmult_mod = 0.25, xmult = 1 } },
 	loc_vars = function(self, info_queue, card) return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } } end,
 	rarity = 2,

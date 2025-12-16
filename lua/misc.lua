@@ -65,14 +65,6 @@ SMODS.Consumable {
 SMODS.Consumable {
 	key = 'resident',
 	set = 'Tarot',
-	loc_txt = {
-		name = "Resident",
-		text = {
-			"Enhances {C:attention}#1#{} selected",
-			"cards into a",
-			"{C:attention}Slime Card"
-		}
-	},
 	cost = 4,
 	atlas = 'consumables',
 	pos = { x = 1, y = 0 },
@@ -88,13 +80,6 @@ SMODS.Consumable {
 -- Slime Enhancement
 SMODS.Enhancement {
 	key = 'slime',
-	loc_txt = {
-		name = "Slime Card",
-		text = {
-			"{C:green}#1# in #2#{} Chance to",
-			"retrigger {C:attention}#3#{} times"
-		}
-	},
 	atlas = 'enhancers',
 	pos = { x = 0, y = 0 },
 	config = { extra = { odds = 3, retriggers = 2 } },

@@ -1,6 +1,6 @@
 local bucket = SMODS.Joker {
 	key = 'lava_bucket',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { mult_mod = 5, mult = 0 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult } }
@@ -34,7 +34,7 @@ bucket.calculate = function(self, card, context)
 		end
 		if obsidian then
 			play_sound("elle_fizz", 1, 0.6)
-			transform_joker(card,"j_elle_obsidian",{},true)
+			change_joker_ability(card,"j_elle_obsidian")
 		end
 	end
 end

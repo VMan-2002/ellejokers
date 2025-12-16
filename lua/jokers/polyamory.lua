@@ -6,7 +6,7 @@ local polyamory = SMODS.Joker {
 	end,
 	rarity = 3,
 	atlas = 'jokers',
-	pos = { x = 1, y = 3 },
+	pos = { x = 0, y = 3 },
 	soul_pos = { x = 5, y = 3 },
 	cost = 8,
 	blueprint_compat = false

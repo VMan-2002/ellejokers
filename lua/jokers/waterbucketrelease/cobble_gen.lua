@@ -1,13 +1,13 @@
 local gen = SMODS.Joker {
 	key = 'cobble_gen',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { } }
 	end,
 	rarity = 2,
 	atlas = 'jokers',
-	pos = { x = 1, y = 2 },
+	pos = { x = 1, y = 3 },
 	cost = 6
 }
 

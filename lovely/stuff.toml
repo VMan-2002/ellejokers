@@ -3,6 +3,7 @@ version = "0.1.0"
 dump_lua = true
 priority = 0
 
+# Add Spearlamp info_queue messages to steel & slime cards
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -16,34 +17,53 @@ if (card) then
 		if (_c.key == "m_steel") then info_queue[#info_queue+1] = G.P_CENTERS.m_elle_slime end
 		if (_c.key == "m_elle_slime") then info_queue[#info_queue+1] = G.P_CENTERS.m_steel end
 	end
+end
+'''
+match_indent = true
 
-	-- Upgrade support
-	if (_c.elle_upgrade and _c.discovered) then
-		--		[[ Upgrade Requirements ]]
-		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_".._c.key, specific_vars = (_c.elle_upgrade.loc_vars and _c.elle_upgrade:loc_vars(card) or {}) }
-		
-		--		[[ Upgrade Preview ]]
-		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
-		
-		-- Upgrade variable stuff
-		if (not upgrade_center.unlocked) then										-- Locked
-			upgrade_center = {set = "Other", key = "elle_upgr_locked"}
-		elseif (not upgrade_center.discovered) then									-- Not Discoverd
-			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered"}
-		else																		-- Unlocked
-			upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
-			local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
-			for k, v in pairs(upgrade_vars) do
-				upgrade_center.config.extra[k] = v
-			end
-			
-			-- Use correct localization
-			local upgrade_loc_values = upgrade_center:loc_vars({}, {ability = upgrade_center.config, config = {center = upgrade_center}}).vars
-			upgrade_center.loc_vars = function() return {vars = upgrade_loc_values} end
-		end
+# Fix Card:load()
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.VT.h = self.T.H'''
+position = "at"
+payload = '''self.VT.h = self.T.h'''
+match_indent = true
 
-		info_queue[#info_queue+1] = upgrade_center
-	end
+# Skip Shop on Café Frequent Challenge
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.STATE = G.STATES.SHOP'''
+position = "after"
+payload = '''if (G.GAME.modifiers.elle_no_shop) then G.STATE = G.STATES.BLIND_SELECT end'''
+match_indent = true
+
+# Rebecca booster stuff, copy-pasted from JoyousSpring
+# https://github.com/nh6574/JoyousSpring/blob/48423d78db5e2a6f16a471d1211d2457b370d413/lovely/states.toml#L80
+
+# Prevent booster in booster softlock
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end '''
+position = "at"
+payload = '''
+if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED then
+    if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end
+end
+'''
+match_indent = true
+
+# Open booster in a round (not used yet but it's nice so I'm keeping it just in case)
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.draw_from_hand_to_deck()'''
+position = "at"
+payload = '''
+if G.GAME.PACK_INTERRUPT ~= G.STATES.SELECTING_HAND then
+    G.FUNCS.draw_from_hand_to_deck()
 end
 '''
 match_indent = true

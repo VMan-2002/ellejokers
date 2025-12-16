@@ -9,7 +9,7 @@ local eraser = SMODS.Joker {
 }
 
 
-eraser.elle_active = {
+eraser.slime_active = {
 	calculate = function(self, card)
 		local target = (
 			G.shop_jokers and #G.shop_jokers.highlighted == 1 and G.shop_jokers.highlighted[1] or

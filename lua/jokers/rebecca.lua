@@ -85,7 +85,7 @@ local function becca_load_cards()
 		
 		-- Make the new cards
 		for i,v2 in ipairs(v) do
-			local new_card = SMODS.create_card({set = v2.ability.set, area=G[k]})
+			local new_card = SMODS.create_card({set = v2.ability.set, area=G[k], bypass_discovery_center = true})
 			new_card:load(v2)
 			create_shop_card_ui(new_card)
 			
@@ -111,7 +111,7 @@ local function becca_visible_reroll(booster)
 
 	-- Jokers
 	for i = 1, 2 -#G.elle_becca_shop_jokers.cards do
-		local new_shop_card = SMODS.create_card({set="Joker", area=G.elle_becca_shop_jokers})
+		local new_shop_card = SMODS.create_card({set="Joker", area=G.elle_becca_shop_jokers, bypass_discovery_center = true})
 		G.elle_becca_shop_jokers:emplace(new_shop_card)
 		create_shop_card_ui(new_shop_card)
 		
@@ -120,7 +120,7 @@ local function becca_visible_reroll(booster)
 	end
 	-- Consumables
 	for i = 1, 2-#G.elle_becca_shop_consumables.cards do
-		local new_shop_card = SMODS.create_card({set="Consumeables", area=G.elle_becca_shop_consumables})
+		local new_shop_card = SMODS.create_card({set="Consumeables", area=G.elle_becca_shop_consumables, bypass_discovery_center = true})
 		G.elle_becca_shop_consumables:emplace(new_shop_card)
 		create_shop_card_ui(new_shop_card)
 		
@@ -130,7 +130,7 @@ local function becca_visible_reroll(booster)
 	-- Booster pack
 	if booster then
 		for i = 1, 1-#G.elle_becca_shop_booster.cards do
-			local new_shop_card = SMODS.create_card({set="Booster", area=G.elle_becca_shop_booster})
+			local new_shop_card = SMODS.create_card({set="Booster", area=G.elle_becca_shop_booster, bypass_discovery_center = true})
 			G.elle_becca_shop_booster:emplace(new_shop_card)
 			create_shop_card_ui(new_shop_card)
 			

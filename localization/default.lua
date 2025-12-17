@@ -324,6 +324,15 @@ return {
 					"Trigger {C:attention}#1#{C:inactive}[#2#]{} times"
 				}
 			}
+		},
+		Tag={
+            tag_elle_rebecca={
+                name="Café Tag",
+                text={
+                    "Restocks",
+                    "{C:attention}Rebecca{}'s Shop"
+                }
+            }
 		}
 	},
 	misc = {

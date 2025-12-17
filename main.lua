@@ -36,6 +36,7 @@
 --		[[ File List ]]
 local files = {
 	"skins",
+	"consumables",
 	"misc",
 	"http",
 	"challenges"
@@ -86,31 +87,37 @@ SMODS.Atlas {
 	key = "jokers",
 	path = "jokers.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "animated",
 	path = "animated.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "legendary",
 	path = "legendary.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "consumables",
 	path = "consumables.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "enhancers",
 	path = "enhancers.png",
 	px = 71,
-	py = 95,
+	py = 95
+}
+SMODS.Atlas {
+	key = "tag",
+	path = "tags.png",
+	px = 34,
+	py = 34
 }
 
 --		[[ Sounds ]]

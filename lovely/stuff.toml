@@ -30,40 +30,16 @@ position = "at"
 payload = '''self.VT.h = self.T.h'''
 match_indent = true
 
-# Skip Shop on Café Frequent Challenge
+# Fix SMODS incorrect challenge saving
 [[patches]]
 [patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''G.STATE = G.STATES.SHOP'''
+target = "engine/controller.lua"
+pattern = '''G.challenge_tab = G.GAME and G.GAME.challenge and G.GAME.challenge_tab or nil'''
 position = "after"
-payload = '''if (G.GAME.modifiers.elle_no_shop) then G.STATE = G.STATES.BLIND_SELECT end'''
-match_indent = true
-
-# Rebecca booster stuff, copy-pasted from JoyousSpring
-# https://github.com/nh6574/JoyousSpring/blob/48423d78db5e2a6f16a471d1211d2457b370d413/lovely/states.toml#L80
-
-# Prevent booster in booster softlock
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end '''
-position = "at"
 payload = '''
-if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED then
-    if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end
+if type(G.challenge_tab) == "string" and G.GAME and G.GAME.challenge then
+    G.challenge_tab = G.CHALLENGES[get_challenge_int_from_id(G.GAME.challenge or '') or ''] or {name = 'ERROR'}
 end
 '''
 match_indent = true
-
-# Open booster in a round (not used yet but it's nice so I'm keeping it just in case)
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''G.FUNCS.draw_from_hand_to_deck()'''
-position = "at"
-payload = '''
-if G.GAME.PACK_INTERRUPT ~= G.STATES.SELECTING_HAND then
-    G.FUNCS.draw_from_hand_to_deck()
-end
-'''
-match_indent = true
+overwrite = false

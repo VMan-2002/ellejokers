@@ -122,8 +122,16 @@ return {
 			j_elle_rebecca = {
 				name = 'Rebecca',
 				text = {
-					"Open a separate {C:attention}Shop",
-					"Resets at end of ante"
+					"Go to a separate {C:attention}Shop",
+					"{C:attention}Restocks{} at end of Ante"
+				}
+			},
+			j_elle_p41 = {
+				name = 'Prototype #1#41',
+				text = {
+					"If scoring hand contains",
+					"an {C:attention}Ace{} and {C:attention}4{}, retrigger",
+					"a random other {C:attention}Joker"
 				}
 			},
 			

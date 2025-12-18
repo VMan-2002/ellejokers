@@ -1,4 +1,3 @@
-
 SMODS.Tag {
 	key = "rebecca",
 	atlas = "tag",

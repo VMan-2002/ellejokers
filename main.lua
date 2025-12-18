@@ -59,6 +59,7 @@ local jokers = {
 	"marie",
 	"bea",
 	"rebecca",
+	"41",
 	
 			-- Jess's Minecraft Idea
 	"waterbucketrelease/cobble_gen",

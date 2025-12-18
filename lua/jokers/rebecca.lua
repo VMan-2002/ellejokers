@@ -127,7 +127,8 @@ do -- Game hooks
 			reroll_cost = 2,
 			reset_on_open = true,
 			data = {},
-			first_open=true
+			first_open=true,
+			open=false
 		}
 		
 		return g
@@ -181,11 +182,43 @@ do -- Game hooks
 		end
 		car(self)
 	end
+	
+	-- Update cards in rebecca menu
+	local csa = Card.set_ability
+	function Card:set_ability(...)
+		local old_center = self.config.center
+		if G.GAME.elle_rebecca.open and old_center and not next(SMODS.find_card(old_center.key, true)) then
+			G.GAME.used_jokers[old_center.key] = nil
+		end
+		csa(self, ...)
+		if G.GAME.elle_rebecca.open then 
+			if self.config.center.key then
+				G.GAME.used_jokers[self.config.center.key] = true
+			end
+		end
+	end
+	local cr = Card.remove
+	function Card:remove(...)
+		local old_center = self.config.center
+		if G.GAME.elle_rebecca.open and old_center and not next(SMODS.find_card(old_center.key, true)) then
+			G.GAME.used_jokers[old_center.key] = nil
+		end
+		cr(self, ...)
+	end
+
+	local eom = G.FUNCS.exit_overlay_menu
+	function G.FUNCS.exit_overlay_menu(...)
+		eom(...)
+		if (G.GAME.elle_rebecca.open) then
+			G.GAME.elle_rebecca.open = false
+			G.E_MANAGER:add_event(Event({ func = function() save_run(); return true end})) -- Save the game :)
+		end
+	end
 end
 
 -- Shop UI
 function create_UIbox_becca()
-	print(G.GAME.elle_rebecca.first_open)
+	--print(G.GAME.elle_rebecca.first_open)
 	G.elle_becca_shop_jokers = CardArea(
 		G.hand.T.x,
 		G.hand.T.y+G.ROOM.T.y + 9,
@@ -207,10 +240,11 @@ function create_UIbox_becca()
 		1.05*G.CARD_H-0.25, 
 		{card_limit = 1, type = 'shop', highlight_limit = 1})
 	
-	
+	G.GAME.elle_rebecca.open = true
 	
 	if not G.GAME.elle_rebecca.first_open then
 		reload_becca_areas()
+		save_run()
 	else G.GAME.elle_rebecca.first_open = false end
 	
 	
@@ -276,7 +310,7 @@ function create_UIbox_becca()
 										}}
 									}},
 									-- Exit button (for people who don't know you can just press ESC)
-									UIBox_button({ button = "elle_rebecca_exit_shop", label = { "Exit" }, minh=.8, minw=2.5, colour = G.C.RED })
+									UIBox_button({ button = "exit_overlay_menu", label = { "Exit" }, minh=.8, minw=2.5, colour = G.C.RED })
 								}},
 							}},
 							-- Consumables
@@ -341,12 +375,5 @@ do -- Button Callbacks
 		
 		-- The game is automatically saved by becca_visible_reroll()
 		--G.E_MANAGER:add_event(Event({ func = function() save_run(); return true end})) -- Save the game :)
-	end
-
-	-- Leave shop
-	function G.FUNCS.elle_rebecca_exit_shop(e)
-		if not e then return end
-		--print(e)
-		G.FUNCS.exit_overlay_menu()
 	end
 end

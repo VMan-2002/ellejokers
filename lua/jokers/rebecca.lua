@@ -240,19 +240,25 @@ function create_UIbox_becca()
 		1.05*G.CARD_H-0.25, 
 		{card_limit = 1, type = 'shop', highlight_limit = 1})
 	
+	-- Track whether this shop is open
 	G.GAME.elle_rebecca.open = true
 	
+	-- Reload areas if not first time opening
 	if not G.GAME.elle_rebecca.first_open then
 		reload_becca_areas()
 		save_run()
 	else G.GAME.elle_rebecca.first_open = false end
-	
-	
-	-- Make the shop stuff on first open
+
+
+	-- Reroll the shop on open if expected to
 	if (G.GAME.elle_rebecca.reset_on_open) then
-		G.GAME.elle_rebecca.reroll = G.GAME.elle_rebecca.default_reroll
-		becca_visible_reroll(true)
 		G.GAME.elle_rebecca.reset_on_open = false
+		
+		G.E_MANAGER:add_event(Event({ func = function()
+			G.GAME.elle_rebecca.reroll = G.GAME.elle_rebecca.default_reroll
+			becca_visible_reroll(true)
+			return true
+		end}))
 	end
 	
 	return create_UIBox_generic_options({

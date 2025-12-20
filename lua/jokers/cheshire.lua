@@ -10,8 +10,7 @@ local cheshire = SMODS.Joker {
 	pos = { x = 2, y = 0 },
 	cost = 12,
 	blueprint_compat = true,
-	in_pool = function(self) return false end,
-	no_doe = true
+	unlocked = false
 }
 
 cheshire.calculate = function(self, card, context)

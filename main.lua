@@ -59,6 +59,8 @@ local jokers = {
 	"marie",
 	"bea",
 	"rebecca",
+	"cassie",
+	"cassie_stasis",
 	"41",
 	
 			-- Jess's Minecraft Idea

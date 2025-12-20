@@ -42,8 +42,7 @@ return {
 				text = {
 					"{C:mult}+#1#{} Mult per {C:attention}overscored",
 					"{C:attention}multiple{} of {C:attention}Blind Size{}",
-					"{C:green}#3# in #4#{} chance to",
-					"{C:red}reset{} instead",
+					"{C:inactive}(Max {C:mult}+#3#{C:inactive} Mult per round)",
 					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 					caption.."Could do no wrong...?"
 				},
@@ -77,7 +76,12 @@ return {
 					"Played cards with",
 					"{C:clubs}Club{} suit give",
 					"{X:mult,C:white}X#1#{} Mult when scored",
-					caption.."...what is wrong with you?"
+					caption..'"She looks better like this."',
+					caption..'"...Happier, even~"'
+				},
+				unlock = {
+					"Make a {C:red}grave",
+					"{C:red}mistake"
 				}
 			},
 			j_elle_spearmintprog = {
@@ -124,6 +128,27 @@ return {
 				text = {
 					"Go to a separate {C:attention}Shop",
 					"{C:attention}Restocks{} at end of Ante"
+				}
+			},
+			j_elle_cassie = {
+				name = 'Cassie',
+				text = {
+					"Gains {C:mult}+#1#{} Mult",
+					"at {C:attention}end of round",
+					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					caption.."Looking for her sister..."
+				}
+			},
+			j_elle_cassie2 = {
+				name = '...',
+				text = {
+					caption..'"You really kept it?',
+					caption..'No amount of magic will',
+					caption..'bring her back, you know?"'
+				},
+				unlock = {
+					"Make a {C:red}grave",
+					"{C:red}mistake"
 				}
 			},
 			j_elle_p41 = {
@@ -306,6 +331,16 @@ return {
 			}
 		},
 		Other = {
+			elle_rebecca_challenge = {
+				name = "Warning!",
+				text = {
+					"Rebecca's shop contents may",
+					"{C:red}not save{} when closing the game",
+					"This is only in {C:red}challenge runs",
+					"and is likely a SMODS issue"
+				}
+			},
+			
 			slime_upgr_j_elle_chloe = {
 				name = 'Upgrade..?',
 				text = {
@@ -316,8 +351,8 @@ return {
 			slime_upgr_j_elle_furry = {
 				name = 'Upgrade',
 				text = {
-					"Destroy {C:attention}#1#{C:inactive}[#2#]{} cards",
-					"and have {C:attention}Sarah{}"
+					"Have {C:red}Sarah{}",
+					"and {C:red}Cassie{}"
 				}
 			},
 			slime_upgr_j_elle_sophie = {
@@ -329,7 +364,8 @@ return {
 			slime_upgr_j_elle_sarah = {
 				name = 'Upgrade..?',
 				text = {
-					"Trigger {C:attention}#1#{C:inactive}[#2#]{} times"
+					"Make a {C:red}grave",
+					"{C:red}mistake"
 				}
 			}
 		},
@@ -356,12 +392,11 @@ return {
 			elle_rebecca_restock = "Restocked!"
 		},
 		challenge_names = {
-			c_elle_cafe_frequent = "Café Frequent"
+			c_elle_cafe_frequent = "Café Frequent",
+			c_elle_forcefem = "Forcefem!"
 		},
 		v_text = {
-			ch_c_elle_no_shop = {
-				"Shop is {C:attention}skipped{} at end of round"
-			}
+			ch_c_elle_no_shop = { "Shop is {C:attention}skipped{} at end of round" }
 		}
 	}
 }

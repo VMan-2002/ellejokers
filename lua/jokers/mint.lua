@@ -9,9 +9,7 @@ local mint = SMODS.Joker {
 	pos = { x = 5, y = 2 },
 	soul_pos = { x = 5, y = 3 },
 	cost = 9,
-	in_pool = function(self) return false end,
-	no_doe = true
-	
+	unlocked = false
 }
 
 mint.calculate = function(self, card, context)

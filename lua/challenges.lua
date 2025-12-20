@@ -8,10 +8,7 @@ SMODS.Challenge {
 	}},
 	rules = {
 		custom = {
-			{id = "elle_no_shop"}
-		},
-		modifiers = {
-			{id="joker_slots",value=6}
+			{id = "elle_no_shop"},
 		}
 	},
 	restrictions = {
@@ -27,5 +24,24 @@ SMODS.Challenge {
 			{id="tag_d_six"},
 		},
 		banned_cards = bc
+	}
+}
+
+SMODS.Challenge {
+	key = "forcefem",
+	jokers = {
+		{
+			id = "j_elle_suggestion",
+			eternal=true
+		},
+		{
+			id = "j_pareidolia",
+			eternal=true
+		}
+	},
+	restrictions = {
+		banned_other = {
+			{id="bl_plant",type="blind"}
+		}
 	}
 }

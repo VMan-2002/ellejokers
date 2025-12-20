@@ -18,7 +18,10 @@ do -- Rebecca Joker stuff
 		key = 'rebecca',
 		set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
 		config = { extra = { cost = { reroll = 4 }, cards = { jokers = {}, consumables = {}, booster = {} } } },
-		loc_vars = function(self, info_queue, card) return { vars = {} } end,
+		loc_vars = function(self, info_queue, card)
+			if G.GAME.challenge then info_queue[#info_queue+1] = {set = "Other", key = "elle_rebecca_challenge"} end
+			return { vars = {} }
+		end,
 		rarity = 3,
 		atlas = 'jokers',
 		pos = { x = 0, y = 1 },

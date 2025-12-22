@@ -13,7 +13,7 @@ local cassie = SMODS.Joker {
 }
 
 cassie.calculate = function(self, card, context)
-	if context.end_of_round then
+	if context.end_of_round and context.cardarea == G.jokers then
 		card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
 		
 		return {

@@ -19,12 +19,7 @@ local cobble = SMODS.Joker {
 -- Set the cost
 local sc_ref = Card.set_cost
 function Card:set_cost()
-	local sc = sc_ref(self)
+	sc_ref(self)
 	
-	if (self.config.center_key == "j_elle_cobblestone") then
-		self.sell_cost = math.max(1,self.ability.extra.mult * self.ability.extra.value)
-		self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost
-	end
-	
-	return sc
+	if (self.config.center_key == "j_elle_cobblestone") then self.sell_cost = math.max(1,self.ability.extra.mult * self.ability.extra.value) end
 end

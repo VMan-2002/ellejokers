@@ -40,9 +40,10 @@ return {
 			j_elle_sophie = {
 				name = 'Sophie',
 				text = {
-					"{C:mult}+#1#{} Mult per {C:attention}overscored",
-					"{C:attention}multiple{} of {C:attention}Blind Size{}",
-					"{C:inactive}(Max {C:mult}+#3#{C:inactive} Mult per round)",
+					"{C:attention}Stores{} {C:mult}+#1#{} Mult if",
+					"score {C:attention}catches on fire",
+					"Use to {C:attention}release{} stored",
+					"Mult and {C:attention}reset",
 					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 					caption.."Could do no wrong...?"
 				},
@@ -54,12 +55,13 @@ return {
 			j_elle_fallen = {
 				name = 'Fallen Angel',
 				text = {
-					"{C:mult}+#1#{} Mult per {C:attention}overscored",
-					"{C:attention}multiple{} of {C:attention}Blind Size{}",
-					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					"{C:attention}Stores{} {X:mult,C:white}X#1#{} Mult if",
+					"score {C:attention}catches on fire",
+					"Use to {C:attention}release{} stored",
+					"Mult and {C:attention}reset",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					caption.."\"It burns so good~\""
-				},
-				unlock = { "Upgrade {C:attention}Sophie" }
+				}
 			},
 			j_elle_sarah = {
 				name = 'Sarah',
@@ -358,7 +360,9 @@ return {
 			slime_upgr_j_elle_sophie = {
 				name = 'Upgrade',
 				text = {
-					"Reach {C:mult}+#1#{} Mult"
+					"{C:attention}Release{} at least {C:attention}#1#{C:inactive}[#2#]",
+					"rounds of Mult",
+					"at once"
 				}
 			},
 			slime_upgr_j_elle_sarah = {
@@ -367,9 +371,18 @@ return {
 					"Make a {C:red}grave",
 					"{C:red}mistake"
 				}
+			},
+			
+			elle_upgr_no_shop = {
+				name = 'Upgrade Only',
+				text = {
+					"This joker can only",
+					"be obtained through",
+					"{C:attention}Upgrading"
+				}
 			}
 		},
-		Tag={
+		Tag = {
             tag_elle_rebecca={
                 name="Café Tag",
                 text={
@@ -377,11 +390,20 @@ return {
                     "{C:attention}Rebecca{}'s Shop"
                 }
             }
+		},
+		Passives = {
+			psv_elle_familiar = {
+				name = "Familiar Face",
+				description = {
+					"{C:attention}Mall{} Jokers are debuffed"
+				}
+			}
 		}
 	},
 	misc = {
 		dictionary = {
 			elle_joker_open = "OPEN",
+			elle_joker_activate = "ACTIVE",
 			
 			elle_rebecca_title1 = "Rebecca's Store",
 			elle_rebecca_title2 = "(Formerly Slime Café)",
@@ -393,7 +415,8 @@ return {
 		},
 		challenge_names = {
 			c_elle_cafe_frequent = "Café Frequent",
-			c_elle_forcefem = "Forcefem!"
+			c_elle_forcefem = "Forcefem!",
+			c_elle_shopless = "Shopless"
 		},
 		v_text = {
 			ch_c_elle_no_shop = { "Shop is {C:attention}skipped{} at end of round" }

@@ -12,6 +12,7 @@ local elle = SMODS.Joker {
 	pos = { x = 3, y = 0 },
 	soul_pos = { x = 3, y = 1 },
 	cost = 20,
+	blueprint_compat = true,
 	unlocked = false
 }
 

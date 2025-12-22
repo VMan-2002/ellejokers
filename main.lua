@@ -42,6 +42,9 @@ local files = {
 	"challenges"
 }
 
+-- Only add LobCorp's blindexpander if the mod isn't present
+files[#files+1] = next(SMODS.find_mod("LobotomyCorp")) and nil or "blindexpander"
+
 --		[[ Joker List ]]
 -- Comment out jokers you want to disable
 local jokers = {
@@ -85,6 +88,8 @@ local jokers = {
 	"elle"
 }
 
+local blinds = {"cassie_39"}
+
 --		[[ Atlases ]]
 SMODS.Atlas {
 	key = "jokers",
@@ -121,6 +126,14 @@ SMODS.Atlas {
 	path = "tags.png",
 	px = 34,
 	py = 34
+}
+SMODS.Atlas {
+	key = "blinds",
+	path = "blinds.png",
+	px = 34,
+	py = 34,
+	atlas_table = 'ANIMATION_ATLAS',
+	frames = 21
 }
 
 --		[[ Sounds ]]
@@ -209,4 +222,8 @@ end
 
 for i, v in ipairs(jokers) do
 	assert(SMODS.load_file("lua/jokers/"..v..".lua"))()
+end
+
+for i, v in ipairs(blinds) do
+	assert(SMODS.load_file("lua/blinds/"..v..".lua"))()
 end

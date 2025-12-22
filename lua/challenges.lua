@@ -1,5 +1,6 @@
 local bc = {}
 if (Cryptid) then bc[#bc+1] = {id="c_cry_run"} end
+
 SMODS.Challenge {
 	key = "cafe_frequent",
 	jokers = {{
@@ -43,5 +44,16 @@ SMODS.Challenge {
 		banned_other = {
 			{id="bl_plant",type="blind"}
 		}
+	}
+}
+
+SMODS.Challenge {
+	key = "shopless",
+	rules = {
+		custom = {
+			{id = "elle_no_shop"},
+		}
+	},
+		banned_cards = bc
 	}
 }

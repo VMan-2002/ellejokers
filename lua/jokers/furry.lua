@@ -3,6 +3,7 @@ local furry = SMODS.Joker {
 	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult_mod = 5, mult = 0, used = false, req = 10, count = 0 } },
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_no_shop"}
 		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult, card.ability.extra.used and "Inactive" or "Active" } }
 	end,
 	rarity = 2,

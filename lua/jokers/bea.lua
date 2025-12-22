@@ -24,7 +24,7 @@ bea.calculate = function(self, card, context)
 	end
 	
 	-- Change shit ^w^
-	if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+	if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
 		local _poker_hands = get_hand_types(true)
 		card.ability.extra.poker_hand = pseudorandom_element(_poker_hands, 'elle_bea_hand')
 		return { message = localize('k_reset') }

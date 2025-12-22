@@ -3,7 +3,7 @@ elle_bsky_count = 100 -- fallback amount
 local succ, https = pcall(require, "SMODS.https")
 local last_update_time = 0
 local initial = true
-local did = "did:plc:56kaelt4plcrtrztlqa3hfal" -- bsky did/handle to check
+elle_bsky_did = "did:plc:56kaelt4plcrtrztlqa3hfal" -- bsky did/handle to check
 if not succ then
 	sendErrorMessage("HTTP module could not be loaded. " .. tostring(https), "ellejokers.")
 end
@@ -20,7 +20,7 @@ function elle_update_follower_count()
 			initial = false
 			last_update_time = os.time()
 			https.asyncRequest(
-				"https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=" .. did,
+				"https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=" .. elle_bsky_did,
 				apply_follower_count
 			)
 		end

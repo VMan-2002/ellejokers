@@ -1,10 +1,9 @@
 local sophie = SMODS.Joker {
 	key = 'sophie',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mall() end,
-	config = { extra = { mult_mod = 2, mult = 0, odds = 4, req = 50 } },
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	config = { extra = { mult_mod = 10, charges = 0, req = 6, active = false, upgr = false } },
 	loc_vars = function(self, info_queue, card)
-		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_sophie')
-		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult, numerator, denominator } }
+		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult_mod*card.ability.extra.charges } }
 	end,
 	rarity = 2,
 	atlas = 'jokers',
@@ -19,52 +18,45 @@ local sophie = SMODS.Joker {
 }
 
 sophie.calculate = function(self, card, context)
-	if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
-		-- Reset on boss blind
-		if (SMODS.pseudorandom_probability(card, 'elle_sophie', 1, card.ability.extra.odds) and to_big(card.ability.extra.mult) > to_big(0)) then
-			card.ability.extra.mult = 0
-			return { message = "Reset!" }
-		end
-		
-		-- Add the mult stuff
-		if math.floor(G.GAME.chips / G.GAME.blind.chips) ~= 1 then
-			local _count = math.floor(G.GAME.chips / G.GAME.blind.chips)-1
-			
-			-- ...what?
-			if (to_number(_count) < 0) then 
-				card:juice_up(1,1)
-				print("Attempted to set Sophie to negative value: ".._count)
-				return {
-					message = "...what?"
-				}
-			end
-			
-			local _mult = _count * card.ability.extra.mult_mod
-			
-			card.ability.extra.mult = card.ability.extra.mult + _mult
-			
+	-- Add the mult stuff
+	if context.after and SMODS.last_hand_oneshot and not context.blueprint then
+		G.E_MANAGER:add_event(Event({func = function()
+			card.ability.extra.charges = card.ability.extra.charges+1
 			card:juice_up(.1,.1)
-			
-			return {
-				message = localize { type = 'variable', key = 'a_mult', vars = { _mult } }
-			}
-		end
+			SMODS.calculate_effect({ message = localize{ type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult_mod } } }, card)
+		return true end }))
 	end
 	
-	if context.joker_main then
-		if card.ability.extra.mult ~= 0 then
-			return {
-				mult_mod = card.ability.extra.mult,
-				message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
-			}
-		end
+	if context.joker_main and card.ability.extra.active then
+		local _mult = card.ability.extra.mult_mod * card.ability.extra.charges
+		card.ability.extra.upgr = card.ability.extra.upgr or (card.ability.extra.charges >= card.ability.extra.req)
+		G.E_MANAGER:add_event(Event({func = function()
+			card:juice_up(.1,.1)
+			card.ability.extra.charges = 0
+			card.ability.extra.active = false
+		return true end }))
+		return { mult = _mult }
 	end
 end
 
-sophie.elle_upgrade = {
+sophie.slime_active = {
+	calculate = function(self, card)
+		card.ability.extra.active = true
+		
+		G.E_MANAGER:add_event(Event({func = function()
+			card:juice_up(.4,.4)
+			SMODS.calculate_effect({ message = localize("elle_joker_activate") }, card)
+			juice_card_until(card, function() return not G.RESET_JIGGLES and card.ability.extra.active end, true)
+		return true end }))
+	end,
+	can_use = function(self, card) return card.ability.extra.charges > 0 and G.STATE == G.STATES.SELECTING_HAND and not card.ability.extra.active end,
+	should_close = function(self, card) return true end
+}
+
+sophie.slime_upgrade = {
 	card = "j_elle_fallen",
-	values = function(self, card) return { mult = to_big(card.ability.extra.mult)/to_big(card.ability.extra.mult_mod) } end,
-	can_use = function(self, card) return to_big(card.ability.extra.mult) >= to_big(card.ability.extra.req) end,
-	loc_vars = function(self, card) return { card.ability.extra.req } end
+	values = function(self, card) return { charges = card.ability.extra.charges } end,
+	can_use = function(self, card) return card.ability.extra.upgr end,
+	loc_vars = function(self, card) return { card.ability.extra.req, card.ability.extra.charges } end
 }
 

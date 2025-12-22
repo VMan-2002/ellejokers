@@ -1,6 +1,6 @@
 local obsidian = SMODS.Joker {
 	key = 'obsidian',
-	set_badges = function(self, card, badges) badges[#badges+1] = elle_badges.mc() end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { xmult = 2 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }

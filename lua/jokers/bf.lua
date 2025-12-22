@@ -28,7 +28,7 @@ bf.calculate = function(self, card, context)
 	end
 end
 
-bf.elle_active = {
+bf.slime_active = {
 	calculate = function(self, card)
 		if photochadfunkin and photochadfunkin.options then
 			photochadfunkin.jokerEdition = card.edition and card.edition.type

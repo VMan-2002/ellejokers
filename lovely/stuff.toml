@@ -3,6 +3,7 @@ version = "0.1.0"
 dump_lua = true
 priority = 0
 
+# Add Spearlamp info_queue messages to steel & slime cards
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -16,34 +17,29 @@ if (card) then
 		if (_c.key == "m_steel") then info_queue[#info_queue+1] = G.P_CENTERS.m_elle_slime end
 		if (_c.key == "m_elle_slime") then info_queue[#info_queue+1] = G.P_CENTERS.m_steel end
 	end
-
-	-- Upgrade support
-	if (_c.elle_upgrade and _c.discovered) then
-		--		[[ Upgrade Requirements ]]
-		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_".._c.key, specific_vars = (_c.elle_upgrade.loc_vars and _c.elle_upgrade:loc_vars(card) or {}) }
-		
-		--		[[ Upgrade Preview ]]
-		local upgrade_center = SMODS.shallow_copy(G.P_CENTERS[_c.elle_upgrade.card]) -- Upgrade target
-		
-		-- Upgrade variable stuff
-		if (not upgrade_center.unlocked) then										-- Locked
-			upgrade_center = {set = "Other", key = "elle_upgr_locked"}
-		elseif (not upgrade_center.discovered) then									-- Not Discoverd
-			upgrade_center = {set = "Other", key = "elle_upgr_not_discovered"}
-		else																		-- Unlocked
-			upgrade_center.config = copy_table(upgrade_center.config) -- OG vars
-			local upgrade_vars = _c.elle_upgrade.values and _c.elle_upgrade:values(card) or {}
-			for k, v in pairs(upgrade_vars) do
-				upgrade_center.config.extra[k] = v
-			end
-			
-			-- Use correct localization
-			local upgrade_loc_values = upgrade_center:loc_vars({}, {ability = upgrade_center.config, config = {center = upgrade_center}}).vars
-			upgrade_center.loc_vars = function() return {vars = upgrade_loc_values} end
-		end
-
-		info_queue[#info_queue+1] = upgrade_center
-	end
 end
 '''
 match_indent = true
+
+# Fix Card:load()
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.VT.h = self.T.H'''
+position = "at"
+payload = '''self.VT.h = self.T.h'''
+match_indent = true
+
+# Fix SMODS incorrect challenge saving
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = '''G.challenge_tab = G.GAME and G.GAME.challenge and G.GAME.challenge_tab or nil'''
+position = "after"
+payload = '''
+if type(G.challenge_tab) == "string" and G.GAME and G.GAME.challenge then
+    G.challenge_tab = G.CHALLENGES[get_challenge_int_from_id(G.GAME.challenge or '') or ''] or {name = 'ERROR'}
+end
+'''
+match_indent = true
+overwrite = false

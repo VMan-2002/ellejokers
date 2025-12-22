@@ -28,7 +28,7 @@ nitro.calculate = function(self, card, context)
 	end
 end
 
-nitro.elle_active = {
+nitro.slime_active = {
 	calculate = function(self, card)
 		ease_dollars(-card.ability.extra.cost)
 		card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod

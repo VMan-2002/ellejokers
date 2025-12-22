@@ -1,0 +1,52 @@
+[manifest]
+version = "0.1.0"
+dump_lua = true
+priority = 0
+
+# Skip Shop modifier
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.STATE = G.STATES.SHOP'''
+position = "after"
+payload = '''
+-- ellejokers. - Shopless challenge modifier
+if (G.GAME.modifiers.elle_no_shop) then
+	-- Maintain HotPotato events for compat :3
+	if (hpot_event_can_appear and G.STATES.HOTPOT_EVENT_SELECT and hpot_event_can_appear(G.GAME.round_resets.blind)) then G.STATE = G.STATES.HOTPOT_EVENT_SELECT
+	-- TheEncounter compat (hotpot events but separate)
+	elseif (TheEncounter and G.STATES.ENC_EVENT_SELECT and TheEncounter.should_encounter({ after = "cashout", blind = G.GAME.round_resets.blind })) then G.STATE = G.STATES.ENC_EVENT_SELECT
+	-- Go back to blind
+	else G.STATE = G.STATES.BLIND_SELECT end
+end
+'''
+match_indent = true
+
+# Booster stuff, copy-pasted from JoyousSpring
+# https://github.com/nh6574/JoyousSpring/blob/48423d78db5e2a6f16a471d1211d2457b370d413/lovely/states.toml#L80
+
+# Prevent booster in booster softlock
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end '''
+position = "at"
+payload = '''
+if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED then
+    if card.ability.set == 'Booster' then G.GAME.PACK_INTERRUPT = G.STATE end
+end
+'''
+match_indent = true
+
+# Open booster in a round (not used yet but it's nice so I'm keeping it just in case)
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.FUNCS.draw_from_hand_to_deck()'''
+position = "at"
+payload = '''
+if G.GAME.PACK_INTERRUPT ~= G.STATES.SELECTING_HAND then
+    G.FUNCS.draw_from_hand_to_deck()
+end
+'''
+match_indent = true

@@ -40,10 +40,10 @@ return {
 			j_elle_sophie = {
 				name = 'Sophie',
 				text = {
-					"{C:mult}+#1#{} Mult per {C:attention}overscored",
-					"{C:attention}multiple{} of {C:attention}Blind Size{}",
-					"{C:green}#3#{} in {C:green}#4#{} chance to",
-					"{C:red}reset{} instead",
+					"{C:attention}Stores{} {C:mult}+#1#{} Mult if",
+					"score {C:attention}catches on fire",
+					"Use to {C:attention}release{} stored",
+					"Mult and {C:attention}reset",
 					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 					caption.."Could do no wrong...?"
 				},
@@ -55,18 +55,19 @@ return {
 			j_elle_fallen = {
 				name = 'Fallen Angel',
 				text = {
-					"{C:mult}+#1#{} Mult per {C:attention}overscored",
-					"{C:attention}multiple{} of {C:attention}Blind Size{}",
-					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					"{C:attention}Stores{} {X:mult,C:white}X#1#{} Mult if",
+					"score {C:attention}catches on fire",
+					"Use to {C:attention}release{} stored",
+					"Mult and {C:attention}reset",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					caption.."\"It burns so good~\""
-				},
-				unlock = { "Upgrade {C:attention}Sophie" }
+				}
 			},
 			j_elle_sarah = {
 				name = 'Sarah',
 				text = {
 					"Scoring {C:clubs}Clubs{} have a",
-					"{C:green}#1#{} in {C:green}#2#{} chance to",
+					"{C:green}#1# in #2#{} chance to",
 					"retrigger once",
 					caption.."Keeping things working"
 				}
@@ -77,7 +78,12 @@ return {
 					"Played cards with",
 					"{C:clubs}Club{} suit give",
 					"{X:mult,C:white}X#1#{} Mult when scored",
-					caption.."...what is wrong with you?"
+					caption..'"She looks better like this."',
+					caption..'"...Happier, even~"'
+				},
+				unlock = {
+					"Make a {C:red}grave",
+					"{C:red}mistake"
 				}
 			},
 			j_elle_spearmintprog = {
@@ -107,6 +113,52 @@ return {
 				text = {
 					"{C:attention}Slime cards{} are",
 					"guaranteed to trigger"
+				}
+			},
+			j_elle_bea = {
+				name = 'Bea',
+				text = {
+					"Played {C:attention}cards{} permanently",
+					"gain {C:mult}+#1#{} Mult when scored",
+					"if played hand is a {C:attention}#2#{},",
+					"poker hand changes at",
+					"end of round"
+				}
+			},
+			j_elle_rebecca = {
+				name = 'Rebecca',
+				text = {
+					"Go to a separate {C:attention}Shop",
+					"{C:attention}Restocks{} at end of Ante"
+				}
+			},
+			j_elle_cassie = {
+				name = 'Cassie',
+				text = {
+					"Gains {C:mult}+#1#{} Mult",
+					"at {C:attention}end of round",
+					"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
+					caption.."Looking for her sister..."
+				}
+			},
+			j_elle_cassie2 = {
+				name = '...',
+				text = {
+					caption..'"You really kept it?',
+					caption..'No amount of magic will',
+					caption..'bring her back, you know?"'
+				},
+				unlock = {
+					"Make a {C:red}grave",
+					"{C:red}mistake"
+				}
+			},
+			j_elle_p41 = {
+				name = 'Prototype #1#41',
+				text = {
+					"If scoring hand contains",
+					"an {C:attention}Ace{} and {C:attention}4{}, retrigger",
+					"a random other {C:attention}Joker"
 				}
 			},
 			
@@ -261,49 +313,113 @@ return {
 				}
 			},
 		},
+		Tarot = {
+			c_elle_resident = {
+				name = "Resident",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into a",
+					"{C:attention}Slime Card"
+				}
+			}
+		},
+		Enhanced = {
+			m_elle_slime = {
+				name = "Slime Card",
+				text = {
+					"{C:green}#1# in #2#{} Chance to",
+					"retrigger {C:attention}#3#{} times"
+				}
+			}
+		},
 		Other = {
-			elle_upgr_locked = {
-				name = 'Locked',
+			elle_rebecca_challenge = {
+				name = "Warning!",
 				text = {
-					"Unlock this card",
-					"to upgrade"
+					"Rebecca's shop contents may",
+					"{C:red}not save{} when closing the game",
+					"This is only in {C:red}challenge runs",
+					"and is likely a SMODS issue"
 				}
 			},
-			elle_upgr_not_discovered = {
-				name = 'Not Discovered',
-				text = {
-					"Upgrade this card or",
-					"discover the upgrade",
-					"card to learn what",
-					"it upgrades into"
-				}
-			},
-			elle_upgr_j_elle_chloe = {
+			
+			slime_upgr_j_elle_chloe = {
 				name = 'Upgrade..?',
 				text = {
 					"Discard {C:attention}#1#{C:inactive}[#2#]{}",
 					"{C:attention}face{} cards"
 				}
 			},
-			elle_upgr_j_elle_furry = {
+			slime_upgr_j_elle_furry = {
 				name = 'Upgrade',
 				text = {
-					"Destroy {C:attention}#1#{C:inactive}[#2#]{} cards",
-					"and have {C:attention}Sarah{}"
+					"Have {C:red}Sarah{}",
+					"and {C:red}Cassie{}"
 				}
 			},
-			elle_upgr_j_elle_sophie = {
+			slime_upgr_j_elle_sophie = {
 				name = 'Upgrade',
 				text = {
-					"Reach {C:mult}+#1#{} Mult"
+					"{C:attention}Release{} at least {C:attention}#1#{C:inactive}[#2#]",
+					"rounds of Mult",
+					"at once"
 				}
 			},
-			elle_upgr_j_elle_sarah = {
+			slime_upgr_j_elle_sarah = {
 				name = 'Upgrade..?',
 				text = {
-					"Trigger {C:attention}#1#{C:inactive}[#2#]{} times"
+					"Make a {C:red}grave",
+					"{C:red}mistake"
+				}
+			},
+			
+			elle_upgr_no_shop = {
+				name = 'Upgrade Only',
+				text = {
+					"This joker can only",
+					"be obtained through",
+					"{C:attention}Upgrading"
 				}
 			}
+		},
+		Tag = {
+            tag_elle_rebecca={
+                name="Café Tag",
+                text={
+                    "Restocks",
+                    "{C:attention}Rebecca{}'s Shop"
+                }
+            }
+		},
+		Passives = {
+			psv_elle_familiar = {
+				name = "Familiar Face",
+				description = {
+					"{C:attention}Mall{} Jokers are debuffed"
+				}
+			}
+		}
+	},
+	misc = {
+		dictionary = {
+			elle_joker_open = "OPEN",
+			elle_joker_activate = "ACTIVE",
+			
+			elle_rebecca_title1 = "Rebecca's Store",
+			elle_rebecca_title2 = "(Formerly Slime Café)",
+			elle_rebecca_booster = "BOOSTER PACK",
+			elle_rebecca_joker = "JOKERS",
+			elle_rebecca_consumable = "CONSUMABLES",
+			elle_rebecca_reroll = "Reroll All",
+			elle_rebecca_restock = "Restocked!"
+		},
+		challenge_names = {
+			c_elle_cafe_frequent = "Café Frequent",
+			c_elle_forcefem = "Forcefem!",
+			c_elle_shopless = "Shopless"
+		},
+		v_text = {
+			ch_c_elle_no_shop = { "Shop is {C:attention}skipped{} at end of round" }
 		}
 	}
 }

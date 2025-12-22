@@ -35,12 +35,16 @@
 
 --		[[ File List ]]
 local files = {
-	"j_buttons",
 	"skins",
+	"consumables",
 	"misc",
 	"http",
-	"fnf/fnf_main"
+	"fnf/fnf_main",
+	"challenges"
 }
+
+-- Only add LobCorp's blindexpander if the mod isn't present
+files[#files+1] = next(SMODS.find_mod("LobotomyCorp")) and nil or "blindexpander"
 
 --		[[ Joker List ]]
 -- Comment out jokers you want to disable
@@ -57,6 +61,11 @@ local jokers = {
 	--"spearmint",
 	"spearlamp",
 	"marie",
+	"bea",
+	"rebecca",
+	"cassie",
+	"cassie_stasis",
+	"41",
 	
 			-- Jess's Minecraft Idea
 	"waterbucketrelease/cobble_gen",
@@ -80,36 +89,52 @@ local jokers = {
 	"elle"
 }
 
+local blinds = {"cassie_39"}
+
 --		[[ Atlases ]]
 SMODS.Atlas {
 	key = "jokers",
 	path = "jokers.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "animated",
 	path = "animated.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "legendary",
 	path = "legendary.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "consumables",
 	path = "consumables.png",
 	px = 71,
-	py = 95,
+	py = 95
 }
 SMODS.Atlas {
 	key = "enhancers",
 	path = "enhancers.png",
 	px = 71,
-	py = 95,
+	py = 95
+}
+SMODS.Atlas {
+	key = "tag",
+	path = "tags.png",
+	px = 34,
+	py = 34
+}
+SMODS.Atlas {
+	key = "blinds",
+	path = "blinds.png",
+	px = 34,
+	py = 34,
+	atlas_table = 'ANIMATION_ATLAS',
+	frames = 21
 }
 
 --		[[ Sounds ]]
@@ -137,44 +162,23 @@ caption = '{C:elle,s:0.7,E:1}'
 
 -- Badges
 elle_badges = {
-	["mall"] =		function() return create_badge("The Mall", HEX('B7A2FD'), G.C.WHITE, 0.8 ) end,
-	["oc"] =		function() return create_badge("ellestuff.", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
-	["friends"] =	function() return create_badge("Friends of Elle", HEX('FF53A9'), G.C.WHITE, 0.8 ) end,
-	["toby"] =		function() return create_badge("Toby Fox", HEX('FF0000'), G.C.WHITE, 0.8 ) end,
-	["mc"] =		function() return create_badge("Minecraft", HEX('FF005F'), G.C.WHITE, 0.8 ) end
+	["mall"] = {
+		text = "The Mall",
+		colour = HEX('b7a2fd')
+	},
+	["oc"] = {
+		text = "ellestuff.",
+		colour = HEX('ff53a9')
+	},
+	["friends"] = {
+		text = "Friends of Elle",
+		colour = HEX('ff53a9')
+	},
+	["mc"] = {
+		text = "Minecraft",
+		colour = HEX('ff005f')
+	},
 }
-
-function transform_joker(card, joker, vars, instant)
-	vars = vars or {}
-	instant = instant or false
-	
-	G.E_MANAGER:add_event(Event({
-		trigger = "after",
-		delay = .1,
-		func = function()
-			if not instant then
-				card:flip()
-				delay(.5)
-				play_sound('tarot1')
-				card:juice_up(.8,.8)
-			end
-			
-			-- Change joker
-			if Cryptid ~= nil then card:set_ability(G.P_CENTERS[joker], true, nil)
-			else card:set_ability(joker) end
-			card:set_cost() -- Update cost
-			
-			-- Carry over values from old joker if u want
-			for i,v in pairs(vars) do
-				card.ability.extra[i] = v
-			end
-			card:set_cost() -- Update cost again bc of stuff like Cobblestone
-			
-			if not instant then card:flip() end
-			return true
-		end
-	}))
-end
 
 -- Cryptid/Talisman Compatibility functions
 to_big = to_big or function(x) return x end
@@ -219,4 +223,8 @@ end
 
 for i, v in ipairs(jokers) do
 	assert(SMODS.load_file("lua/jokers/"..v..".lua"))()
+end
+
+for i, v in ipairs(blinds) do
+	assert(SMODS.load_file("lua/blinds/"..v..".lua"))()
 end

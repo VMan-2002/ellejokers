@@ -1,3 +1,6 @@
+-- Text Prefix Shortcuts
+local caption = '{C:elle,s:0.7,E:1}'
+
 return {
 	descriptions = {
 		Joker = {
@@ -66,9 +69,9 @@ return {
 			j_elle_sarah = {
 				name = 'Sarah',
 				text = {
-					"Scoring {C:clubs}Clubs{} have a",
-					"{C:green}#1# in #2#{} chance to",
-					"retrigger once",
+					"Scoring {C:clubs}Clubs",
+					"retrigger one",
+					"additional time",
 					caption.."Keeping things working"
 				}
 			},
@@ -111,7 +114,8 @@ return {
 			j_elle_marie = {
 				name = 'Marie',
 				text = {
-					"{C:attention}Slime cards{} are",
+					"{C:attention}Slime cards{} give",
+					"{C:mult}+#1#{} Mult and are",
 					"guaranteed to trigger"
 				}
 			},
@@ -129,7 +133,7 @@ return {
 				name = 'Rebecca',
 				text = {
 					"Go to a separate {C:attention}Shop",
-					"{C:attention}Restocks{} at end of Ante"
+					"{C:inactive}(Restocks at end of Ante)"
 				}
 			},
 			j_elle_cassie = {
@@ -153,12 +157,33 @@ return {
 					"{C:red}mistake"
 				}
 			},
+			j_elle_not_cassie = {
+				name = 'Prototype #1#39',
+				text = {
+					"Held hand is scored",
+					"{C:attention}before{} played hand",
+					caption..'"I\'m sorry..."'
+				},
+				unlock = {
+					"Beat {C:attention}???",
+					"Boss Blind"
+				}
+			},
 			j_elle_p41 = {
 				name = 'Prototype #1#41',
 				text = {
-					"If scoring hand contains",
-					"an {C:attention}Ace{} and {C:attention}4{}, retrigger",
-					"a random other {C:attention}Joker"
+					"If played hand contains",
+					"an {C:attention}Ace{} and {C:attention}4{},",
+					"Copy abilities of",
+					"neighbouring {C:attention}Jokers",
+					caption.."Protected innocence..."
+				}
+			},
+			j_elle_discarded = {
+				name = 'Discarded Prototypes',
+				text = {
+					"{C:attention}Debuffed{} cards give",
+					"{C:money}$#1#{} when discarded"
 				}
 			},
 			
@@ -185,6 +210,14 @@ return {
 					"if played hand contains",
 					"a {C:attention}Full House",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+				}
+			},
+			j_elle_spamton = {
+				name = '[[{V:1}BIG {V:2}SHOP{}]]',
+				text = {
+					"* ENTER MY {C:attention}[[Home-made",
+					"{C:attention}Storefront Site]]",
+					"{C:inactive}(Restocks at end of Ante)"
 				}
 			},
 			j_elle_polyamory = {
@@ -239,9 +272,25 @@ return {
 					caption..'"I have a suggestion."'
 				}
 			},
+			j_elle_diamond_pickaxe = {
+				name = "Diamond Pickaxe",
+				text = {
+					"{C:attention}Eternal{} Jokers can be sold",
+					"by {C:attention}paying{} {C:white,X:money}X#1#{} the sell cost"
+				}
+			},
 			
 			-- Jess's Minecraft Idea
 			j_elle_cobble_gen = {
+				name = 'Cobblestone Generator',
+				text = {
+					"When blind selected, turn Joker",
+					"to the left into {C:attention}Cobblestone",
+					"{C:green}#1# in #2#{} chance to turn itself",
+					"into an {C:attention}Eternal Obsidian{} instead"
+				}
+			},
+			j_elle_cobble_gen_old = {
 				name = 'Cobblestone Generator',
 				text = {
 					"{C:attention}Sell{} this Joker to create",
@@ -252,7 +301,6 @@ return {
 			j_elle_water_bucket = {
 				name = 'Water Bucket',
 				text = {
-					"{C:chips}+#1#{} Chips",
 					"When blind selected,",
 					"if there is a single Joker",
 					"between this and {C:attention}Lava Bucket{},",
@@ -279,6 +327,15 @@ return {
 				name = 'Obsidian',
 				text = {
 					"{X:mult,C:white}X#1#{} Mult"
+				}
+			},
+			j_elle_jess = {
+				name = 'Jess',
+				text = {
+					"{C:attention}Held{} Jess cards count",
+					"towards Jess {C:attention}retriggers",
+					"Turn {C:attention}#1#{} played cards into",
+					"{C:attention}Jess{} cards before scoring"
 				}
 			},
 			
@@ -318,8 +375,16 @@ return {
 				name = "Resident",
 				text = {
 					"Enhances {C:attention}#1#{} selected",
-					"cards into a",
-					"{C:attention}Slime Card"
+					"cards into",
+					"{C:attention}Slime Cards"
+				}
+			},
+			c_elle_jess = {
+				name = "Jess",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into",
+					"{C:attention}Jess Cards"
 				}
 			}
 		},
@@ -330,19 +395,21 @@ return {
 					"{C:green}#1# in #2#{} Chance to",
 					"retrigger {C:attention}#3#{} times"
 				}
+			},
+			m_elle_jess = {
+				name = "Jess Card",
+				text = {
+					"{C:chips}+#1#{} Chips",
+					"Retriggers once",
+					"per other",
+					"scoring Jess card",
+					"Counts as a",
+					"face card",
+					"no rank or suit"
+				}
 			}
 		},
 		Other = {
-			elle_rebecca_challenge = {
-				name = "Warning!",
-				text = {
-					"Rebecca's shop contents may",
-					"{C:red}not save{} when closing the game",
-					"This is only in {C:red}challenge runs",
-					"and is likely a SMODS issue"
-				}
-			},
-			
 			slime_upgr_j_elle_chloe = {
 				name = 'Upgrade..?',
 				text = {
@@ -354,7 +421,7 @@ return {
 				name = 'Upgrade',
 				text = {
 					"Have {C:red}Sarah{}",
-					"and {C:red}Cassie{}"
+					"or {C:red}Cassie{}"
 				}
 			},
 			slime_upgr_j_elle_sophie = {
@@ -380,6 +447,16 @@ return {
 					"be obtained through",
 					"{C:attention}Upgrading"
 				}
+			},
+			
+			elle_protected = {
+				name = 'Protected',
+				text = {
+					"Instantly {C:red}lose{} the",
+					"run when this",
+					"card is {C:attention}changed{},",
+					"{C:attention}sold{}, or {C:attention}destroyed"
+				}
 			}
 		},
 		Tag = {
@@ -390,6 +467,23 @@ return {
                     "{C:attention}Rebecca{}'s Shop"
                 }
             }
+		},
+		Voucher = {
+			v_elle_mixup = {
+				name = "Mix-up",
+				text={
+					"{C:common}Common{}, {C:uncommon}Uncommon{}, and",
+					"{C:rare}Rare{} Jokers are {C:attention}equally",
+					"{C:attention}likely{} to appear"
+				}
+			},
+			v_elle_breakthrough = {
+				name = "Breakthrough",
+				text={
+					"{C:legendary}Legendary{} Jokers can",
+					"appear in {C:attention}Shop"
+				}
+			}
 		},
 		Passives = {
 			psv_elle_familiar = {
@@ -411,15 +505,24 @@ return {
 			elle_rebecca_joker = "JOKERS",
 			elle_rebecca_consumable = "CONSUMABLES",
 			elle_rebecca_reroll = "Reroll All",
-			elle_rebecca_restock = "Restocked!"
+			elle_shop_restock = "Restocked!",
+			
+			elle_41_activate = "Yeah~!"
 		},
 		challenge_names = {
 			c_elle_cafe_frequent = "Café Frequent",
-			c_elle_forcefem = "Forcefem!",
-			c_elle_shopless = "Shopless"
+			c_elle_spamton = "[[Number 1 Rated]]",
+			c_elle_shopless = "Shopless",
+			c_elle_cobbled = "Cobbled",
+			c_elle_pay2play = "Pay 2 Play"
 		},
 		v_text = {
-			ch_c_elle_no_shop = { "Shop is {C:attention}skipped{} at end of round" }
+			ch_c_elle_no_shop = { "Shop is {C:attention}skipped{} at end of round" },
+			ch_c_elle_not_all = { "Instantly {C:attention}lose{} the run if initial scoring hand is only {C:attention}#1#s" },
+			ch_c_elle_untested = { "{C:inactive}This challenge has not been tested and may be {C:red}impossible" }
+		},
+		labels = {
+			elle_protected="Protected"
 		}
 	}
 }

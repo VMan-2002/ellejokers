@@ -10,7 +10,6 @@
 --- SMODS.Blind.defeat(self) is called on the current blind if it has a summon
 --- If passive description is too long, changing how it is formatted instead of changing UIBox width is preferred
 
-to_big = to_big or function(x) return x end
 local BLINDEXPANDER_VERSION = 101000
 
 local function startup()

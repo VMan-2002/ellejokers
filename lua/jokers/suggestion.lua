@@ -10,7 +10,7 @@ local suggestion = SMODS.Joker {
 }
 
 suggestion.calculate = function(self, card, context)
-	if context.before and not context.blueprint then
+	if context.after and not context.blueprint then
 		local faces = 0
 		for _, scored_card in ipairs(context.scoring_hand) do
 			if scored_card:is_face() and scored_card:get_id() ~= 12 then

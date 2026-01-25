@@ -1,4 +1,3 @@
---		[[ Consumables ]]
 -- Upgrade (Spectral)
 --[[
 SMODS.Consumable {
@@ -75,39 +74,20 @@ SMODS.Consumable {
 	end
 }
 
-
---		[[ Enhancements/Editions ]]
--- Slime Enhancement
-SMODS.Enhancement {
-	key = 'slime',
-	atlas = 'enhancers',
-	pos = { x = 0, y = 0 },
-	config = { extra = { odds = 3, retriggers = 2 } },
+-- Jess (Tarot)
+SMODS.Consumable {
+	key = 'jess',
+	set = 'Tarot',
+	cost = 4,
+	atlas = 'consumables',
+	pos = { x = 2, y = 0 },
+	config = { extra = { }, max_highlighted = 2, mod_conv = "m_elle_jess" },
 	loc_vars = function(self, info_queue, card)
-		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_slime_card')
-		return { vars = { numerator, denominator, card.ability.extra.retriggers } }
-	end,
-	calculate = function(self, card, context)
-		if context.repetition and SMODS.pseudorandom_probability(card, 'elle_slime_card', 1, card.ability.extra.odds) then
-			return {
-				message = localize('k_again_ex'),
-				repetitions = card.ability.extra.retriggers
-			}
-		end
+		info_queue[#info_queue+1] = G.P_CENTERS.m_elle_jess
+		return { vars = { card.ability.max_highlighted } }
 	end
-	
-		--[[if context.discard and context.other_card == card then
-			G.E_MANAGER:add_event(Event({
-				trigger = 'before',
-				delay = 0.0,
-				func = (function()
-					card:start_dissolve({HEX("FF53A9")}, nil, 1.6)
-					return true
-				end)}))
-			return {remove = true}
-		end
-	end]]
 }
+
 
 --		[[ MoreFluff Stuff ]]
 --	colour card crashes game :(

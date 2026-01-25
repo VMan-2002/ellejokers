@@ -11,7 +11,32 @@ pattern = '''G.STATE = G.STATES.SHOP'''
 position = "after"
 payload = '''
 -- ellejokers. - Shopless challenge modifier
-if (G.GAME.modifiers.elle_no_shop) then
+if (G.GAME.modifiers.elle_no_shop or ellejokers.skip_shop) then
+	-- Stocking Stuffer stuff(er)
+	G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		func = function()
+			if G.GAME.stocking_last_pack and G.GAME.round_resets.ante > G.GAME.stocking_last_pack then
+				G.GAME.stocking_last_pack = G.GAME.round_resets.ante
+				if not G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed then
+					G.PROFILES[G.SETTINGS.profile].stocking_stuffer_completed = true
+					local sprite = SMODS.create_sprite(0,0, 3*(231/117), 3, 'stocking_logo', {x=0,y=0})
+					PotatoPatchUtils.INFO_MENU.create_menu{menu_type = 'stocking_stuffer', outline_colour = G.C.RED, colour = HEX("22A617"), page_colour = HEX("22A617"), no_first_time = true, image = sprite, vars = {StockingStuffer.Developers.internal_count}}
+				end
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					func = function()
+						if G.STATE_COMPLETE and not G.OVERLAY_MENU then
+							local card = SMODS.add_card({area = G.play, key = 'p_stocking_present_select', skip_materialize = true})
+							card.cost = 0
+							G.FUNCS.use_card({ config = { ref_table = card } })
+							return true
+						end
+					end
+				}))
+			end
+	return true end}))
+	
 	-- Maintain HotPotato events for compat :3
 	if (hpot_event_can_appear and G.STATES.HOTPOT_EVENT_SELECT and hpot_event_can_appear(G.GAME.round_resets.blind)) then G.STATE = G.STATES.HOTPOT_EVENT_SELECT
 	-- TheEncounter compat (hotpot events but separate)
@@ -22,7 +47,7 @@ end
 '''
 match_indent = true
 
-# Booster stuff, copy-pasted from JoyousSpring
+# Booster stuff, copy-pasted with permission from JoyousSpring
 # https://github.com/nh6574/JoyousSpring/blob/48423d78db5e2a6f16a471d1211d2457b370d413/lovely/states.toml#L80
 
 # Prevent booster in booster softlock

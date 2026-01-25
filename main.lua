@@ -33,6 +33,9 @@
 --		- MoreFluff
 --			- Custom Colour card crashes game on round end
 
+ellejokers = {
+}
+
 --		[[ File List ]]
 local files = {
 	"skins",
@@ -40,7 +43,9 @@ local files = {
 	"misc",
 	"http",
 	"fnf/fnf_main",
-	"challenges"
+	"challenges",
+	"popup_shop",
+	"enhancements"
 }
 
 -- Only add LobCorp's blindexpander if the mod isn't present
@@ -65,7 +70,9 @@ local jokers = {
 	"rebecca",
 	"cassie",
 	"cassie_stasis",
+	--"not_cassie",
 	"41",
+	"discarded",
 	
 			-- Jess's Minecraft Idea
 	"waterbucketrelease/cobble_gen",
@@ -78,11 +85,14 @@ local jokers = {
 	"drago",
 	"vivian",
 	"carpet",
+	"spamton",
 	"polyamory",
 	"bf",
 	"nitro",
 	"eraser",
 	"suggestion",
+	"diamond_pickaxe",
+	"jess",
 	
 			-- Legendaries
 	"twy",
@@ -92,6 +102,12 @@ local jokers = {
 local blinds = {"cassie_39"}
 
 --		[[ Atlases ]]
+SMODS.Atlas{
+    key = "modicon",
+    path = "modicon.png",
+    px = 34,
+    py = 34,
+}
 SMODS.Atlas {
 	key = "jokers",
 	path = "jokers.png",
@@ -123,6 +139,18 @@ SMODS.Atlas {
 	py = 95
 }
 SMODS.Atlas {
+	key = "vouchers",
+	path = "vouchers.png",
+	px = 71,
+	py = 95
+}
+SMODS.Atlas {
+	key = "stickers",
+	path = "stickers.png",
+	px = 71,
+	py = 95
+}
+SMODS.Atlas {
 	key = "tag",
 	path = "tags.png",
 	px = 34,
@@ -146,6 +174,15 @@ SMODS.Sound {
 	key = "fizz",
 	path = "fizz.ogg"
 }
+SMODS.Sound {
+	key = "music_spamton",
+	path = "music_spamton.ogg",
+	sync = false,
+	select_music_track = function()
+		return G.GAME.elle_popup_shop_open == "spamton"
+	end,
+	pitch = 1
+}
 
 --		[[ Config / Optional Features ]]
 -- Optional Features
@@ -156,9 +193,6 @@ end
 -- Text Colours
 loc_colour('red')
 G.ARGS.LOC_COLOURS['elle'] = HEX('FF53A9')
-
--- Text Prefix Shortcuts
-caption = '{C:elle,s:0.7,E:1}'
 
 -- Badges
 elle_badges = {
@@ -184,7 +218,7 @@ elle_badges = {
 to_big = to_big or function(x) return x end
 to_number = to_number or function(x) return x end
 
--- Add spearmint animations
+-- Add joker animations
 local upd = Game.update
 anim_elle_spearmint_dt = 0
 anim_elle_spearmint_f = 0
@@ -227,4 +261,8 @@ end
 
 for i, v in ipairs(blinds) do
 	assert(SMODS.load_file("lua/blinds/"..v..".lua"))()
+end
+
+SMODS.current_mod.calculate = function(self,context)
+	elle_challenge_mod_calc(self,context)
 end

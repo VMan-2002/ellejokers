@@ -30,11 +30,13 @@ sophie.calculate = function(self, card, context)
 	if context.joker_main and card.ability.extra.active then
 		local _mult = card.ability.extra.mult_mod * card.ability.extra.charges
 		card.ability.extra.upgr = card.ability.extra.upgr or (card.ability.extra.charges >= card.ability.extra.req)
+		
 		G.E_MANAGER:add_event(Event({func = function()
 			card:juice_up(.1,.1)
 			card.ability.extra.charges = 0
 			card.ability.extra.active = false
 		return true end }))
+		
 		return { mult = _mult }
 	end
 end

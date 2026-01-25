@@ -1,0 +1,10 @@
+{
+	"githubPath": "ellestuff/ellejokers",
+	"relations": [
+		{
+			"id": "slime_utils",
+			"githubPath": "ellestuff/slimeutils",
+			"type": "required"
+		}
+	]
+}

@@ -510,6 +510,16 @@ return {
 					"discarding blinds"
 				},
 			}
+		},
+		TopUpLib_Music = {
+			elle_music_spamton = {
+				name = "Dialtone",
+				text = {
+					"In {C:attention}Spamton's Shop{}",
+					"By Toby Fox"
+				},
+				center = "j_elle_spamton"
+			}
 		}
 	},
 	misc = {

@@ -15,9 +15,5 @@ local jessclip = SMODS.Joker {
 	pos = { x = 2, y = 5 },
 	cost = 6,
 	blueprint_compat = false,
-	enhancement_gate = 'm_elle_jess',
-	slime_desc_icon = {
-		atlas = "elle_cornericons",
-		pos = {x=1,y=0}
-	}
+	enhancement_gate = 'm_elle_jess'
 }

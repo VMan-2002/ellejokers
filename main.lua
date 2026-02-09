@@ -292,10 +292,6 @@ elle_badges = {
 	}
 }
 
--- Cryptid/Talisman Compatibility functions
-to_big = to_big or function(x) return x end
-to_number = to_number or function(x) return x end
-
 -- Add joker animations
 local upd = Game.update
 anim_elle_spearmint_dt = 0
@@ -356,24 +352,26 @@ SMODS.Shader {
 	path = "pixelated.fs"
 }
 
-local w,h = love.graphics.getDimensions()
-SMODS.ScreenShader {
-	key = "pixelated",
-	shader = "elle_pixelated", --modprefix is necessary, this now refers to the same shader defined above
+if SMODS.ScreenShader then
+	local w,h = love.graphics.getDimensions()
+	SMODS.ScreenShader {
+		key = "pixelated",
+		shader = "elle_pixelated", --modprefix is necessary, this now refers to the same shader defined above
 
-	send_vars = function (self)
-		local p = ellejokers.palettes[ellejokers.mod_data.config.pixel_shader.palette]
-		return {
-			palette = p.image,
-			paletteSize = p.dims,
-			dims = {w/2,h/2}
-		}
-	end,
-	should_apply = function(self)
-		return ellejokers.mod_data.config.pixel_shader.enabled
-	end,
-	order = 1
-}
+		send_vars = function (self)
+			local p = ellejokers.palettes[ellejokers.mod_data.config.pixel_shader.palette]
+			return {
+				palette = p.image,
+				paletteSize = p.dims,
+				dims = {w/2,h/2}
+			}
+		end,
+		should_apply = function(self)
+			return ellejokers.mod_data.config.pixel_shader.enabled
+		end,
+		order = 1
+	}
+end
 
 ellejokers.mod_data.menu_cards = function()
     return {

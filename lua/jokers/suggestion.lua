@@ -26,8 +26,8 @@ suggestion.calculate = function(self, card, context)
 		end
 		if faces > 0 then
 			return {
-				message = "Forcefem!",
-				colour = G.ARGS.LOC_COLOURS['elle']
+				message = localize("elle_suggestion"),
+				colour = G.ARGS.LOC_COLOURS.elle
 			}
 		end
 	end

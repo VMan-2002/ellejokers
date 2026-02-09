@@ -10,7 +10,7 @@ nitro = SMODS.Joker {
 
 nitro.calculate = function(self, card, context)
 	-- Get fucked lol
-	if context.end_of_round and not card.ability.extra.used and to_big(card.ability.extra.mult) > to_big(0) then
+	if context.end_of_round and context.main_eval and not card.ability.extra.used and to_big(card.ability.extra.mult) > to_big(0) then
 		card.ability.extra.mult = 0
 		return { message = "Reset!" }
 	end

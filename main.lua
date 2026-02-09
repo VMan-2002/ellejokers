@@ -45,7 +45,8 @@ local files = {
 	"fnf/fnf_main",
 	"challenges",
 	"popup_shop",
-	"enhancements"
+	"enhancements",
+	"blindside"
 }
 
 -- Only add LobCorp's blindexpander if the mod isn't present

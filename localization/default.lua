@@ -492,6 +492,24 @@ return {
 					"{C:attention}Mall{} Jokers are debuffed"
 				}
 			}
+		},
+		Blind = {
+			-- Blindside stuff
+			bl_elle_suggestion = {
+				name = "Suggestion",
+				text = {
+					"Held blinds are burned",
+					"and temporary The Queens",
+					"are added to deck"
+				},
+			},
+			bl_elle_chloe = {
+				name = "Chloe",
+				text = {
+					"+20 Chips when",
+					"discarding blinds"
+				},
+			}
 		}
 	},
 	misc = {
@@ -507,7 +525,8 @@ return {
 			elle_rebecca_reroll = "Reroll All",
 			elle_shop_restock = "Restocked!",
 			
-			elle_41_activate = "Yeah~!"
+			elle_41_activate = "Yeah~!",
+			elle_suggestion = "Forcefem!"
 		},
 		challenge_names = {
 			c_elle_cafe_frequent = "Café Frequent",

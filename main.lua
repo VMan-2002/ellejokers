@@ -80,7 +80,7 @@ local lib = {
 	"consumables",
 	"misc",
 	"http",
-	"fnf/fnf_main",
+	"../fnf/fnf_main",
 	"challenges",
 	"popup_shop",
 	"enhancements",

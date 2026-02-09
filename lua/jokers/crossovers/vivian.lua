@@ -2,6 +2,7 @@ local vivian = SMODS.Joker {
 	key = 'vivian',
 	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.friends) end end,
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = "Other", key = "elle_crossover", specific_vars = {"Reverie","@critterror.bsky.social"} }
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_vivian')
 		return { vars = { numerator, denominator } }
 	end,

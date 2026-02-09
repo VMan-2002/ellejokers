@@ -3,7 +3,7 @@ version = "0.1.0"
 dump_lua = true
 priority = 0
 
-# Add Spearlamp info_queue messages to steel & slime cards
+# Add Spearlamp & Drago info_queue messages
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -16,6 +16,10 @@ if (card) then
 	if (#SMODS.find_card("j_elle_spearlamp", false)>0) then
 		if (_c.key == "m_steel") then info_queue[#info_queue+1] = G.P_CENTERS.m_elle_slime end
 		if (_c.key == "m_elle_slime") then info_queue[#info_queue+1] = G.P_CENTERS.m_steel end
+	end
+	-- Drago support
+	if (#SMODS.find_card("j_elle_drago", false)>0) then
+		if (_c.key == "m_wild") then info_queue[#info_queue+1] = G.P_CENTERS[G.GAME.current_round.elle_drago_ench] end
 	end
 end
 '''

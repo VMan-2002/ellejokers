@@ -3,6 +3,7 @@ local twy = SMODS.Joker {
 	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.poly) end end,
 	config = { extra = { odds = 4 } },
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = "Other", key = "elle_crossover", specific_vars = {"Twylight","@twylightstar.bsky.social"} }
 		local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'elle_twy')
 		return { vars = { numerator, denominator } }
 	end,

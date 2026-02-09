@@ -3,6 +3,10 @@ local jess = SMODS.Joker {
 	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.poly) end end,
 	config = { extra = { count = 2 } },
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {
+			set = "Other", key = "elle_crossover", specific_vars = {"Jess","@soup587.bsky.social"},
+			slime_desc_icon = { atlas = "elle_cornericons", pos = {x=1,y=0} }
+		}
 		info_queue[#info_queue+1] = G.P_CENTERS.m_elle_jess
 		return { vars = { card.ability.extra.count } }
 	end,
@@ -10,7 +14,11 @@ local jess = SMODS.Joker {
 	atlas = 'jokers',
 	pos = { x = 1, y = 5 },
 	cost = 6,
-	blueprint_compat = true
+	blueprint_compat = true,
+	slime_desc_icon = {
+		atlas = "elle_cornericons",
+		pos = {x=1,y=0}
+	}
 }
 
 jess.calculate = function(self, card, context)

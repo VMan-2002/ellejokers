@@ -136,7 +136,7 @@ SMODS.Challenge {
 	}
 }
 
-function elle_challenge_mod_calc(self,context)
+function ellejokers.calculate.challenge(context)
 	if G.GAME.modifiers.elle_not_all and context.modify_hand then
 		local all_rank = true
 		for _,v in ipairs(context.scoring_hand) do

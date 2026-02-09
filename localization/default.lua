@@ -182,11 +182,13 @@ return {
 					caption.."Protected innocence..."
 				}
 			},
-			j_elle_discarded = {
-				name = 'Discarded Prototypes',
+			j_elle_prototypes = {
+				name = 'The Prototypes',
 				text = {
-					"{C:attention}Debuffed{} cards give",
-					"{C:money}$#1#{} when discarded"
+					"Copy abilities of",
+					"{C:attention}#1#{} random {C:attention}Jokers{},",
+					"Jokers change at",
+					"start of round"
 				}
 			},
 			
@@ -194,8 +196,9 @@ return {
 			j_elle_drago = {
 				name = 'Drago',
 				text = {
-					"{C:attention}Wild Cards{} cannot",
-					"get debuffed"
+					"Wild Cards count as",
+					"{C:attention}#1#s{} instead,",
+					"{s:0.8}changes at end of round"
 				}
 			},
 			j_elle_vivian = {
@@ -204,6 +207,14 @@ return {
 					"{C:green}#1# in #2#{} chance to",
 					"give {C:attention}scoring hand",
 					"random {C:enhanced}Enhancements"
+				}
+			},
+			j_elle_feri = {
+				name = 'Feri',
+				text = {
+					"Played {C:hearts}Hearts{} cards",
+					"permanently gain",
+					"{C:mult}+#1#{} Mult when scored"
 				}
 			},
 			j_elle_carpet = {
@@ -371,9 +382,7 @@ return {
 					"{C:attention}destroy all cards{} held",
 					"in hand and add {C:dark_edition}Negative{}",
 					"to a random joker",
-					caption.."99... 100! This is too many tails~,,",
-					"{C:inactive,s:0.7}Character belongs to",
-					"{C:inactive,s:0.7}@twylightstar.bsky.social"
+					caption.."99... 100! This is too many tails~,,"
 				},
 				unlock = {
 					"{E:1,s:1.3}?????"
@@ -476,6 +485,13 @@ return {
 					"{C:red}mistake"
 				}
 			},
+			slime_upgr_j_elle_p41 = {
+				name = 'Upgrade',
+				text = {
+					"Trigger",
+					"{C:attention}#1#{C:inactive}[#2#]{} times"
+				}
+			},
 			
 			elle_upgr_no_shop = {
 				name = 'Upgrade Only',
@@ -510,6 +526,15 @@ return {
 				name = 'Slimeify',
 				text = {
 					"Pay {C:money}$#1#"
+				}
+			},
+
+			elle_crossover = {
+				name = 'Crossover',
+				text = {
+					"Character by",
+					"{C:attention}#1#",
+					"{C:inactive,s:0.7}#2#"
 				}
 			}
 		},

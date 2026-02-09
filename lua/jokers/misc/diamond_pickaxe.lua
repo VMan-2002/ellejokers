@@ -7,7 +7,8 @@ SMODS.Joker {
 	end,
 	rarity = 3,
 	atlas = 'jokers',
-	pos = { x = 6, y = 3 },
+	pos = { x = 4, y = 5 },
+	soul_pos = { x = 5, y = 5 },
 	cost = 11,
 	blueprint_compat = false,
 	add_to_deck = function(self, card)

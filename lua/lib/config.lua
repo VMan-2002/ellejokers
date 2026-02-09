@@ -41,6 +41,7 @@ end
 
 function G.FUNCS.conf_elle_palette_toggle(args)
 	ellejokers.mod_data.config.pixel_shader.enabled = not ellejokers.mod_data.config.pixel_shader.enabled
+	check_for_unlock({type = "elle_toggle_palette"})
 end
 
 function G.FUNCS.conf_elle_palette_credit(args)

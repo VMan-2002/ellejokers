@@ -18,7 +18,7 @@ SMODS.Achievement {
 	end
 }
 
-function elle_achievement_mod_calc(self, context)
+function ellejokers.calculate.achievement(context)
 	if context.final_scoring_step then
 		-- Copycat check
 		local copycat_ach = 0

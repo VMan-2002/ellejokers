@@ -64,7 +64,11 @@ SMODS.Enhancement {
 				}
 			end
 		end
-	end
+	end,
+	slime_desc_icon = {
+		atlas = "elle_cornericons",
+		pos = {x=1,y=0}
+	}
 }
 --#endregion
 

@@ -13,7 +13,7 @@ local chloe = SMODS.Joker {
 }
 
 chloe.calculate = function(self, card, context)
-	if context.discard and not context.other_card.debuff then
+	if context.discard and not context.other_card.debuff and not context.blueprint then
 		card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
 		
 		local face = context.other_card:is_face()

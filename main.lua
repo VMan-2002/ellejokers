@@ -34,7 +34,43 @@
 --			- Custom Colour card crashes game on round end
 
 ellejokers = {
+	mod_data = SMODS.current_mod,
+	palettes = {
+		{
+			name = "octo80",
+			path = "octo80.png",
+			credit = "octoshrimpy"
+		},
+		{
+			name = "AAP-64",
+			path = "aap64.png",
+			credit = "Adigun A. Polack"
+		},
+		{
+			name = "Greyscale (octo80)",
+			path = "greyscale.png",
+			credit = "octoshrimpy"
+		},
+		{
+			name = "Binary",
+			path = "binary.png",
+			credit = "???"
+		},
+		{
+			name = "Balatro...?",
+			path = "balatro.png",
+			credit = "???"
+		}
+	}
 }
+
+-- Create palettes
+for k, v in ipairs(ellejokers.palettes) do
+	v.image = love.graphics.newImage( love.image.newImageData(NFS.newFileData( SMODS.current_mod.path .. "assets/palettes/"..v.path) ) )
+	local w,h = v.image:getDimensions()
+	v.dims = {w,h}
+end
+
 
 --		[[ File List ]]
 local files = {
@@ -46,7 +82,9 @@ local files = {
 	"challenges",
 	"popup_shop",
 	"enhancements",
-	"blindside"
+	"blindside",
+	"achievements",
+	"config"
 }
 
 -- Only add LobCorp's blindexpander if the mod isn't present
@@ -74,6 +112,7 @@ local jokers = {
 	--"not_cassie",
 	"41",
 	"discarded",
+	--"wordle",
 	
 			-- Jess's Minecraft Idea
 	"waterbucketrelease/cobble_gen",
@@ -85,15 +124,17 @@ local jokers = {
 			-- Other stuff
 	"drago",
 	"vivian",
+	"jess",
+	"jessclip",
 	"carpet",
 	"spamton",
 	"polyamory",
 	"bf",
+	"ourple",
 	"nitro",
 	"eraser",
 	"suggestion",
 	"diamond_pickaxe",
-	"jess",
 	
 			-- Legendaries
 	"twy",
@@ -176,6 +217,10 @@ SMODS.Sound {
 	path = "fizz.ogg"
 }
 SMODS.Sound {
+	key = "squeak",
+	path = "squeak.ogg"
+}
+SMODS.Sound {
 	key = "music_spamton",
 	path = "music_spamton.ogg",
 	sync = false,
@@ -197,22 +242,22 @@ G.ARGS.LOC_COLOURS['elle'] = HEX('FF53A9')
 
 -- Badges
 elle_badges = {
-	["mall"] = {
+	mall = {
 		text = "The Mall",
 		colour = HEX('b7a2fd')
 	},
-	["oc"] = {
-		text = "ellestuff.",
+	oc = {
+		text = "slimestuff.",
 		colour = HEX('ff53a9')
 	},
-	["friends"] = {
+	friends = {
 		text = "Friends of Elle",
-		colour = HEX('ff53a9')
+		colour = HEX('40aeff')
 	},
-	["mc"] = {
-		text = "Minecraft",
-		colour = HEX('ff005f')
-	},
+	poly = {
+		text = "Girlfriends of Elle",
+		colour = HEX('81cefd')
+	}
 }
 
 -- Cryptid/Talisman Compatibility functions
@@ -266,4 +311,42 @@ end
 
 SMODS.current_mod.calculate = function(self,context)
 	elle_challenge_mod_calc(self,context)
+	elle_achievement_mod_calc(self,context)
 end
+
+SMODS.Shader {
+	key = "pixelated",
+	path = "pixelated.fs"
+}
+
+local w,h = love.graphics.getDimensions()
+SMODS.ScreenShader {
+	key = "pixelated",
+	shader = "elle_pixelated", --modprefix is necessary, this now refers to the same shader defined above
+
+	send_vars = function (self)
+		local p = ellejokers.palettes[ellejokers.mod_data.config.pixel_shader.palette]
+		return {
+			palette = p.image,
+			paletteSize = p.dims,
+			dims = {w/2,h/2}
+		}
+	end,
+	should_apply = function(self)
+		return ellejokers.mod_data.config.pixel_shader.enabled
+	end,
+	order = 1
+}
+
+-- test drawstep,,
+--[[SMODS.DrawStep {
+	key = "elle_pixelated",
+	order = 20,
+	func = function(self, layer)
+        self.children.center:draw_shader('elle_pixelated', nil, self.ARGS.send_to_shader)
+		if self.children.front and not self:should_hide_front() then
+			self.children.front:draw_shader('elle_pixelated', nil, self.ARGS.send_to_shader)
+		end
+	end,
+    conditions = { vortex = false, facing = 'front' }
+}]]

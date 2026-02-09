@@ -1,7 +1,7 @@
 local sarah = SMODS.Joker {
 	key = 'sarah',
 	blueprint_compat = true,
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card) return { vars = { } } end,
 	rarity = 2,

@@ -1,4 +1,5 @@
 .lovelyignore
+.luarc.json
 # Temporary
 assets/sounds/*-inst.ogg
 assets/sounds/*-voices.ogg

@@ -16,14 +16,7 @@ ellejokers.popup_shop = {
 			"elle_spamton_shop"
 		}
 	},
-	
-	-- Copied very loosely from HotPot
-	reload_areas = function()
-		-- Go through areas for different shops
-		for k,_ in pairs(G.GAME.elle_popup_shops) do
-			load_shop_areas(k)
-		end
-	end,
+
 	
 	load_shop_areas = function(shop)
 		-- Go through shop's areas
@@ -41,6 +34,14 @@ ellejokers.popup_shop = {
 				end
 				G.GAME.elle_popup_shops[shop].data[key] = nil
 			end
+		end
+	end,
+
+	-- Copied very loosely from HotPot
+	reload_areas = function()
+		-- Go through areas for different shops
+		for k,_ in pairs(G.GAME.elle_popup_shops) do
+			ellejokers.popup_shop.load_shop_areas(k)
 		end
 	end
 }

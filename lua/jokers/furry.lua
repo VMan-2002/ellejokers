@@ -1,6 +1,6 @@
 local furry = SMODS.Joker {
 	key = 'furry',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult_mod = 5, mult = 0, used = false, req = 10, count = 0 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_no_shop"}
@@ -67,7 +67,7 @@ furry.slime_upgrade = {
 		local sarah = SMODS.find_card("j_elle_sarah")[1]
 		local cassie = SMODS.find_card("j_elle_cassie")[1]
 		
-		if cassie then transform_joker(cassie,"j_elle_cassie2",{end_sound='slice1'}) end
-		if sarah then transform_joker(sarah,"j_elle_mint") end
+		if cassie then slimeutils.transform_card(cassie,"j_elle_cassie2",{end_sound='slice1'}) end
+		if sarah then slimeutils.transform_card(sarah,"j_elle_mint") end
 	end
 }

@@ -114,9 +114,12 @@ return {
 			j_elle_marie = {
 				name = 'Marie',
 				text = {
-					"{C:attention}Slime cards{} give",
-					"{C:mult}+#1#{} Mult and are",
-					"guaranteed to trigger"
+					"Upgrade {C:attention}Unenhanced",
+					"playing cards into",
+					"{C:attention}Slime{} cards by",
+					"paying {C:money}$#1#{}, increase",
+					"the cost by {C:money}$#2#",
+					"afterwards"
 				}
 			},
 			j_elle_bea = {
@@ -217,7 +220,7 @@ return {
 				text = {
 					"* ENTER MY {C:attention}[[Home-made",
 					"{C:attention}Storefront Site]]",
-					"{C:inactive}(Restocks at end of Ante)"
+					"{C:inactive}(Restocks at end of Blind)"
 				}
 			},
 			j_elle_polyamory = {
@@ -239,6 +242,18 @@ return {
 					"once per round",
 					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)",
 					"{C:inactive}(#4#)"
+				}
+			},
+			j_elle_ourple = {
+				name = 'Ourple Guy',
+				text = {
+					"If played hand is",
+					"a {C:attention}Flush{} of {C:spades}Spades{},",
+					"destroy {C:attention}#1#{} random",
+					"cards in hand and",
+					"gain {X:mult,C:white}X#2#{} Mult",
+					"per card destroyed",
+					"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)"
 				}
 			},
 			j_elle_nitro = {
@@ -277,6 +292,23 @@ return {
 				text = {
 					"{C:attention}Eternal{} Jokers can be sold",
 					"by {C:attention}paying{} {C:white,X:money}X#1#{} the sell cost"
+				}
+			},
+			j_elle_jess = {
+				name = 'Jess',
+				text = {
+					"{C:attention}Held{} Jess cards count",
+					"towards Jess {C:attention}retriggers",
+					"Turn {C:attention}#1#{} played cards into",
+					"{C:attention}Jess{} cards before scoring"
+				}
+			},
+			j_elle_jessclip = {
+				name = 'Heart Hairpin',
+				text = {
+					"{C:hearts}Hearts{} cards",
+					"count towards",
+					"Jess {C:attention}retriggers"
 				}
 			},
 			
@@ -329,15 +361,6 @@ return {
 					"{X:mult,C:white}X#1#{} Mult"
 				}
 			},
-			j_elle_jess = {
-				name = 'Jess',
-				text = {
-					"{C:attention}Held{} Jess cards count",
-					"towards Jess {C:attention}retriggers",
-					"Turn {C:attention}#1#{} played cards into",
-					"{C:attention}Jess{} cards before scoring"
-				}
-			},
 			
 			-- Legendaries
 			j_elle_twy = {
@@ -380,11 +403,21 @@ return {
 				}
 			},
 			c_elle_jess = {
-				name = "Jess",
+				name = "The Jess",
 				text = {
 					"Enhances {C:attention}#1#{} selected",
 					"cards into",
 					"{C:attention}Jess Cards"
+				}
+			}
+		},
+		Spectral = {
+			c_elle_doppel = {
+				name = "Doppelgänger",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"card into a",
+					"{C:attention}Copycat Card"
 				}
 			}
 		},
@@ -399,12 +432,16 @@ return {
 			m_elle_jess = {
 				name = "Jess Card",
 				text = {
-					"{C:chips}+#1#{} Chips",
-					"Retriggers once",
-					"per other",
-					"scoring Jess card",
-					"Counts as a",
-					"face card",
+					"Retrigger this card",
+					"{C:attention}#1#{} time per every {C:attention}#2#",
+					"scoring {C:attention}Jess{} cards"
+				}
+			},
+			m_elle_copycat = {
+				name = "Copycat Card",
+				text = {
+					"Copies {C:attention}Card",
+					"to the right",
 					"no rank or suit"
 				}
 			}
@@ -456,6 +493,23 @@ return {
 					"run when this",
 					"card is {C:attention}changed{},",
 					"{C:attention}sold{}, or {C:attention}destroyed"
+				}
+			},
+
+			elle_crash_warning = {
+				name = 'Crash Warning!',
+				text = {
+					"This card may {C:red}crash",
+					"the game due to an",
+					"incompatibility with:",
+					"{C:attention}#1#"
+				}
+			},
+
+			elle_marie_upgrade = {
+				name = 'Slimeify',
+				text = {
+					"Pay {C:money}$#1#"
 				}
 			}
 		},
@@ -526,7 +580,16 @@ return {
 			elle_shop_restock = "Restocked!",
 			
 			elle_41_activate = "Yeah~!",
-			elle_suggestion = "Forcefem!"
+			elle_suggestion = "Forcefem!",
+			elle_ourple_kill = "!!!"
+		},
+		achievement_names = {
+			ach_elle_soretro = "So Retro",
+			ach_elle_copycat = "Redundancy"
+		},
+		achievement_descriptions = {
+			ach_elle_soretro = "Toggle the limited palette shader",
+			ach_elle_copycat = "Play 5 pointless Copycat cards"
 		},
 		challenge_names = {
 			c_elle_cafe_frequent = "Café Frequent",

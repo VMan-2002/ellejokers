@@ -1,6 +1,5 @@
 local gen = SMODS.Joker {
 	key = 'cobble_gen',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { odds = 20 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_elle_cobblestone
@@ -24,9 +23,9 @@ gen.calculate = function(self, card, context)
 		
 		if card_pos>1 then
 			if SMODS.pseudorandom_probability(card, 'elle_cobble_gen', 1, card.ability.extra.odds) then
-				change_joker_ability(card,"j_elle_obsidian",{calculate = function(self, card) play_sound("elle_fizz", 1, 0.6) end})
-			else
-				change_joker_ability(G.jokers.cards[card_pos-1], "j_elle_cobblestone", {vars={value=G.jokers.cards[card_pos-1].sell_cost},end_sound="elle_fizz"})
+				slimeutils.transform_card(card,"j_elle_obsidian",{calculate = function(self, card) play_sound("elle_fizz", 1, 0.6) end})
+			elseif G.jokers.cards[card_pos-1].config.center_key ~= "j_elle_cobblestone" then
+				slimeutils.transform_card(G.jokers.cards[card_pos-1], "j_elle_cobblestone", {vars={value=G.jokers.cards[card_pos-1].sell_cost},end_sound="elle_fizz"})
 			end
 		end
 	end

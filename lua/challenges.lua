@@ -21,7 +21,7 @@ SMODS.Challenge {
 			{id="tag_coupon"},
 			{id="tag_d_six"},
 		},
-		banned_cards = Cryptid and {{id="c_cry_run"}, {id="j_elle_spamton"}} or {{id="j_elle_spamton"}}
+		banned_cards = next(SMODS.find_mod("Cryptid")) and {{id="c_cry_run"}, {id="j_elle_spamton"}} or {{id="j_elle_spamton"}}
 	}
 }
 
@@ -48,7 +48,7 @@ SMODS.Challenge {
 			{id="tag_coupon"},
 			{id="tag_d_six"},
 		},
-		banned_cards = Cryptid and {{id="c_cry_run"}, {id="j_elle_rebecca"}} or {{id="j_elle_rebecca"}}
+		banned_cards = next(SMODS.find_mod("Cryptid")) and {{id="c_cry_run"}, {id="j_elle_rebecca"}} or {{id="j_elle_rebecca"}}
 	}
 }
 
@@ -98,11 +98,12 @@ local shopless = SMODS.Challenge {
 			{id="tag_d_six"},
 		},
 		banned_cards = {
-			{id="j_elle_rebecca"}
+			{id="j_elle_rebecca"},
+			{id="j_elle_spamton"}
 		}
 	}
 }
-if Cryptid then shopless.restrictions.banned_cards[#shopless.restrictions.banned_cards+1] = {id="c_cry_run"} end
+if next(SMODS.find_mod("Cryptid")) then shopless.restrictions.banned_cards[#shopless.restrictions.banned_cards+1] = {id="c_cry_run"} end
 
 SMODS.Challenge {
 	key = "cobbled",

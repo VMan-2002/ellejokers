@@ -1,6 +1,6 @@
 local elle = SMODS.Joker {
 	key = 'elle',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.oc) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.oc) end end,
 	config = { extra = {
 		xmult_mod = 0.1,
 	}},
@@ -59,7 +59,7 @@ Game.main_menu = function(change_context, ...)
             newcard:start_materialize(nil, false, 1)
             newcard.T.w = newcard.T.w * 1.1 * 1.2
             newcard.T.h = newcard.T.h * 1.1 * 1.2
-            newcard.no_ui = true
+            newcard.no_ui = false
             newcard:set_sprites(newcard.config.center)
 
             return true
@@ -67,4 +67,15 @@ Game.main_menu = function(change_context, ...)
     }))
 
     return ret
+end
+
+local card_click_hook = Card.click
+function Card:click()
+	card_click_hook(self)
+	
+	if self.area == G.title_top and self.config.center_key == 'j_elle_elle' then
+        play_sound('elle_squeak')
+        ellejokers.mod_data.config.pixel_shader.enabled = not ellejokers.mod_data.config.pixel_shader.enabled
+        check_for_unlock({type = "elle_toggle_palette"})
+    end
 end

@@ -33,7 +33,7 @@ spam.slime_active = {
 
 -- Restock shop
 spam.calculate = function(self, card, context)
-	if (context.ante_change) then
+	if (context.end_of_round and context.main_eval and not context.blueprint) then
 		G.GAME.elle_popup_shops.spamton.reset_on_open = true
 		return { message = localize("elle_shop_restock") }
 	end

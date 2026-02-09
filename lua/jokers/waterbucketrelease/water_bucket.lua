@@ -1,6 +1,5 @@
 local bucket = SMODS.Joker {
 	key = 'water_bucket',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_elle_cobblestone

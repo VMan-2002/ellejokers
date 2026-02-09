@@ -1,6 +1,6 @@
 local sophie = SMODS.Joker {
 	key = 'sophie',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult_mod = 10, charges = 0, req = 6, active = false, upgr = false } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult_mod*card.ability.extra.charges } }

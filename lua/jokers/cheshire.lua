@@ -1,6 +1,6 @@
 local cheshire = SMODS.Joker {
 	key = 'cheshire',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { Xmult_mod = 0.1, Xmult = 1, used = false } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.Xmult_mod, card.ability.extra.Xmult, card.ability.extra.used and "Inactive" or "Active" } }
@@ -8,22 +8,17 @@ local cheshire = SMODS.Joker {
 	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 2, y = 0 },
-	cost = 12,
+	cost = 10,
 	blueprint_compat = true,
 	unlocked = false
 }
 
 cheshire.calculate = function(self, card, context)
-	if context.before then
-		card.ability.extra.used = false
-	end
+	if context.before then card.ability.extra.used = false end
+	
 	-- XMult stuff
-	if context.joker_main then
-		if card.ability.extra.Xmult ~= 0 then
-			return {
-				Xmult = card.ability.extra.Xmult,
-			}
-		end
+	if context.joker_main and card.ability.extra.Xmult ~= 0 then
+		return { Xmult = card.ability.extra.Xmult }
 	end
 end
 

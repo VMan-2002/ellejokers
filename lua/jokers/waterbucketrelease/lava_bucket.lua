@@ -1,6 +1,5 @@
 local bucket = SMODS.Joker {
 	key = 'lava_bucket',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mc) end end,
 	config = { extra = { mult_mod = 5, mult = 0 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.j_elle_obsidian
@@ -30,11 +29,11 @@ bucket.calculate = function(self, card, context)
 			
 			-- Make cobblestone
 			if (G.jokers.cards[lava_pos+(i*2)] and G.jokers.cards[lava_pos+(i*2)].config.center_key == "j_elle_water_bucket" and G.jokers.cards[lava_pos+i].config.center_key ~= "j_elle_cobblestone") then
-				transform_joker(G.jokers.cards[lava_pos+(i)],"j_elle_cobblestone",{value=G.jokers.cards[lava_pos+(i)].sell_cost, instant = true, end_sound = "elle_fizz"})
+				slimeutils.transform_card(G.jokers.cards[lava_pos+(i)],"j_elle_cobblestone",{value=G.jokers.cards[lava_pos+(i)].sell_cost, instant = true, end_sound = "elle_fizz"})
 			end
 		end
 		if obsidian then
-			transform_joker(card,"j_elle_obsidian",{instant = true, end_sound = "elle_fizz"})
+			slimeutils.transform_card(card,"j_elle_obsidian",{instant = true, end_sound = "elle_fizz"})
 		end
 	end
 end

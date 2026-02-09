@@ -1,6 +1,6 @@
 local bea = SMODS.Joker {
 	key = 'bea',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { mult = 2, poker_hand = "High Card" } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.mult, card.ability.extra.poker_hand } }
@@ -25,13 +25,13 @@ bea.calculate = function(self, card, context)
 	
 	-- Change shit ^w^
 	if context.end_of_round and context.cardarea == G.jokers and not context.blueprint then
-		local _poker_hands = get_hand_types(true)
+		local _poker_hands = slimeutils.get_hand_types(true)
 		card.ability.extra.poker_hand = pseudorandom_element(_poker_hands, 'elle_bea_hand')
 		return { message = localize('k_reset') }
 	end
 end
 
 bea.set_ability = function(self, card, initial, delay_sprites)
-	local _poker_hands = get_hand_types(true)
+	local _poker_hands = slimeutils.get_hand_types(true)
 	card.ability.extra.poker_hand = pseudorandom_element(_poker_hands, 'elle_bea_hand')
 end

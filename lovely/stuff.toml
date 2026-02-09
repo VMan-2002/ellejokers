@@ -74,14 +74,3 @@ if v.ability then
 end
 '''
 match_indent = true
-
-# jess card patch so i don't have to deal with debuff shit :)
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if not id then return end"
-position = "before"
-payload = '''
-	if SMODS.has_enhancement(self, "m_elle_jess") then return true end
-'''
-match_indent = true

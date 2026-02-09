@@ -1,16 +1,16 @@
 local fallen = SMODS.Joker {
 	key = 'fallen',
-	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = table_create_badge(elle_badges.mall) end end,
+	set_badges = function(self, card, badges) if (self.discovered) then badges[#badges+1] = slimeutils.table_create_badge(elle_badges.mall) end end,
 	config = { extra = { xmult_mod = 0.4, charges = 0, active = false } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = {set = "Other", key = "elle_upgr_no_shop"}
 		return { vars = { card.ability.extra.xmult_mod, 1+(card.ability.extra.xmult_mod*card.ability.extra.charges) } }
 	end,
-	rarity = 2,
+	rarity = 3,
 	atlas = 'jokers',
 	pos = { x = 4, y = 0 },
 	soul_pos = { x = 4, y = 1 },
-	cost = 6,
+	cost = 9,
 	unlocked = false,
 	blueprint_compat = true,
 	check_for_unlock = function(self, args)

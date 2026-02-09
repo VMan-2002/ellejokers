@@ -1,65 +1,3 @@
--- Upgrade (Spectral)
---[[
-SMODS.Consumable {
-	key = 'parasite',
-	set = 'Spectral',
-	loc_txt = {
-		name = "Upgrade",
-		text = {
-			"Can {C:attention}Upgrade{} specific Jokers.",
-			"Carries over values when applicable.",
-			"Destroys #1# random cards in hand"
-		}
-	},
-	config = { extra = { cards = 3 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.cards } }
-	end,
-	cost = 7,
-	atlas = 'consumables',
-	pos = { x = 0, y = 0 },
-	can_use = function(self, card)
-		-- immediately ignore if the init conditions aren't true
-		if (#G.jokers.highlighted ~= 1 or #G.hand.cards < 3) then return false end
-		
-		local _curr = G.jokers.highlighted[1]
-		
-		if (elle_parasite_upgrades[_curr.config.center.key] == nil) then return false end
-		
-		local _upgr = G.P_CENTERS[elle_parasite_upgrades[_curr.config.center.key].upgrade]
-		
-		return (_upgr.unlocked or _upgr.parasite_bypass)
-	end,
-	use = function(self, card, area, copier)
-		-- Code I took from Immolate (and tweaked ofc)
-		local destroyed_cards = {}
-		local temp_hand = {}
-		for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end
-		table.sort(temp_hand, function (a, b) return not a.playing_card or not b.playing_card or a.playing_card < b.playing_card end)
-		pseudoshuffle(temp_hand, pseudoseed('elle_parasite'))
-
-		for i = 1, card.ability.extra.cards do destroyed_cards[#destroyed_cards+1] = temp_hand[i] end
-
-		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-			play_sound('tarot1')
-			card:juice_up(0.3, 0.5)
-			return true end }))
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			delay = 0.1,
-			func = function() 
-				for i=#destroyed_cards, 1, -1 do
-					destroyed_cards[i]:start_dissolve(nil, i == #destroyed_cards)
-				end
-				return true end }))
-		delay(0.5)
-		
-		-- Card Upgrading
-		upgrade_joker(G.jokers.highlighted[1], elle_parasite_upgrades)
-	end
-}
---]]
-
 -- Resident (Tarot)
 SMODS.Consumable {
 	key = 'resident',
@@ -80,10 +18,24 @@ SMODS.Consumable {
 	set = 'Tarot',
 	cost = 4,
 	atlas = 'consumables',
-	pos = { x = 2, y = 0 },
+	pos = { x = 0, y = 0 },
 	config = { extra = { }, max_highlighted = 2, mod_conv = "m_elle_jess" },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS.m_elle_jess
+		return { vars = { card.ability.max_highlighted } }
+	end
+}
+
+-- Doppelgänger (Tarot)
+SMODS.Consumable {
+	key = 'doppel',
+	set = 'Spectral',
+	cost = 7,
+	atlas = 'consumables',
+	pos = { x = 0, y = 1 },
+	config = { extra = { }, max_highlighted = 1, mod_conv = "m_elle_copycat" },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_elle_copycat
 		return { vars = { card.ability.max_highlighted } }
 	end
 }

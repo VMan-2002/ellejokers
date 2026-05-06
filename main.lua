@@ -93,6 +93,7 @@ local lib = {
 	"achievements",
 	"config",
 	"tv_time",
+	"final_episode",
 	"decks"
 }
 

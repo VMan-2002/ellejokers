@@ -818,6 +818,12 @@ return {
 			}
 		},
 		Blind = {
+			bl_elle_final_episode = {
+				name = "Final Episode",
+				text = {
+					"Defeat Tenna"
+				},
+			},
 			-- Blindside stuff
 			bl_elle_suggestion = {
 				name = "Suggestion",
@@ -851,7 +857,9 @@ return {
 			
 			elle_41_activate = "Yeah~!",
 			elle_suggestion = "Forcefem!",
-			elle_ourple_kill = "!!!"
+			elle_ourple_kill = "!!!",
+			
+			k_points = "Points"
 		},
 		achievement_names = {
 			ach_elle_soretro = "So Retro",
